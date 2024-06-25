@@ -4,9 +4,9 @@ import ttkbootstrap as ttk
 from lib.gui.components.form import NavigationButton
 from lib.utils import get_path
 from PIL import Image, ImageTk
+from lib.utils import *
 
-PADDING_BUTTONS_X = 22
-
+PADDING_BUTTONS_X = real_size(50)
 class Navigation(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
@@ -14,7 +14,7 @@ class Navigation(tk.Frame):
         # bar
         self.image_references = {}
         center_frame = ttk.Frame(self)
-        center_frame.pack(pady=(5,30), expand=True)
+        center_frame.pack(pady=(15,25), expand=True)
         self.button_previous = self.create_button(center_frame,
                                                   image="left.png")
         self.button_previous.pack(side=ttk.LEFT, padx=PADDING_BUTTONS_X)
@@ -23,14 +23,14 @@ class Navigation(tk.Frame):
         self.button_next.pack(side=ttk.LEFT, padx=PADDING_BUTTONS_X)
         self.button_run = self.create_button(center_frame,
                                                     image="go.png",
-                                                    iwidth=30,
-                                                    iheight=30)
+                                                    iwidth=rreal_size(30),
+                                                    iheight=rreal_size(30))
         self.button_run.pack(side=ttk.LEFT, padx=PADDING_BUTTONS_X)
 
     def create_button(self, frame, **kwargs):
         image_file = kwargs['image']
-        iwidth = kwargs.pop('iwidth', 45)
-        iheight = kwargs.pop('iheight', 35)
+        iwidth = kwargs.pop('iwidth', rreal_size(50))
+        iheight = kwargs.pop('iheight', rreal_size(35))
         icons_dir = get_path("lib/assets/navigation")
         image_path = os.path.join(icons_dir, image_file)
         image = Image.open(image_path, "r").resize((iwidth, iheight))
@@ -38,4 +38,4 @@ class Navigation(tk.Frame):
         return tk.Button(frame, image=self.image_references[image_file],
                                     autostyle=False, background='white',
                          relief='raise', borderwidth=2, padx=5, pady=5,
-                         width=66, height=39)
+                         width=rreal_size(66), height=rreal_size(39))

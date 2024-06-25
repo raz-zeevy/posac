@@ -2,23 +2,22 @@ import tkinter as tk
 import tkinter.ttk
 import ttkbootstrap as ttk
 
-from lib.gui.components.PosacNotebook import PosacNotebook
+from lib.gui.components.editable_tree_view import EditableTreeView
+from lib.gui.components.posac_notebook import PosacNotebook
 from lib.utils import *
 from lib.gui.components.menus import Menu, IconMenu
 from lib.gui.components.help_bar import HelpBar
 from lib.gui.components.navigation import Navigation
 
-
 ROOT_TITLE = "Posac Program-v3.00"
 THEME_NAME = 'sandstone'
 p_ICON = 'icon.ico'
-
 
 class GUI():
     def __init__(self):
         # Main window
         self.root = ttk.Window(
-            # themename=THEME_NAME
+            themename=THEME_NAME
         )
         self.root.title(ROOT_TITLE)
         # set the icon
@@ -27,9 +26,14 @@ class GUI():
         # Initialize an attribute to store images
         self.image_references = {}
 
+        # set the dpi_ratio enviroment variable
+        os.environ['DPI_RATIO'] = str(self.root.winfo_fpixels('1i')/96)
         # Set the window to be square
-        self.root.geometry(f'{WINDOW_WIDTH}x{WINDOW_HEIGHT}')
+        self.root.geometry(f'{real_size(WINDOW_WIDTH,_round=True)}x'
+                           f'{real_size(WINDOW_HEIGHT, _round=True)}')
         self.root.resizable(False, False)
+        EditableTreeView.configure_style(
+            row_height=30)
 
         # init tabs
         self.current_page = None
@@ -81,8 +85,8 @@ class GUI():
         # Create the Notebook widget
         main_frame = ttk.Frame(self.root)
         main_frame.pack(expand=True, fill='both', padx=30, pady=0)
-        notebook = PosacNotebook(main_frame)
-        notebook.pack(expand=True,
+        self.notebook = PosacNotebook(main_frame)
+        self.notebook.pack(expand=True,
                       fill='both',)
 
 

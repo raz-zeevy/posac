@@ -65,14 +65,16 @@ class IconMenu(tk.Frame):
         for file in os.listdir(get_path(icons_dir)):
             if file.endswith(".png") or file.endswith(".ico"):
                 image_path = os.path.join(icons_dir, file)
-                image = Image.open(image_path, "r").resize((19, 19))
+                image = Image.open(image_path, "r").resize(real_size((19,
+                                                                      19),
+                                                                     _round=True))
                 self.image_references[file] = ImageTk.PhotoImage(image)
 
     def add_button(self, image: str, command=None, **kwargs):
         if not "width" in kwargs:
-            kwargs["width"] = 25
+            kwargs["width"] = real_size(25, _round=True)
         if not "height" in kwargs:
-            kwargs["height"] = 25
+            kwargs["height"] = real_size(25, _round=True)
         button = tk.Button(self,
                            autostyle=False,
                            image=self.image_references[image],

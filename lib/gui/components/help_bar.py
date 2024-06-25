@@ -1,7 +1,5 @@
 import tkinter as tk
 import ttkbootstrap as ttk
-
-
 class HelpBar(tk.Frame):
     def __init__(self, root):
         super().__init__(root)

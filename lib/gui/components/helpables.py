@@ -3,8 +3,15 @@ from tkinter import *
 from tkinter import messagebox
 from abc import ABC, abstractmethod
 
-
+#todo:
+    # there is the bbox method that is used in the editable_tree_view to get
+    # the position of the cell to place the entry widget. This method can be
+    # used in the helpables to place the help text in the right place.
 class HelpMixin(ABC):
+    """
+    HelpMixin class is an abstract class that provides a help text when the
+    user presses the F1 key. The help text is shown in a messagebox.
+    """
     def __init__(self, help_title="Help", help_text="No help available",
                  **kwargs):
         self.help_title = help_title

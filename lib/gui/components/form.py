@@ -1,17 +1,33 @@
 import ttkbootstrap as ttk
+import tkinter as tk
 
+from lib.gui.components.editable_tree_view import EditableTreeView
+from lib.utils import real_size, rreal_size
 
 CALIBRI_FONT = ('Calibri', 10)
 SEGOE_UI_FONT = ('Segoe UI', 10)
+SEGOE_UI_FONT_BOLD = ('Segoe UI', 10, 'bold')
 
-class Label(ttk.Label):
+class Label(tk.Label):
     """A label that can be used to display text."""
 
     def __init__(self, parent, **kwargs):
         if 'font' not in kwargs:
             kwargs['font'] = SEGOE_UI_FONT
+        if 'size' in kwargs:
+            kwargs['font'] = (kwargs['font'][0], kwargs['size'])
+            del kwargs['size']
         super().__init__(parent, **kwargs)
+class BoldLabel(tk.Label):
+    """A label that can be used to display text."""
 
+    def __init__(self, parent, **kwargs):
+        if 'font' not in kwargs:
+            kwargs['font'] = SEGOE_UI_FONT_BOLD
+        if 'size' in kwargs:
+            kwargs['font'] = (kwargs['font'][0], kwargs['size'], kwargs['font'][2])
+            del kwargs['size']
+        super().__init__(parent, **kwargs)
 
 class DataButton(ttk.Button):
     """A button that can be used to navigate to a different page."""
@@ -51,6 +67,19 @@ class SelectionBox(ttk.Combobox):
             self.current(default_index)
 
 
+class SpinBox(ttk.Spinbox):
+    def __init__(self, parent, **kwargs):
+        default_value = None
+        if 'default' in kwargs:
+            default_value = kwargs.pop('default')
+        if 'width' not in kwargs:
+            kwargs['width'] = 10
+        super().__init__(parent, **kwargs,
+                         state="readonly", )
+        if default_value is not None:
+            self.set(default_value)
+
+
 def create_labeled_selection_box(master, label_text, values, default,
                                  width=10, label_padx=10, box_pad_x=0, pady=10,
                                  wraplength=500):
@@ -69,4 +98,3 @@ def create_labeled_selection_box(master, label_text, values, default,
         width=width)
     selection_box.pack(side=ttk.RIGHT, padx=box_pad_x)
     return label, selection_box
-

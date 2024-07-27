@@ -1,9 +1,10 @@
 from lib.controller.controller import Controller
+import unittest
 
 DATA_PATH = "data/first_test_data.csv"
 
 
-class first_test(Controller):
+class GuiTest(Controller):
     def __init__(self):
         super().__init__()
         self.notebook = self.gui.notebook
@@ -196,6 +197,7 @@ class first_test(Controller):
                                range(num_ex_var_2)])
         assert tt.get_traits() == test_traits_1
         tt.reset_default()
+
         self.gui.notebook.clear_external_variables()
 
     def test_posacsep_tab(self):
@@ -219,7 +221,8 @@ class first_test(Controller):
         # Test 4: Check reset_to_default()
         pt.reset_to_default()
         assert pt.get_values() == var_num * [pt.DEFAULT_ROW[0]]
-
+        self.notebook.clear_internal_variables()
+        assert not pt.get_values()
     def test_output_tab(self):
         self.notebook.select(7)
         oft = self.notebook.output_files_tab
@@ -236,9 +239,69 @@ class first_test(Controller):
         # cur_values = ot.get_all()
         # assert test_values == cur_values
 
+    def test_navigation(self):
+        # Test 1: Check initial page
+        assert self.gui.navigator.cur_page == 0
+
+        # Test 2: Navigate to next page
+        self.gui.navigator.next_page()
+        assert self.gui.navigator.cur_page == 1
+
+        # Test 3: Navigate to previous page
+        self.gui.navigator.prev_page()
+        assert self.gui.navigator.cur_page == 0
+
+        # Test 4: Navigate to a specific page
+        for i in range(3):
+            self.gui.navigator.next_page()
+        assert self.gui.navigator.cur_page == 3
+
+        # Test 5: Navigate beyond the last page
+        for _ in range(5):
+            self.gui.navigator.next_page()
+        assert self.gui.navigator.cur_page == self.gui.navigator.max_page
+
+        # Test 6: Navigate before the first page
+        for _ in range(5):
+            self.gui.navigator.prev_page()
+        assert self.gui.navigator.cur_page == 0
+
+        # Test 7: Navigate between the external var tabs
+        # No external variables
+        self.gui.navigator.set_page(3)
+        self.gui.navigator.next_page()
+        assert self.gui.navigator.cur_page == 6
+        self.gui.navigator.prev_page()
+        assert self.gui.navigator.cur_page == 3
+
+        # Test 8: Navigate between the external var tabs
+        # With external variables
+        self.add_external_variables(3)
+        self.gui.navigator.set_page(3)
+        self.gui.navigator.next_page()
+        assert self.gui.navigator.cur_page == 4
+        self.gui.navigator.prev_page()
+        assert self.gui.navigator.cur_page == 3
+
+def test():
+    try:
+        a = GuiTest()
+        a.test_general_tab()
+        a.test_zero_option()
+        a.test_internal_variables_tab()
+        a.test_external_variables_tab()
+        a.test_external_variables_ranges_tab()
+        a.test_traits_tab()
+        a.test_posacsep_tab()
+        a.test_output_tab()
+        a.test_navigation()
+    except Exception as e:
+        print(e)
+        return False
+    return True
 
 if __name__ == '__main__':
-    a = first_test()
+    a = GuiTest()
     a.test_general_tab()
     a.test_zero_option()
     a.test_internal_variables_tab()
@@ -247,4 +310,6 @@ if __name__ == '__main__':
     a.test_traits_tab()
     a.test_posacsep_tab()
     a.test_output_tab()
+    a.test_navigation()
     a.run_process()
+

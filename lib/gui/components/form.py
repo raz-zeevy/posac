@@ -8,6 +8,7 @@ CALIBRI_FONT = ('Calibri', 10)
 SEGOE_UI_FONT = ('Segoe UI', 10)
 SEGOE_UI_FONT_BOLD = ('Segoe UI', 10, 'bold')
 
+
 class Label(tk.Label):
     """A label that can be used to display text."""
 
@@ -18,6 +19,8 @@ class Label(tk.Label):
             kwargs['font'] = (kwargs['font'][0], kwargs['size'])
             del kwargs['size']
         super().__init__(parent, **kwargs)
+
+
 class BoldLabel(tk.Label):
     """A label that can be used to display text."""
 
@@ -25,9 +28,11 @@ class BoldLabel(tk.Label):
         if 'font' not in kwargs:
             kwargs['font'] = SEGOE_UI_FONT_BOLD
         if 'size' in kwargs:
-            kwargs['font'] = (kwargs['font'][0], kwargs['size'], kwargs['font'][2])
+            kwargs['font'] = (
+            kwargs['font'][0], kwargs['size'], kwargs['font'][2])
             del kwargs['size']
         super().__init__(parent, **kwargs)
+
 
 class DataButton(ttk.Button):
     """A button that can be used to navigate to a different page."""
@@ -98,3 +103,12 @@ def create_labeled_selection_box(master, label_text, values, default,
         width=width)
     selection_box.pack(side=ttk.RIGHT, padx=box_pad_x)
     return label, selection_box
+
+
+class BrowseButton(ttk.Button):
+    def __init__(self, parent, **kwargs):
+        if 'text' not in kwargs:
+            kwargs['text'] = 'Browse'
+        if 'width' not in kwargs:
+            kwargs['width'] = 10
+        super().__init__(parent, **kwargs, )

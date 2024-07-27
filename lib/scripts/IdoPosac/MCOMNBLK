@@ -1,0 +1,26 @@
+      COMMON XN2BIS(MNV),XN2TER(MNV),XN21(MNXT),XN22(MNXT),
+     $       XN23(MINTERV,MNXT),XN24(MINTERV,MNXT),XN210(MNXT,MMAP),
+     $       XN220(MNXT,MMAP),XN230(MINTERV,MNXT,MMAP),
+     $       XN240(MINTERV,MNXT,MMAP),XX1(MNV),XN20(MNV),XN1(MNV),
+     $       XN2(MNV),XN3(MNC),XN5(MNC),XN6(MNC),XN8(MIEND,2),
+     $       XN9(MIEND,2),XN10(MIEND,2),XN11(MIEND,2),
+     $       XN12(MIEND,2),XN4(MNV,MNC),XN7(MIEND,MIEND)
+      INTEGER*2 XN2BIS, XN2TER, XN21, XN22, XN23, XN24,
+     $          XN210, XN220, XN230, XN240, XN20,
+     $          XN1, XN2, XN3, XN4, XN5, XN6
+      REAL   XX1, XN7, XN8, XN9, XN10, XN11, XN12
+
+      INTEGER*2   XN44 (MNV, MIEND)
+      EQUIVALENCE (XN44, XN4)
+ 
+C       assumed (for HUGE declarations) that up to end of XN44
+C               is entirely in first 64K
+C
+C             21,884 bytes up to end of XN12
+C             78,000 bytes in XN4   (8840 bytes in XN44)
+C        so   99,884 bytes up to end of XN4 (1*64K + 34348)
+C
+C            115,600 bytes in XN7
+C        so  215,484 bytes up to end of XN7 (3*64K + 18876)
+
+

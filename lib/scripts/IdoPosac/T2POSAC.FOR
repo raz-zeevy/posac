@@ -1,0 +1,432 @@
+
+
+      SUBROUTINE EXTMAP(IVEXT2,NBINT2,IBORN2,JBORN2,NXT,MAP)
+C
+      PARAMETER (NWORDS=10)
+      PARAMETER (MAXEXMAP=30)
+      PARAMETER (MAXINTRV=10)
+C
+C  READS EXTERNAL TRAIT FOR EACH MAP
+C
+      COMMON/IO/NTAPE,NREAD,NWRITE,NSCR
+      COMMON/MAPLAB/LABMAP(NWORDS,MAXEXMAP)
+      INTEGER*4 LABMAP
+C
+      INTEGER*2 NXT,MAP
+      INTEGER*2 IVEXT2(NXT,MAP),NBINT2(NXT,MAP)
+      INTEGER*2 IBORN2(MAXINTRV,NXT,MAP),JBORN2(MAXINTRV,NXT,MAP)
+C
+      INTEGER*2 M,J,I,NB
+C **********************************************************************
+C
+      DO 20 M=1,MAP
+          READ(NREAD,50) (LABMAP(J,M),J=1,NWORDS)
+          WRITE(NWRITE,100) M,(LABMAP(J,M),J=1,NWORDS)
+          DO 10 I=1,NXT
+               READ(NREAD,200) IVEXT2(I,M),NB,
+     $                      (IBORN2(J,I,M),JBORN2(J,I,M),J=1,NB)
+               IF (NB .GT. MAXINTRV) THEN
+                    WRITE (*,*) '*** ERROR *** External variable with',
+     $                  ' more than', MAXINTRV, ' category intervals.',
+     $                  CHAR(7)
+                    WRITE (*,*) IVEXT2(I,M),NB,
+     $                      (IBORN2(J,I,M),JBORN2(J,I,M),J=1,NB)
+                    STOP
+               END IF
+               NBINT2(I,M)=NB
+               WRITE(NWRITE,300) IVEXT2(I,M),
+     $                        (IBORN2(J,I,M),JBORN2(J,I,M),J=1,NB)
+   10     CONTINUE
+   20 CONTINUE
+      RETURN
+   50 FORMAT(10A4)
+  100 FORMAT(//,1X,15HEXTERNAL TRAIT ,I2,2X,2H: ,10A4,/,
+     $18H EXTERNAL VARIABLE,6X,18HCATEGORY INTERVALS,
+     $/,1X,17(1H-),6X,18(1H-))
+  200 FORMAT(20I4)
+  300 FORMAT(8X,I2,14X,10(1H(,I2,1H,,I2,2H) :2H, ))
+      END
+
+      SUBROUTINE READAT(IPROF,IPMIN,IPMAX,ICATMN,ICATMX,IVEXT,NBINT,
+     $                                    IBORNE,JBORNE)
+
+      PARAMETER (LENIFOR=255)
+      PARAMETER (IDLEN=10)
+      PARAMETER (MAXINTRV=10)
+
+C  READS SUBJECTS OR PROFILES , REJECTS THOSE WHICH
+C  HAVE MISSING VALUES . THE RETAINED ONES ARE
+C  WRITTEN ON TAPE9
+C  THIS SUB. COMPUTES ALSO THE MAXIMUM AND MINIMUM PROFILES
+C  IVEXT  SERIAL NUMBER OF EXTERNAL VARIABLE
+C  NBINT   NUMBER OF INTERVALS FOR VARIABLE IVEXT
+C  IBORNE LEFT BOUND OF AN INTERVAL
+C  JBORNE RIGHT BOUND OF THE SAME INTERVAL
+C  NXT    NUMBER OF EXTERNAL VARIABLES
+
+      COMMON/IO/NTAPE,NREAD,NWRITE,NSCR
+      COMMON/AA/NV,NCAS,NXT,MAP,MDUM
+      COMMON/BB/IFOR
+      COMMON/CC/ISMN,ISMX,IEND
+      COMMON/OPT/IDATA
+      COMMON/KENID/YESID
+C
+      LOGICAL YESID
+C
+      PARAMETER (MFRLIN = 10)
+      INTEGER*2 NFRLIN, JSTRT, JEND, NUMRD, IDLIN
+      COMMON /FORANL/ NFRLIN, JSTRT (MFRLIN), JEND (MFRLIN),
+     $                NUMRD (MFRLIN), IDLIN
+C
+      CHARACTER*10 ID
+      CHARACTER IFOR*(LENIFOR)
+C
+      INTEGER*2 NV,NCAS,NXT,MAP,MDUM,ISMN,ISMX,IEND
+      INTEGER*2 IPROF(0:NV), IPMIN(NV),IPMAX(NV),ICATMN(NV),ICATMX(NV)
+      INTEGER*2 IVEXT(NXT),NBINT(NXT),IBORNE(MAXINTRV,NXT),
+     $                                 JBORNE(MAXINTRV,NXT)
+C
+      INTEGER*2 MAXSTOR
+      PARAMETER (MAXSTOR = 10)
+      INTEGER*2 NSER, NREJ, I, IP, IYES, JYES, IVX, NB, J, K, ICN, ICX,
+     $          IPN, IPF, IPX, COUNT, NSYSMS, MINRD, NRD,
+     $          NSTOR, STOR (MAXSTOR)
+      LOGICAL   ERRFND
+C
+C **********************************************************************
+C  EACH SUBJECT IS CONSIDERED AS A PROFILE
+C  WITH FREQUENCY 1
+C  IFREQ IS NOW STORED IN IPROF (0)
+C
+C          WRITE (NWRITE, *) 'DEBUG', NFRLIN, IDLIN, IDATA, YESID
+C      DO 1234 I = 1, NFRLIN
+C          WRITE (NWRITE, *) I, NUMRD (I), JSTRT (I), JEND (I), 'AA',
+C     1                      IFOR (JSTRT (I):JEND (I) ), 'AA'
+C 1234 CONTINUE
+C
+      IPROF (0) = 1
+      NSER=0
+      NCAS=0
+      NREJ=0
+      COUNT = 0
+      NSYSMS = 0
+      MINRD = 0
+      IF (IDATA .EQ. 0) MINRD = 1
+      ERRFND = .FALSE.
+      REWIND NSCR
+      REWIND NTAPE
+C
+   80 CONTINUE
+C
+C  READING OF THE RECORDS
+C
+      K = 0
+      NRD = MINRD
+      IF (YESID) THEN
+          IF (IDLIN .GT. 1) THEN
+               DO 85 J = 2, IDLIN
+                    READ (NTAPE, 800, END=2)
+ 85            CONTINUE
+          END IF
+          J = IDLIN
+          K = IDLIN
+          IF (NUMRD (J) .GT. 0) THEN
+               READ (NTAPE, IFOR (JSTRT (J):JEND (J) ), ERR=33, END=2)
+     1                    ID, (IPROF(I), I= NRD, (NRD+NUMRD(J)-1) )
+               NRD = NRD + NUMRD (J)
+          ELSE
+               READ (NTAPE, IFOR (JSTRT (J):JEND (J) ), ERR=33, END=2)
+     1                      ID
+          END IF
+      END IF
+      DO 90 J = K+1, NFRLIN
+          IF (NUMRD (J) .EQ. 0) THEN
+               READ (NTAPE, 800, END=2)
+          ELSE
+               READ (NTAPE, IFOR (JSTRT (J):JEND (J) ), ERR=33, END=2)
+     1                        (IPROF(I), I= NRD, (NRD+NUMRD(J)-1) )
+               NRD = NRD + NUMRD (J)
+          END IF
+ 90   CONTINUE
+      COUNT = COUNT + 1
+      NSER=NSER+1
+C  IF AN ID IS NOT SUBMITTED BY THE USER THE SERIAL NUMBER
+C  OF THE CASE IS PUT IN THE PROGRAM ID
+      IF (.NOT.YESID) WRITE(ID,'(I4)') NSER
+C  RECORD REJECTED BECAUSE MISSING VALUES
+      DO 50 I=1,NV
+          IP=IPROF(I)
+          IF(NXT.EQ.0) GO TO 57
+C
+C  FOR EXTERNAL VARIABLES , RECORDS REJECTED
+C  BECAUSE CATEGORIES NOT REQUIRED
+C
+C  IS I AN EXTERNAL VARIABLE
+          IYES=0
+          DO 55 J=1,NXT
+               IVX=IVEXT(J)
+               IF(I.EQ.IVX) IYES=1
+               IF(I.EQ.IVX) JYES=J
+   55     CONTINUE
+          IF(IYES.EQ.0) GO TO 57
+          NB=NBINT(JYES)
+C  IS CATEGORY IP IN THE REQUIRED CATEGORIES
+          DO 56 K=1,NB
+               IF(IP.GE.IBORNE(K,JYES).AND.
+     $                  IP.LE.JBORNE(K,JYES)) GO TO 50
+   56     CONTINUE
+          GO TO 51
+   57     CONTINUE
+          ICN=ICATMN(I)
+          ICX=ICATMX(I)
+          IF(IP.GE.ICN.AND.IP.LE.ICX) GO TO 50
+   51     CONTINUE
+          NREJ=NREJ+1
+C
+C        GET NEXT RECORD
+C
+          GO TO 80
+C
+   50 CONTINUE
+      WRITE(NSCR) ID, (IPROF(I), I=0,NV)
+      NCAS=NCAS+1
+C  ARE INITIALIZED TO THE FIRST
+C  RETAINED CASE
+      IF(NCAS.EQ.1) GO TO 25
+      DO 20 I=1,NV
+          IPN=IPMIN(I)
+          IPX=IPMAX(I)
+          IPF=IPROF(I)
+          IPMIN(I)=MIN0(IPN,IPF)
+          IPMAX(I)=MAX0(IPX,IPF)
+   20 CONTINUE
+C
+C        GET NEXT RECORD
+C
+      GO TO 80
+   25 CONTINUE
+      DO 10 I=1,NV
+          IPMIN(I)=IPROF(I)
+          IPMAX(I)=IPROF(I)
+   10 CONTINUE
+C
+C        GET NEXT RECORD
+C
+      GO TO 80
+C
+C         READ ERROR
+C
+ 33   CONTINUE
+      COUNT = COUNT + 1
+      NSYSMS = NSYSMS + 1
+      IF (ERRFND) THEN
+          NSTOR = NSTOR + 1
+          STOR (NSTOR) = COUNT
+          IF (NSTOR .EQ. MAXSTOR) THEN
+               WRITE (NWRITE, 550) STOR
+               NSTOR = 0
+          END IF
+      ELSE
+          WRITE (NWRITE, 500)
+          ERRFND = .TRUE.
+          NSTOR = 1
+          STOR (1) = COUNT
+      END IF
+C
+C         note: in microsoft fortran, after error, still left in current record
+C               in professional fortran, left before next record
+C
+C      DO 190 K = J+1, NFRLIN        line for professional fortran
+      DO 190 K = J, NFRLIN
+          READ (NTAPE, 800, END=2)
+ 190  CONTINUE
+      GOTO 80
+C
+C         END OF FILE
+C
+    2 CONTINUE
+      IF (ERRFND .AND. NSTOR .GT. 0)
+     $               WRITE (NWRITE, 550) (STOR (J), J = 1, NSTOR)
+C
+C  PRINT SOME RESULTS
+C
+      WRITE(NWRITE,100) COUNT, NSYSMS, NSER, NREJ, NCAS
+C  SCORES OF MINIMAL AND MAXIMAL PROFILES
+      ISMN=0
+      ISMX=0
+      DO 30 J=1,NV
+       IF(NXT.EQ.0) GO TO 36
+       IYES=0
+       DO 35 K=1,NXT
+          IVX=IVEXT(K)
+          IF(J.EQ.IVX) IYES=1
+   35  CONTINUE
+       IF(IYES.EQ.1) GO TO 30
+   36  CONTINUE
+       ISMN=ISMN+IPMIN(J)
+       ISMX=ISMX+IPMAX(J)
+   30 CONTINUE
+      RETURN
+C
+  100 FORMAT(//' NUMBER OF CASES IN FILE ', 23(1H.), I4/
+     $         ' NUMBER OF CASES WITH SYSTEM-MISSING VALUES ',4(1H.),I4/
+     $       22H NUMBER OF READ CASES ,26(1H.),I4/
+     $         ' NUMBER OF CASES WITH USER-MISSING VALUES ',6(1H.),I4/
+     $       26H NUMBER OF RETAINED CASES ,22(1H.),I4)
+  500 FORMAT (//' System missing (non-numerical) values in cases',
+     $          ' numbers:')
+  550 FORMAT (10I8)
+  800 FORMAT (1X)
+C
+      END
+
+      SUBROUTINE PERMUT(IPROF,IFREQ,IPRF,IPMIN,IPMAX,
+     $                             IVEXT,IPERM,NV,NCAS,NXT)
+
+INCLUDE 'MPARMLIN'
+
+      PARAMETER (IDMAX=500)
+      PARAMETER (IDLEN=10)
+
+C  THIS SUB. FINDS A PERMUTATION IPERM ON THE VARIABLES IN
+C  SUCH A WAY THAT THE FIRST (NV-NXT) VARIABLES ARE
+C  ALL INTERNALS
+
+      INTEGER*2 NV,NCAS,NXT
+      INTEGER*2 IPROF(NV),IFREQ(NCAS),IPRF(NV,NCAS),IPMIN(NV),
+     $         IPMAX(NV),IVEXT(NXT),IPERM(NV)
+C
+C
+      COMMON/IO/NTAPE,NREAD,NWRITE,NSCR
+      COMMON/ZIHOUY/ID
+C
+      CHARACTER*10 ID(IDMAX)
+C
+      INTEGER*2 I,I1,J,NINT,NEXT,IVAR,IEXT,IPR,K
+      INTEGER*2 LOC (MNV)
+C
+C     LOC IS USED TO STORE THE INVERSE PERMUTATION AFTERWARDS STORED IN XN20
+C
+C **********************************************************************
+C
+      IF (NXT .EQ. 0) GOTO 100
+C
+      REWIND NSCR
+      DO 10 I=1,NCAS
+       IF(I.LE.IDMAX) II=I
+       READ(NSCR) ID(II), IFREQ(I),(IPRF(J,I),J=1,NV)
+   10 CONTINUE
+C
+C  FINDING THE PERMUTATION
+      NINT=1
+      NEXT=NV-NXT+1
+      IVAR=1
+      IEXT=1
+   20 CONTINUE
+      IF(IVAR.EQ.IVEXT(IEXT)) GO TO 30
+      IPERM(IVAR)=NINT
+      LOC (NINT) = IVAR
+      IVAR=IVAR+1
+      NINT=NINT+1
+      GO TO 20
+   30 CONTINUE
+      IPERM(IVAR)=NEXT
+      LOC (NEXT) = IVAR
+      IF(IEXT.EQ.NXT) GO TO 40
+      NEXT=NEXT+1
+      IVAR=IVAR+1
+      IEXT=IEXT+1
+      GO TO 20
+   40 CONTINUE
+      IF(IVAR.EQ.NV) GO TO 50
+      I1=IVAR+1
+      DO 60 I=I1,NV
+          IPERM(I)=NINT
+          LOC (NINT) = I
+          NINT=NINT+1
+   60 CONTINUE
+   50 CONTINUE
+C
+C  PERFORMING THE PERMUTATION ON THE CASES
+      REWIND NSCR
+      DO 70 I=1,NCAS
+       DO 80 K=1,NV
+          IPR=IPERM(K)
+          IPROF(IPR)=IPRF(K,I)
+   80  CONTINUE
+       WRITE(NSCR) ID(I), IFREQ(I),(IPROF(J),J=1,NV)
+   70 CONTINUE
+      DO 90 K=1,NV
+       IPR=IPERM(K)
+   90 IPROF(IPR)=IPMIN(K)
+      DO 95 K=1,NV
+   95 IPMIN(K)=IPROF(K)
+      DO 96 K=1,NV
+       IPR=IPERM(K)
+   96 IPROF(IPR)=IPMAX(K)
+      DO 97 K=1,NV
+   97 IPMAX(K)=IPROF(K)
+C
+      DO 99 K = 1,NV
+   99 IPERM (K) = LOC (K)
+C
+      GOTO 200
+C
+ 100  DO 110 K = 1, NV
+          IPERM (K) = K
+ 110  CONTINUE
+C
+ 200  RETURN
+C
+      END
+
+      SUBROUTINE ORDEXT(IVEXT ,NBINT ,IBORNE,JBORNE,
+     $              IVEXT2,NBINT2,IBORN2,JBORN2,NXT,MAP,NV)
+
+      PARAMETER (MAXINTRV=10)
+C
+C  THIS SUB. ORDERS THE EXTERNAL TRAIT FOR EACH MAP
+C  IN THE INCREASING ORDER OF THE EXTERNAL VARIABLES
+C
+      INTEGER*2 NXT,MAP,NV
+      INTEGER*2 IVEXT(NXT),NBINT(NXT),IBORNE(MAXINTRV,NXT),
+     $          JBORNE(MAXINTRV,NXT),IVEXT2(NXT,MAP),NBINT2(NXT,MAP),
+     $                IBORN2(MAXINTRV,NXT,MAP),JBORN2(MAXINTRV,NXT,MAP)
+C
+      INTEGER*2 M,I,J,IVMIN,IVX,II
+C
+C **********************************************************************
+C
+      DO 10 M=1,MAP
+C
+C  STORING OPERATION
+       DO 20 I=1,NXT
+          IVEXT(I)=IVEXT2(I,M)
+          NBINT(I)=NBINT2(I,M)
+          DO 30 J=1,10
+             IBORNE(J,I)=IBORN2(J,I,M)
+             JBORNE(J,I)=JBORN2(J,I,M)
+   30     CONTINUE
+   20  CONTINUE
+C
+C  ORDERING
+       DO 50 K=1,NXT
+          IVMIN=NV
+          DO 40 I=1,NXT
+             IVX=IVEXT(I)
+             IF(IVX.EQ.-1) GO TO 40
+             IVMIN=MIN0(IVMIN,IVX)
+             IF(IVMIN.EQ.IVX) II=I
+   40     CONTINUE
+          IVEXT2(K,M)=IVEXT(II)
+          NBINT2(K,M)=NBINT(II)
+          DO 35 J=1,10
+             IBORN2(J,K,M)=IBORNE(J,II)
+             JBORN2(J,K,M)=JBORNE(J,II)
+   35     CONTINUE
+          IVEXT(II)=-1
+   50  CONTINUE
+   10 CONTINUE
+      RETURN
+      END
+

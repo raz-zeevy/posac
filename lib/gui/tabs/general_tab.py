@@ -1,6 +1,6 @@
 import tkinter as tk
 import ttkbootstrap as ttk
-from lib.gui.components.form import Label
+from lib.gui.components.form import Label, BrowseButton
 from lib.utils import real_size
 
 ENTRIES_PAD_Y = 7
@@ -32,7 +32,7 @@ class GeneralTab(tk.Frame):
         self.job_name_frame.pack(fill='x', padx=10, pady=real_size(2))
         self.job_name_entry = self._create_label_entry(
             "What name do you want for this "
-            "Posac job?")
+            "Posac job?", width = 40)
         self._create_data_input()
         self.lines_per_case_entry = self._create_label_entry(
             "How many lines per case in the data file?",
@@ -73,7 +73,7 @@ class GeneralTab(tk.Frame):
         self.data_input_entry = ttk.Entry(right_frame, width=50)
         self.data_input_entry.pack(side=tk.LEFT)
         # add a browse button
-        self.browse_button = ttk.Button(right_frame, text="Browse")
+        self.browse_button = BrowseButton(right_frame)
         self.browse_button.pack(side=tk.LEFT, padx=(40, 0))
 
     def _create_id_location(self):

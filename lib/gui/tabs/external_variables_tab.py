@@ -69,7 +69,10 @@ class EVariablesTab(tk.Frame):
     def get_all_variables(self):
         return [list(row)[1:] for row in self.vars_table.get_all_values()]
 
-    def get_num_variables(self):
+    def get_all_variables_values(self):
+        return self.vars_table.get_all_values()
+
+    def get_vars_num(self):
         return len(self.vars_table)
 
     def get_selected_variables(self):

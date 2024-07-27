@@ -68,6 +68,9 @@ class IVariablesTab(tk.Frame):
     def get_all_variables(self):
         return [list(row)[1:] for row in self.vars_table.get_all_values()]
 
+    def get_all_variables_values(self):
+        return self.vars_table.get_all_values()
+
     def get_selected_variables(self):
         return [list(row)[1:] for row in
                 self.vars_table.get_check_rows_values()]
@@ -77,6 +80,9 @@ class IVariablesTab(tk.Frame):
 
     def set_default(self):
         self.vars_table.clear_rows()
+
+    def get_vars_num(self):
+        return len(self.get_all_variables())
 
     #########
     #  API  #

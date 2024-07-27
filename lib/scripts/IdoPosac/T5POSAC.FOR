@@ -1,0 +1,306 @@
+
+
+      SUBROUTINE ALF(ALFA, IPRF, NV, N)
+C
+C  THIS SUB. COMPUTES THE COMPARABILITY MATRIX ALFA(.,.)
+C            1 IF K.GT.L
+C  ALFA(K,L)= -1 IF K.LT.L
+C            0 IF K NOT COMPARABLE TO L
+C  THIS MATRIX IS ANTISYMMETRIC THEREFORE
+C  ONLY THE UPPER HALF MATRIX IS FILLED
+C  THE LOWER HALF PART IS USED FOR THE COMPUTATION
+C  OF THE MATRIX WEIGHT (SEE THE SUB. BETA)
+C
+      COMMON/VARINT/INTERN
+C
+      INTEGER*2 NV,N,IPRF(NV,N)
+      REAL      ALFA(N,N)
+C
+      INTEGER*2 N1,K,L1,L,I
+C
+      N1=N-1
+      DO 10 K=1,N1
+       ALFA(K,K)=0.
+       L1=K+1
+       DO 15 L=L1,N
+          ALFA(K,L)=0.
+          DO 20 I=1,INTERN
+C
+             IF(IPRF(I,K)-IPRF(I,L)) 15,20,20
+C
+   20     CONTINUE
+          ALFA(K,L)=1.
+   15  CONTINUE
+   10 CONTINUE
+      ALFA(N,N)=0.
+C
+      RETURN
+C
+      END
+
+      SUBROUTINE BETA(ISCO, ALFA, WEIGHT, N,FND1,FND2)
+C
+C  THIS SUB. COMPUTES THE MATRIX OF BALANCING WEIGHTS
+C  LET DSCO=SCORE(1)-SCORE(N) THEN
+C  WEIGHT(K,L)=((DSCO-ABS(SCORE(K)-SCORE(L)))/DSCO)**(FND1 OR FND2)
+C  FND1 POWER NUMBER FOR INCOMPARABLES
+C  FND2 POWER NUMBER FOR   COMPARABLES
+C  THE MATRIX WEIGHT(.,.) IS SYMMETRIC
+C  ONLY THE LOWER HALF MATRIX IS FILLED
+C
+      INTEGER*2 N,ISCO(N)
+      REAL      ALFA(N,N),WEIGHT(N,N)
+C
+      INTEGER*2 ISC1N,K,ISK,L1,L,IAL,ISKL
+      INTEGER*4 ITMP4
+C
+      ISC1N=ISCO(1)-ISCO(N)
+      DO 10 K=2,N
+         ISK=ISCO(K)
+         L1=K-1
+         DO 13 L=1,L1
+C  IN THE UPPER HALF MATRIX OF WEIGHT THERE ARE
+C  THE COEFFICIENTS ALFA
+            IAL=-ALFA(L,K)
+            IF (IAL.EQ.0) GO TO 20
+            IF (FND2.EQ.0) GO TO 12
+            ITMP4 = ISK-ISCO(L)
+            ISKL=IABS(ITMP4)
+            WEIGHT(K,L)=((ISC1N-ISKL)/FLOAT(ISC1N))**FND2
+            GO TO 13
+   20       IF (FND1.EQ.0) GO TO 12
+            ITMP4 = ISK-ISCO(L)
+            ISKL=IABS(ITMP4)
+            WEIGHT(K,L)=((ISC1N-ISKL)/FLOAT(ISC1N))**FND1
+            GOTO 13
+   12       WEIGHT(K,L)=1
+   13    CONTINUE
+   10 CONTINUE
+C
+      RETURN
+C
+      END
+
+      SUBROUTINE INIT (X1, X2 ,IPRF, IFREQ, ISCO, COEFF, NV, N)
+
+INCLUDE 'MPARMLIN'
+
+C      PARAMETER (INTMAX=26)
+C
+C     SUBROUTINE INIT(X1,X2,IPRF,IFREQ,ISCO,NV,N)
+C *** MATRIX OF WEAK MONOTONICITY COEFFICIENTS BETWEEN VARIABLES
+C     WAS ADDED , JANUARY 1983 .
+C
+C  THIS SUB. COMPUTES THE INITIAL SOLUTION FOR POSAC
+C  THE COMPUTATION IS BASED ON THE SCORE OF EACH PROFILE
+C  AND ON THE TWO VARIABLES WHICH ARE LESS CORRELATED (MONOTONICALLY)
+C
+      COMMON/IO/NTAPE,NREAD,NWRITE,NSCR
+      COMMON/PARAM/IEXDIAGRM, ITEMDGPLT, IWRTFLS
+      COMMON/VARINT/INTERN
+      COMMON/FF/FORMFEED
+      COMMON/BOXSTRNG/UP,BOTTM,LEFT,RIGHT,
+     $               UPLEFT,UPRIGHT,BOTTMLEFT,BOTTMRIGHT
+      COMMON/LAB/LABEL (MNV),PATH
+      COMMON/NPG/NEWPAGE, PATHLEN
+C
+      CHARACTER*40 LABEL
+      CHARACTER*80 PATH
+      INTEGER*2 NEWPAGE, PATHLEN
+      CHARACTER*1 UP,BOTTM,LEFT,RIGHT,
+     $             UPLEFT,UPRIGHT,BOTTMLEFT,BOTTMRIGHT
+      CHARACTER*1 FORMFEED
+      CHARACTER TR*5
+      CHARACTER*5 PCOEFF(INTMAX)
+C
+      INTEGER*2 N,NV,IFREQ(N),ISCO(N),IPRF(NV,N)
+      REAL      COEFF(NV),X1(N,2),X2(N,2)
+C
+      INTEGER*2 I,JM,J,I1,J1,IS,IPIJ
+C
+C **********************************************************************
+C
+      WRITE(NWRITE,400) FORMFEED
+      WRITE(NWRITE,100)  (J,J=1,INTERN)
+      TR=UP//UP//UP//UP//UP
+      MAXTR=24
+      IF(INTERN.LT.MAXTR) MAXTR=INTERN
+      WRITE(NWRITE,300)  UPLEFT,(TR,J=1,MAXTR)
+      VMU2=2.
+C
+      IF (IWRTFLS .GT. 0) THEN
+          IF (PATHLEN .GT. 0) THEN
+               OPEN (IWRTFLS, FILE = PATH(1:PATHLEN)//'MUMATRIX.PSC')
+          ELSE
+               OPEN (IWRTFLS, FILE = 'MUMATRIX.PSC')
+          END IF
+      END IF
+C
+      DO 10 I=1,INTERN
+          IF (I.EQ.1) GO TO 25
+          JM=I-1
+          DO 11 J=1,JM
+               CALL MU2(IPRF,IFREQ,NV,N,I,J,XMU2)
+               COEFF(J)=XMU2
+               WRITE(PCOEFF(J),'(F5.2)') XMU2
+               IF (XMU2 .EQ. 9.) PCOEFF(J)='  .  '
+               VMU2=AMIN1(VMU2,XMU2)
+               IF (VMU2.NE.XMU2) GO TO 11
+               I1=I
+               J1=J
+   11     CONTINUE
+   25     CONTINUE
+          COEFF(I)=1.00
+          PCOEFF(I)=' 1.00'
+          WRITE(NWRITE,500) LEFT
+          WRITE(NWRITE,200) I,LEFT,(PCOEFF(J),J=1,I)
+          IF (IWRTFLS .GT. 0) WRITE (IWRTFLS,250) (PCOEFF(J),J=1,I)
+   10 CONTINUE
+      IF (IWRTFLS .GT. 0) CLOSE (IWRTFLS)
+      DO 20 K=1,N
+          IS=ISCO(K)
+          IPIJ=IPRF(I1,K)-IPRF(J1,K)
+          X1(K,1)=IS+IPIJ
+          X1(K,2)=IS-IPIJ
+   20 CONTINUE
+C
+      XT=X1(N,1)
+      YT=X1(N,2)
+      FACTX=X1(1,1)-XT
+      FACTY=X1(1,2)-YT
+      DO 30 K=1,N
+          X1(K,1)=(X1(K,1)-XT)/FACTX
+          X1(K,2)=(X1(K,2)-YT)/FACTY
+   30 CONTINUE
+C
+      X2(1,1)=1.
+      X2(1,2)=1.
+      X2(N,1)=0.
+      X2(N,2)=0.
+      WRITE (NWRITE,*)
+      WRITE (NWRITE,*) '  * A DOT (.) IS PRINTED IF THE COEFFICIENT ',
+     $                 'CANNOT BE COMPUTED.'
+C
+      RETURN
+C
+  100 FORMAT(7X,(T8,24I5))
+C 200 FORMAT(2X,I3,1X,'I',(T8,24F5.2))
+  200 FORMAT(2X,I3,(T7,A1,24A5))
+  250 FORMAT(24A5)
+  300 FORMAT(6X,A1,24A)
+C 300 FORMAT(6X,'+',(T8,24A))
+  400 FORMAT(A1,//,10X,'COEFFICIENTS OF WEAK MONOTONICITY',/,
+     $         18X,'BETWEEN THE ITEMS',//)
+  500 FORMAT(6X,A1)
+C
+      END
+
+      SUBROUTINE MU2 (IPRF, IFREQ, NV, N, I, J, XMU2)
+C
+C **********************************************************************
+C
+      COMMON/ZEROES/ZERO,ZEROMU2
+C
+      INTEGER*2 NV, N, I, J, IPRF(NV,N), IFREQ(N)
+C
+      INTEGER*4 IFK, IPKI, IPKJ
+      INTEGER*2 N1,K,L1,L
+C
+C **********************************************************************
+C
+      U=0.
+      V=0.
+      XMU2=0.
+      N1=N-1
+      DO 10 K=1,N1
+          IFK=IFREQ(K)
+          IPKI=IPRF(I,K)
+          IPKJ=IPRF(J,K)
+          L1=K+1
+          DO 11 L=L1,N
+               XNUM=IFK*IFREQ(L)*(IPKI-IPRF(I,L))*(IPKJ-IPRF(J,L))
+               XDEN=ABS(XNUM)
+               U=U+XNUM
+               V=V+XDEN
+   11     CONTINUE
+   10 CONTINUE
+      IF(V.LT.ZEROMU2) THEN
+          XMU2=9.
+          RETURN
+      ENDIF
+      XMU2=U/V
+C
+      RETURN
+      END
+
+      SUBROUTINE ENTER (X, NP, M)
+C
+      PARAMETER (LENIFOR=255)
+C
+      COMMON/IO/NTAPE,NREAD,NWRITE,NSCR
+      COMMON/BB/IFOR
+C
+      CHARACTER IFOR*(LENIFOR)
+C
+      INTEGER*2 NP,M
+      REAL      X(NP,M)
+C
+      INTEGER*2 K,IM
+C
+C **********************************************************************
+C
+      DO 10 K=1,NP
+         READ(NREAD,IFOR) (X(K,IM),IM=1,M)
+   10 CONTINUE
+C
+      RETURN
+C
+      END
+
+      SUBROUTINE TRANS2 (X1, N, M)
+C
+      INTEGER*2 N, M
+      REAL      X1(N,M)
+C
+      INTEGER*2 J
+C
+      XT=X1(N,1)
+      YT=X1(N,2)
+      DO 10 J=1,N
+         X1(J,1)=X1(J,1)-XT
+         X1(J,2)=X1(J,2)-YT
+   10 CONTINUE
+      XX=X1(1,1)
+      YY=X1(1,2)
+      CS=XX/SQRT(XX*XX+YY*YY)
+      TET=ACOS(CS)
+      TETR=ATAN(1.)-TET
+      CC=COS(TETR)
+      SS=SIN(TETR)
+      DO 20 J=1,N
+         XX=X1(J,1)
+         YY=X1(J,2)
+         X1(J,1)=XX*CC-YY*SS
+         X1(J,2)=XX*SS+YY*CC
+   20 CONTINUE
+      FACT=1./X1(1,1)
+      CALL ENLA(X1,FACT,N,M)
+C
+      RETURN
+C
+      END
+
+      SUBROUTINE BOUND (X2, N, M)
+C
+      INTEGER*2 N,M
+      REAL      X2(N,M)
+C
+      X2(1,1)=1.
+      X2(1,2)=1.
+      X2(N,1)=0.
+      X2(N,2)=0.
+C
+      RETURN
+C
+      END
+

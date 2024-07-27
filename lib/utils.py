@@ -9,7 +9,6 @@ def get_window_width():
 
 def get_window_height():
     return real_size(WINDOW_HEIGHT)
-
 def rreal_size(args):
     return real_size(args, _round=True)
 def real_size(args, _round=False):
@@ -36,53 +35,39 @@ def real_size(args, _round=False):
     else:
         raise ValueError(f"Invalid type: {type(args)}")
 
-
 DELIMITER_1_D = "1-digit"
 DELIMITER_2_D = "2-digit"
 
 GROUPING_TYPES = ["Percentile", "Equal Intervals", "By Rank"]
 
-DISSIMILARITY = "Dissimilarity"
-SIMILARITY = "Similarity"
-MONO = "Monotonicity"
-PEARSON = "Pearson"
-ENTRY_WIDTH = 2
-
 ######################
 #        FSS         #
 ######################
 # Script paths
-p_FSS_DIR = './scripts/fssa-21'
+p_FSS_DIR = './scripts/IdoPosac'
 SCRIPT_PEARSON = "PEARSON"
 SCRIPT_MONO = "MONO"
 
-
 def GET_MODE():
     return os.environ.get('MODE')
-
 
 def SET_MODE_TEST():
     import os
     os.environ['MODE'] = config.MODE_DEBUG
 
-
 def SET_MODE_PRODUCTION():
     import os
     os.environ['MODE'] = config.MODE_PRODUCTION
-
 
 def SET_MODE_NO_VALIDATION():
     import os
     os.environ['MODE'] = config.MODE_NO_VALIDATION
 
-
 def IS_PRODUCTION():
     return GET_MODE() == config.MODE_PRODUCTION
 
-
 def IS_NO_VALIDATE():
     return GET_MODE() == config.MODE_NO_VALIDATION
-
 
 def get_script_dir_path():
     try:
@@ -104,11 +89,9 @@ p_OUTPUT_FILE = os.path.join(p_OUTPUT_DIR, OUTPUT_FILE_NAME)
 # Input paths
 RUN_FILES_DIR = "..\\run_files"
 RUN_FILES_DIR = os.path.join(get_script_dir_path(), RUN_FILES_DIR)
-PEAR_FILE_NAME = "PEARINP.DRV"
-MONO_FILE_NAME = "MONOINP.DRV"
-file_name = "FSSAINP.DRV"
+DRV_IN_NAME = "POSACINP.DRV"
 DATA_FILE_NAME = "FSSADATA.DAT"
-p_FSS_DRV = os.path.join(RUN_FILES_DIR, file_name)
+p_POSAC_DRV = os.path.join(RUN_FILES_DIR, DRV_IN_NAME)
 p_DATA_FILE = os.path.join(RUN_FILES_DIR, DATA_FILE_NAME)
 INPUT_MATRIX_FORMAT = "(8F10.7)"
 

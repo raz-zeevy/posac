@@ -1,4 +1,6 @@
 import tkinter as tk
+from typing import List
+
 import ttkbootstrap as ttk
 
 from lib.gui.components.editable_tree_view import EditableTreeView
@@ -133,6 +135,15 @@ class TraitsTab(tk.Frame):
     def get_traits(self):
         return self._traits
 
+    def get_traits_values(self):
+        traits = []
+        for trait in self._traits:
+            trait_value = {}
+            trait_value['data'] = [var[1:] for var in trait.data]
+            trait_value['label'] = trait.label
+            traits.append(trait_value)
+        return traits
+
     #######
     # Set #
     #######
@@ -153,7 +164,7 @@ class TraitsTab(tk.Frame):
             self.traits_table.add_row(ranges_row)
         self._current_trait = i
 
-    def set_trait(self,i, label=None, data=None):
+    def set_trait(self,i, label=None, data : List[List] =None):
         if label is not None:
             self._traits[i - 1].label = label
         if data is not None:

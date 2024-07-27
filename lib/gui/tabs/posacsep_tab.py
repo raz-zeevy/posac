@@ -120,3 +120,6 @@ class PosacsepTab(tk.Frame):
 
     def remove_internal_variable(self):
         self.vars_table.remove_row(-1)
+
+    def clear_internal_variables(self):
+        self.vars_table.clear_rows()

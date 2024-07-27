@@ -61,9 +61,8 @@ class PosacNotebook(tkinter.ttk.Notebook):
         )
 
     # Internal Variables
-
-    def add_internal_variable(self):
-        self.internal_variables_tab.add_variable()
+    def add_internal_variable(self, values_: list = [], check=True):
+        self.internal_variables_tab.add_variable(values_, check)
         self.posacsep_tab.add_internal_variable()
 
     def remove_internal_variable(self):
@@ -72,6 +71,7 @@ class PosacNotebook(tkinter.ttk.Notebook):
 
     def clear_internal_variables(self):
         self.internal_variables_tab.clear_variables()
+        self.posacsep_tab.clear_internal_variables()
 
     # External Variables
 
@@ -90,10 +90,12 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.external_variables_ranges_tab.clear_ranges()
         self.traits_tab.clear_external_variables()
 
+    def exist_external_variables(self):
+        return self.external_variables_tab.get_vars_num() > 0
+
     # External Traits
     def on_traits_num_change(self):
         traits_num = self.external_variables_ranges_tab.get_external_traits_num()
         self.traits_tab.update_traits_num(
             traits_num,
-            self.external_variables_tab.get_num_variables())
-        # add external trait
+            self.external_variables_tab.get_vars_num())

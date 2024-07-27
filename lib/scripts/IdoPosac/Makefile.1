@@ -1,0 +1,71 @@
+LINKER = c:\MinGW\bin\gfortran
+LOPTS =
+FCOMP = c:\MinGW\bin\gfortran
+COPTS = -Wall -ffixed-form -std=legacy
+
+all : TSPOSAC.exe  SLSA1.exe  SLSA2.exe  SSHEMOR.exe  POSACSEP.exe \
+      POSXTSP1.exe POSXTSP2.exe POSXTSP3.exe
+	  copy TSPOSAC.exe TPOSAC.exe
+	  del TSPOSAC.exe
+
+clean :
+	del *.obj *.exe
+
+%.exe : %.obj
+	$(LINKER) $(LOPTS) $^ -o $@
+
+%.obj : %.FOR
+	$(FCOMP) $(COPTS) $< -c -o $@
+
+POSACSEP.exe  : GRAPH_SHELL.obj
+
+POSXTSP1.exe  : GRAPH_SHELL.obj
+
+POSXTSP2.exe  : GRAPH_SHELL.obj
+
+POSXTSP3.exe  : GRAPH_SHELL.obj
+
+TSPOSAC.exe : TNWPOSAC.obj T0POSAC.obj T1POSAC.obj T2POSAC.obj \
+             T3POSAC.obj T4POSAC.obj T5POSAC.obj T6POSAC.obj T7POSAC.obj \
+             T8POSAC.obj T9POSAC.obj
+
+
+POSXTSP1.obj : MPARMLIN
+
+POSXTSP2.obj : MPARMLIN
+
+POSXTSP3.obj : MPARMLIN
+
+POSACSEP.obj : MPARMLIN
+
+SLSA1.obj : MPARMLIN
+
+SLSA2.obj : MPARMLIN
+
+SSHEMOR.obj :  MPARMLIN
+
+TNWPOSAC.obj : TNWPOSAC.FOR  MPARMLIN  MCOMNBLK
+
+TSPOSAC.obj : MPARMLIN  MCOMNBLK
+
+T0POSAC.obj : MPARMLIN  MCOMNBLK
+
+T1POSAC.obj : MPARMLIN  MCOMNBLK
+
+T2POSAC.obj : MPARMLIN  MCOMNBLK
+
+T3POSAC.obj : MPARMLIN  MCOMNBLK
+
+T4POSAC.obj : MPARMLIN  MCOMNBLK
+
+T5POSAC.obj : MPARMLIN  MCOMNBLK
+
+T6POSAC.obj : MPARMLIN  MCOMNBLK
+
+T7POSAC.obj : MPARMLIN  MCOMNBLK
+
+T8POSAC.obj : MPARMLIN  MCOMNBLK
+
+T9POSAC.obj : MPARMLIN  MCOMNBLK
+
+

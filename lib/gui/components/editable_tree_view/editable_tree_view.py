@@ -504,6 +504,7 @@ class EditableTreeView(ttk.Treeview):
             col_name = self._col_names[identifier]
         else:
             col_name = identifier
+        if col_name not in self._display_columns: return
         self._display_columns.remove(col_name)
         self["displaycolumns"] = self._display_columns
 

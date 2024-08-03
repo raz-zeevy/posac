@@ -11,7 +11,9 @@ class IVariablesTab(tk.Frame):
         'line_number': 'Line No.',
         'field_width': 'Field Width',
         'start_col': 'Start Col',
-        'label': 'Label'
+        'label': 'Label',
+        'valid_low' : 'Valid Low',
+        'valid_high' : 'Valid High',
     }
 
     def __init__(self, parent, *args, **kwargs):
@@ -31,10 +33,9 @@ class IVariablesTab(tk.Frame):
                                            add_check_box=True)
         self.vars_table.column('Label', stretch=True)
         for col in ['Sel. Var.', 'Line No.', 'Field Width', 'Start Col',
-                    'Label']:
+                    'Valid Low', 'Valid High', 'Label']:
             self.vars_table.heading(col, text=col, anchor="w")
             self.vars_table.column(col, width=rreal_size(60), anchor='w')
-            # self.column(col, stretch=False)
         self.vars_table.column('Field Width', width=rreal_size(80),
                                anchor='w')
         self.vars_table_frame.pack(fill='both', expand=True, padx=10,
@@ -80,9 +81,16 @@ class IVariablesTab(tk.Frame):
 
     def set_default(self):
         self.vars_table.clear_rows()
+        self.hide_low_high()
 
     def get_vars_num(self):
         return len(self.get_all_variables())
+
+    def set_variables(self, vars):
+        self.vars_table.clear_rows()
+        for var in vars:
+            self.add_variable(var, check=True)
+
 
     #########
     #  API  #
@@ -94,9 +102,10 @@ class IVariablesTab(tk.Frame):
         :param values: list of length 4 containing values for the columns
         :return:
         """
-        cur_index = len(self.vars_table)
+        def_value = ['1', '1', '0', f'v{len(self.vars_table) + 1}', 0, 9]
         values = values_.copy()
-        if not values: values = ['1', '1', '0', f'v{cur_index + 1}']
+        if len(values) < len(def_value):
+            values.extend(def_value[len(values):])
         self.vars_table.add_row(values, check=check)
 
     def remove_variable(self):
@@ -104,3 +113,17 @@ class IVariablesTab(tk.Frame):
 
     def clear_variables(self):
         self.vars_table.clear_rows()
+
+    def hide_low_high(self):
+        self.vars_table.hide_column('Valid Low')
+        self.vars_table.hide_column('Valid High')
+        for col in ['Label']:
+            self.vars_table.column(col, width=rreal_size(400))
+            self.vars_table.column(col, stretch=True)
+
+    def show_low_high(self):
+        self.vars_table.show_column('Valid Low')
+        self.vars_table.show_column('Valid High')
+        for col in ['Label']:
+            self.vars_table.column(col, stretch=False)
+            self.vars_table.column(col, width=rreal_size(200))

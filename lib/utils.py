@@ -11,6 +11,7 @@ def get_window_height():
     return real_size(WINDOW_HEIGHT)
 def rreal_size(args):
     return real_size(args, _round=True)
+
 def real_size(args, _round=False):
     """
     This function is used to calculate the real size of the GUI elements

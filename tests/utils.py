@@ -10,9 +10,10 @@ def are_files_identical(file1_path, file2_path):
     :param file2_path: Path to the second file
     :return: True if the files are identical, False otherwise
     """
-    with open(file1_path, 'r') as file1, open(file2_path, 'r') as file2:
-        file1_lines = file1.read().strip().splitlines()
-        file2_lines = file2.read().strip().splitlines()
+    with open(file1_path, 'r', encoding='latin-1') as file1,\
+            open(file2_path, 'r', encoding='latin-1') as file2:
+        file1_lines = [line.strip() for line in file1.read().strip().splitlines()]
+        file2_lines = [line.strip() for line in file2.read().strip().splitlines()]
 
     if file1_lines == file2_lines:
         return True

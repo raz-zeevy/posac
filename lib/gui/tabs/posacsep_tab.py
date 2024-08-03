@@ -106,6 +106,16 @@ class PosacsepTab(tk.Frame):
         for i, row in enumerate(values):
             self.vars_table.set_row(i, [row])
 
+    def get_all(self):
+        return dict(
+            posacsep=self.get_combo(),
+            values=self.get_values()
+        )
+
+    def set_all(self, **kwargs):
+        self.set_combo(kwargs['posacsep'])
+        self.set_values(kwargs['values'])
+
     def reset_to_default(self):
         self.set_combo(True)
         for i in range(len(self.vars_table)):

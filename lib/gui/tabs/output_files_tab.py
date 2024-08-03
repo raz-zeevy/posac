@@ -81,3 +81,6 @@ class OFilesTab(tk.Frame):
         self.set_lsa1_out(lsa1)
         self.set_lsa2_out(lsa2)
 
+    def reset_default(self):
+        self.set_all(self.DEFAULT_OUT_POS, self.DEFAULT_OUT_LS1,
+                     self.DEFAULT_OUT_LS2)

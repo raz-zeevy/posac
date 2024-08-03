@@ -2,5 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/tests/simple_test/output/job1.ls2" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/tests/simple_test/output/job1.pos" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/tests/simple_test/results/job1.ls1" charset="windows-1252" />
   </component>
 </project>

@@ -7,6 +7,7 @@ from ttkbootstrap.dialogs import Messagebox
 from lib.gui.components.editable_tree_view import EditableTreeView
 from lib.gui.components.notebook import PosacNotebook
 from lib.gui.windows.about_window import AboutWindow
+from lib.gui.windows.diagram_window import DiagramWindow
 from lib.gui.windows.options_window import OptionsWindow
 from lib.utils import *
 from lib.gui.components.menus import Menu, IconMenu
@@ -52,6 +53,7 @@ class GUI():
         #
         self.init_window()
         self.navigator = Navigator(self)
+        self.view_results = None
 
     def run_process(self):
         self.root.mainloop()
@@ -98,12 +100,13 @@ class GUI():
     def create_start_frame(self):
         pass
 
-        #########################
-        # Dialogues and Windows #
-        #########################
+
+    #########################
+    # Dialogues and Windows #
+    #########################
 
     def show_diagram_window(self, graph_data_lst):
-        # self.diagram_window = DiagramWindow(self, graph_data_lst)
+        self.diagram_window = DiagramWindow(self, graph_data_lst)
         # self.diagram_window.bind("<F1>", lambda x: self.show_help_windw())
         pass
 
@@ -186,6 +189,46 @@ class GUI():
         file_name = filedialog.askopenfilename(filetypes=[('mem', '*.mem')],
                                                title="Open FSSA Session")
         return file_name
+
+    #########
+    # Menus #
+    #########
+
+    def enable_view_results(self):
+        self.menu.enable_view_results()
+        self.view_results = True
+
+    def disable_view_results(self):
+        self.menu.disable_view_results()
+        self.view_results = False
+
+    #######
+    # API #
+    #######
+
+    def reset(self):
+        self.notebook.reset_to_default()
+        self.disable_view_results()
+        self.navigator.set_page(0)
+        OptionsWindow.reset_default()
+
+    def get_state(self):
+        return {
+            'notebook' : self.notebook.get_state(),
+            'navigator' : self.navigator.cur_page,
+            'view_results' : self.view_results,
+            'options' : OptionsWindow.DEFAULT_VALUES
+        }
+
+    def load_state(self, state : dict):
+        self.reset()
+        self.notebook.set_state(state['notebook'])
+        self.navigator.set_page(state['navigator'])
+        if state['view_results']:
+            self.enable_view_results()
+        else:
+            self.disable_view_results()
+        OptionsWindow.set(**state['options'])
 
 if __name__ == '__main__':
     gui = GUI()

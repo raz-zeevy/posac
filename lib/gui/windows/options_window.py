@@ -21,7 +21,7 @@ t_POWER_WEIGHTS = 'Power of balancing weights (incomparable and comparable)'
 POWER_WEIGHTS_LOW = 4
 POWER_WEIGHTS_HIGH = 4
 t_MAX_ITERATION = 'Enter maximum number of iterations'
-MAX_ITERATION_LOW = 15
+MAX_ITERATIONS = 15
 
 ENTRIES_PAD_LEFT = 10
 ENTRIES_PAD_RIGHT = 30
@@ -35,7 +35,7 @@ class OptionsWindow(Window):
                           form_feed='',
                           power_weights_low=POWER_WEIGHTS_LOW,
                           power_weights_high=POWER_WEIGHTS_HIGH,
-                          max_iterations=MAX_ITERATION_LOW)
+                          max_iterations=MAX_ITERATIONS)
 
     def __init__(self, **kwargs):
         width, height = rreal_size(600), rreal_size(450)
@@ -88,7 +88,7 @@ class OptionsWindow(Window):
         label = BoldLabel(self.theme_tab, text=t_ASCII_OUTPUT)
         label.pack(anchor="w", padx=10, pady=10)
         self.ascii_output_var = tk.StringVar(value=ASCII_OUTPUT_DEFAULT)
-        ascii_output_menu = ttk.Combobox(self.theme_tab,
+        ascii_output_menu = SelectionBox(self.theme_tab,
                                          values=ASCII_OUTPUT_OPTIONS,
                                          textvariable=self.ascii_output_var)
         ascii_output_menu.state(["readonly"])
@@ -104,9 +104,9 @@ class OptionsWindow(Window):
                                                         t_FORM_FEED,
                                                         default="")
         self.create_power_weights_entries()
-        self.max_iteration_low_entry = self._create_label_entry(
+        self.max_iterations = self._create_label_entry(
             self.technical_tab, t_MAX_ITERATION,
-            default=str(MAX_ITERATION_LOW), width=rreal_size(5))
+            default=str(MAX_ITERATIONS), width=rreal_size(5))
 
     def create_power_weights_entries(self):
         w_entry = rreal_size(3)
@@ -155,9 +155,9 @@ class OptionsWindow(Window):
         self.power_weights_high_entry.delete(0, tk.END)
         self.power_weights_high_entry.insert(0, self.DEFAULT_VALUES[
             'power_weights_high'])
-        self.max_iteration_low_entry.delete(0, tk.END)
-        self.max_iteration_low_entry.insert(0, self.DEFAULT_VALUES[
-            'max_iteration_low'])
+        self.max_iterations.delete(0, tk.END)
+        self.max_iterations.insert(0, self.DEFAULT_VALUES[
+            'max_iterations'])
 
     def get_settings(self):
         return {
@@ -167,7 +167,7 @@ class OptionsWindow(Window):
             'form_feed': self.form_feed_entry.get(),
             'power_weights_low': self.power_weights_low_entry.get(),
             'power_weights_high': self.power_weights_high_entry.get(),
-            'max_iteration_low': self.max_iteration_low_entry.get()
+            'max_iterations': self.max_iterations.get()
         }
 
     def set_settings(self, **settings):
@@ -196,10 +196,10 @@ class OptionsWindow(Window):
             self.power_weights_high_entry.delete(0, tk.END)
             self.power_weights_high_entry.insert(0, settings[
                 'power_weights_high'])
-        if 'max_iteration_low' in settings:
-            self.max_iteration_low_entry.delete(0, tk.END)
-            self.max_iteration_low_entry.insert(0,
-                                                settings['max_iteration_low'])
+        if 'max_iterations' in settings:
+            self.max_iterations.delete(0, tk.END)
+            self.max_iterations.insert(0,
+                                       settings['max_iterations'])
     @staticmethod
     def set(**settings):
         known_settings = set(OptionsWindow.DEFAULT_VALUES.keys())
@@ -217,6 +217,9 @@ class OptionsWindow(Window):
     def cancel_settings(self):
         self.destroy()
 
+    @staticmethod
+    def reset_default():
+        OptionsWindow.set(**OptionsWindow.DEFAULT_VALUES)
 
 # Example of how to use the window and set default values:
 if __name__ == "__main__":

@@ -59,6 +59,9 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.external_variables_ranges_tab.traits_num_spinbox.config(
             command=self.on_traits_num_change
         )
+        # missing values
+        self.zero_option_tab._on_change = lambda: self.toggle_zero_option(
+                self.zero_option_tab._zero_option_combo.get() == 'Yes')
 
     # Internal Variables
     def add_internal_variable(self, values_: list = [], check=True):
@@ -99,3 +102,47 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.traits_tab.update_traits_num(
             traits_num,
             self.external_variables_tab.get_vars_num())
+
+    def toggle_zero_option(self, value):
+        print(f'TOGGLED, {value}')
+        if not value:
+            self.internal_variables_tab.show_low_high()
+            self.external_variables_tab.show_low_high()
+        else:
+            self.internal_variables_tab.hide_low_high()
+            self.external_variables_tab.hide_low_high()
+
+    def reset_to_default(self):
+        self.clear_internal_variables()
+        self.clear_external_variables()
+        self.general_tab.set_default()
+        self.output_files_tab.reset_default()
+        self.posacsep_tab.reset_to_default()
+        self.traits_tab.reset_default()
+        self.zero_option_tab.reset_default()
+
+    def get_state(self):
+        return {
+            'general': self.general_tab.get_all(),
+            'zero_option': self.zero_option_tab.get_all(),
+            'internal_variables': self.internal_variables_tab.get_all_variables(),
+            'external_variables': self.external_variables_tab.get_all_variables(),
+            'external_variables_ranges':
+                self.external_variables_ranges_tab.get_all(),
+            'traits': self.traits_tab.get_traits(),
+            'posacsep': self.posacsep_tab.get_all(),
+            'output_files': self.output_files_tab.get_all()
+        }
+
+    def set_state(self, state : dict):
+        self.general_tab.set(**state['general'])
+        self.zero_option_tab.set(**state['zero_option'])
+        for var in state['internal_variables']:
+            self.add_internal_variable(var, True)
+        for var in state['external_variables']:
+            self.add_external_variable(var, True)
+        self.external_variables_ranges_tab.set_all(**state[
+            'external_variables_ranges'])
+        self.traits_tab.set_traits(state['traits'])
+        self.posacsep_tab.set_all(**state['posacsep'])
+        self.output_files_tab.set_all(**state['output_files'])

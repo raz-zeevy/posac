@@ -12,6 +12,8 @@ from lib.utils import real_size
 px_TOP_INPUTS = 50
 py_TOP_INPUTS = 10
 px_TOP_INPUTS_INNER = 10
+
+
 class TraitsTab(tk.Frame):
     class TabContext:
         NO_TRAITS = 'no_traits'
@@ -121,7 +123,8 @@ class TraitsTab(tk.Frame):
 
     def _update_traits_from_table(self):
         if self._context == self.TabContext.TRAITS:
-            self._traits[self._current_trait - 1].label = self.trait_entry.get()
+            self._traits[
+                self._current_trait - 1].label = self.trait_entry.get()
             self._traits[self._current_trait - 1].data = self.traits_table. \
                 get_all_values()
 
@@ -164,13 +167,18 @@ class TraitsTab(tk.Frame):
             self.traits_table.add_row(ranges_row)
         self._current_trait = i
 
-    def set_trait(self,i, label=None, data : List[List] =None):
+    def set_trait(self, i, label=None, data: List[List] = None):
         if label is not None:
             self._traits[i - 1].label = label
         if data is not None:
             self._traits[i - 1].data = data
         if self._current_trait == i:
             self.select_trait(i)
+
+    def set_traits(self, traits):
+        for i, trait in enumerate(traits):
+            self.set_trait(i+1, label=trait.label,
+                           data=trait.data)
 
     #######
     # API #
@@ -207,6 +215,7 @@ class TraitsTab(tk.Frame):
             trait.data = [RangesTable.DEFAULT_VALUE] * len(trait.data)
         if self._traits:
             self.select_trait(self._current_trait)
+
     def clear_external_variables(self):
         self._traits = []
         self.update_traits_num(0, 0)

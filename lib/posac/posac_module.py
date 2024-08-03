@@ -44,7 +44,7 @@ def cwd(path):
 class PosacModule:
     def __init__(self):
         self.posacsep = [2] * 8  # Example list, replace with actual values
-        self.posacsep = []
+        # self.posacsep = []
 
     def create_files(self,
                      job_name: str,
@@ -110,7 +110,11 @@ class PosacModule:
                                              boxstring=boxstring,
                                              form_feed=form_feed,
                                              shemor_directives=shemor_directives)
-    def run(self, posac_out: str, lsa1_out, lsa2_out):
+    def run(self, data_file : str,
+            posac_out: str,
+            lsa1_out,
+            lsa2_out,
+            posacsep):
         """
         The way this function works if there is no posacsep the return code
         will still be 0 but NOPSOACSEP will be printed
@@ -121,20 +125,14 @@ class PosacModule:
                 return os.path.abspath(path)
             else:
                 return SCRIPT_NESTING_PREFIX + path
-
-        data_file = p_DATA_FILE
         posac_input_drv_file = p_POSAC_DRV
-        # todo: remove
-        posac_input_drv_file = \
-            r"C:\Users\Raz_Z\Desktop\shmuel-project\shared\posainp.DRV"
-        data_file = r'C:\Users\Raz_Z\Desktop\shmuel-project\shared\KEDDIR2.DAT'
         # Define the command and arguments
         arguments = [
             get_path(posac_input_drv_file),  # A file in a specific format (see
             # fssainp.drv
             # instructions file) that tells the program how to read data file and
             # what you want done.
-            get_path(data_file),
+            data_file,
             # Path and filename of the input data file in ASCII (simple txt
             # file). You can change it to fit with your own directory, and you
             # can simplify
@@ -153,6 +151,7 @@ class PosacModule:
 
         # Run the command
         posac_dir = get_script_dir_path()
+        posacsep = [2] * 8
         with cwd(posac_dir):
             process = subprocess.Popen(full_command,
                                     shell=True,
@@ -160,7 +159,7 @@ class PosacModule:
                                     # stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     text=True)
-            input_data = "\n".join(map(str, self.posacsep)) + "\n"
+            input_data = "\n".join(map(str, posacsep)) + "\n"
             print("Input data:", input_data)
             try:
                 stdout, stderr = process.communicate(input=input_data, timeout=15)
@@ -184,11 +183,62 @@ class PosacModule:
             print("Output:", stdout)
             print("Error:", stderr)
 
+    def run_2(self, data_file : str,
+            posac_out: str,
+            lsa1_out,
+            lsa2_out,
+            posacsep):
+        """
+        The way this function works if there is no posacsep the return code
+        will still be 0 but NOPSOACSEP will be printed
+        :return:
+        """
+        def get_path(path: str):
+            if os.path.exists(path):
+                return os.path.abspath(path)
+            else:
+                return SCRIPT_NESTING_PREFIX + path
+
+        posac_input_drv_file = p_POSAC_DRV
+        # Define the command and arguments
+        arguments = [
+            get_path(posac_input_drv_file),  # A file in a specific format (see
+            # fssainp.drv
+            # instructions file) that tells the program how to read data file and
+            # what you want done.
+            data_file,
+            # Path and filename of the input data file in ASCII (simple txt
+            # file). You can change it to fit with your own directory, and you
+            # can simplify
+            # filename. For example, c:\tstfssa\tstdata.dat
+            posac_out,  # Path and filename of the output
+            # data file. You can change it to your own directory, and simplify
+            # filename. For example  c:\tstfssa\tstdata.fss
+            lsa1_out,
+            lsa2_out
+        ]
+        # command = r"C:\Users\Raz_Z\Desktop\shmuel-project\fssa-21\FASSA.BAT"
+        command = "PXPOS.BAT"
+
+        # Combine the command and arguments into a single list
+        full_command = [command] + arguments
+
+        # Run the command
+        posac_dir = get_script_dir_path()
+        with cwd(posac_dir):
+            result = subprocess.run(full_command)
+            if result.returncode == 0:
+                print("Command succeeded:", result.stdout)
+            else:
+                print("Command failed with error:", result.stderr)
 
 if __name__ == '__main__':
     """
     """
     posac = PosacModule()
-    posac.run("C:\\Users\\Raz_Z\\Desktop\\shmuel-project\\shared\\job1.pos",
+    posac.run(r"C:\Users\Raz_Z\Projects\Shmuel\posac\tests\simple_test"
+              r"\results\KEDDIR2.DAT",
+              "C:\\Users\\Raz_Z\\Desktop\\shmuel-project\\shared\\job1.pos",
                 "C:\\Users\\Raz_Z\\Desktop\\shmuel-project\\shared\\job1.ls1",
-                "C:\\Users\\Raz_Z\\Desktop\\shmuel-project\\shared\\job1.ls2")
+                "C:\\Users\\Raz_Z\\Desktop\\shmuel-project\\shared\\job1.ls2",
+              [2]*8)

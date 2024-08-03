@@ -12,11 +12,24 @@ class WindowsTest(Controller):
         self.gui.technical_options.notebook.select(1)
         # self.gui.technical_options.on_closing()
         print("done")
+def test_posac_ls_graphs():
+    from tests.scenarios_test import ScenTest
+    a = ScenTest()
+    a.simple_test()
+    a.show_diagram_window()
 
-    def test_about(self):
-        pass
+
+    a.run_process()
+
+def find_menu_index(menu, label):
+    for index in range(menu.index('end') + 1):
+        if menu.entrycget(index, 'label') == label:
+            return index
+    return None
 
 if __name__ == '__main__':
-    a = WindowsTest()
-    a.test_options()
-    a.run_process()
+    # a = WindowsTest()
+    # a.test_options()
+    # a.run_process()
+    test_posac_ls_graphs()
+

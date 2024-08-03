@@ -33,7 +33,7 @@ class GuiTest(Controller):
             id_location=(1, 2)
         )
         test_values = gt.get_all()
-        gt.set_default()
+        gt.reset_default()
         assert gt.get_all() == gt.DEFAULT_VALUES
         gt.set(**test_values)
         cur_values = gt.get_all()
@@ -45,7 +45,7 @@ class GuiTest(Controller):
         zo.set(
             zero_option=False)
         test_values = zo.get_all()
-        zo.set_default()
+        zo.reset_default()
         assert zo.get_all() == zo.DEFAULT_VALUES
         zo.set(**test_values)
         cur_values = zo.get_all()
@@ -74,7 +74,7 @@ class GuiTest(Controller):
         assert test_values == [first_var] + dummy_vars
         iv.clear_variables()
         assert not iv.get_all_variables()
-        iv.set_default()
+        iv.reset_default()
         assert not iv.get_all_variables()
 
     def test_external_variables_tab(self):
@@ -102,7 +102,7 @@ class GuiTest(Controller):
         assert test_values == [first_var] + dummy_vars
         ev.clear_variables()
         assert not ev.get_all_variables()
-        ev.set_default()
+        ev.reset_default()
         assert not ev.get_all_variables()
 
     def test_external_variables_ranges_tab(self):
@@ -126,14 +126,14 @@ class GuiTest(Controller):
         assert evr.get_external_traits_num() == traits_num
         #
         all_data = evr.get_all()
-        evr.set_default()
+        evr.reset_default()
         assert evr.get_all_ranges() == [evr.DEFAULT_VALUE] * 3
         evr.set_all(all_data['ranges'], all_data['traits_num'])
         assert evr.get_all() == {
             'ranges': test_values,
             'traits_num': traits_num
         }
-        evr.set_default()
+        evr.reset_default()
         self.notebook.clear_external_variables()
 
     def assert_no_traits(self):

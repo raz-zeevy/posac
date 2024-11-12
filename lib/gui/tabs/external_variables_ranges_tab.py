@@ -135,6 +135,7 @@ class EVRangesTab(tk.Frame):
         self.num_external_ranges -= 1
         if self.num_external_ranges == 0:
             self._switch_frames('no_ranges')
+            self.set_traits_num(0)
 
     def clear_ranges(self):
         self.ranges_table.clear_rows()

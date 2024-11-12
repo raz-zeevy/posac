@@ -5,7 +5,9 @@ import ttkbootstrap as ttk
 from ttkbootstrap.dialogs import Messagebox
 
 from lib.gui.components.editable_tree_view import EditableTreeView
+from lib.gui.components.helpables import Helpable
 from lib.gui.components.notebook import PosacNotebook
+from lib.gui.pages.start_page import StartPage
 from lib.gui.windows.about_window import AboutWindow
 from lib.gui.windows.diagram_window import DiagramWindow
 from lib.gui.windows.options_window import OptionsWindow
@@ -30,12 +32,12 @@ class GUI():
     def __init__(self):
         # Main window
         self.root = ttk.Window(
-            themename=THEME_NAME
+            themename=THEME_NAME,
         )
         self.root.title(ROOT_TITLE)
         # set the icon
         # self.root.iconbitmap(get_resource(p_ICON))
-
+        # self.root.config(cursor="question_arrow")
         # Initialize an attribute to store images
         self.image_references = {}
 
@@ -51,6 +53,7 @@ class GUI():
         # init common gui
         self.center_window()
         #
+        Helpable.init(self.root)
         self.init_window()
         self.navigator = Navigator(self)
         self.view_results = None
@@ -92,14 +95,23 @@ class GUI():
     def create_main_frame(self):
         # Create the Notebook widget
         main_frame = ttk.Frame(self.root)
-        main_frame.pack(expand=True, fill='both', padx=30, pady=0)
-        self.notebook = PosacNotebook(main_frame)
+        main_frame.pack(expand=True, fill='both', padx=0, pady=0,)
+        self.notebook_frame = ttk.Frame(main_frame)
+        # self.notebook_frame.pack(expand=True, fill='both', padx=30, pady=0,)
+        self.notebook = PosacNotebook(self.notebook_frame, self)
         self.notebook.pack(expand=True,
-                      fill='both',)
+                      fill='both')
+        self.start_page = StartPage(main_frame)
+        self.start_page.pack(expand=True, fill='both')
 
     def create_start_frame(self):
         pass
 
+    def set_save_title(self, save_path):
+        if save_path:
+            self.root.title(f"{ROOT_TITLE} - {save_path}")
+        else:
+            self.root.title(ROOT_TITLE)
 
     #########################
     # Dialogues and Windows #
@@ -179,16 +191,24 @@ class GUI():
         return output_file_path
 
     def save_session_dialogue(self):
-        file_name = filedialog.asksaveasfilename(filetypes=[('mem', '*.mem')],
-                                                 defaultextension='.mem',
-                                                 title="Save FSSA Session",
+        file_name = filedialog.asksaveasfilename(filetypes=[('Memory files',
+                                                             '*.mpm')],
+                                                 defaultextension='.mpm',
+                                                 title="Save Posac Session",
                                                  confirmoverwrite=True)
         return file_name
 
     def open_session_dialogue(self):
-        file_name = filedialog.askopenfilename(filetypes=[('mem', '*.mem')],
-                                               title="Open FSSA Session")
+        file_name = filedialog.askopenfilename(filetypes=[('mpm', '*.mpm')],
+                                               title="Open Posac Session")
         return file_name
+
+    def browse_file_dialogue(self, title="Open",
+                             file_types=[]):
+        filename = filedialog.askopenfilename(
+            filetypes=file_types,
+            title=title)
+        return filename
 
     #########
     # Menus #

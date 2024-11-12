@@ -4,7 +4,8 @@ from typing import List
 import ttkbootstrap as ttk
 
 from lib.gui.components.editable_tree_view import EditableTreeView
-from lib.gui.components.form import Label, SelectionBox, BoldLabel
+from lib.gui.components.form import Label, SelectionBox,\
+    BoldLabel, Entry
 from lib.gui.components.ranges_table import RangesTable
 
 from lib.utils import real_size
@@ -99,7 +100,7 @@ class TraitsTab(tk.Frame):
         trait_label_frame = tk.Frame(upper_frame)
         trait_label = Label(trait_label_frame, text='Trait Label')
         trait_label.pack(side='left')
-        self.trait_entry = ttk.Entry(trait_label_frame)
+        self.trait_entry = Entry(trait_label_frame)
         self.trait_entry.pack(side='right', padx=real_size(
             px_TOP_INPUTS_INNER))
         trait_label_frame.pack(side='right',
@@ -192,6 +193,7 @@ class TraitsTab(tk.Frame):
             self._traits.append(self.TraitData(label, ranges))
         while len(self._traits) > traits_num:
             self._traits.pop()
+        self._current_trait = min(self._current_trait, len(self._traits))
         if traits_num == 0:
             self._update_frames(self.TabContext.NO_TRAITS)
         else:

@@ -1,12 +1,17 @@
 import tkinter as tk
 from tkinter import ttk
-from lib.gui.components.form import Label, BoldLabel, BrowseButton
+from lib.gui.components.form import Label, BoldLabel, BrowseButton, Entry
 from lib.utils import real_size, rreal_size
 
 py_ENTRIES = 25
 pl_ENTRIES = 75
 pl_ENTRIES_INNER = 60
 
+EXT = dict(
+    POSAC = ("Posac files", "*.pos"),
+    LSA1 = ("LSA1 files", "*.ls1"),
+    LSA2 = ("LSA2 files", "*.ls2")
+)
 
 class OFilesTab(tk.Frame):
     DEFAULT_OUT_POS = 'C:/Program Files/POSAC/job.pos'
@@ -16,6 +21,7 @@ class OFilesTab(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self._parent = parent
+        self.gui = self._parent.parent
         self._create_widgets()
 
     def _create_widgets(self):
@@ -26,9 +32,9 @@ class OFilesTab(tk.Frame):
         self.posac_entry, self.posac_browse = self._create_output_entry(
             'POSAC',
             self.DEFAULT_OUT_POS)
-        self.lsa1_entry, self.lsa1_browse = self._create_output_entry('LS1',
+        self.lsa1_entry, self.lsa1_browse = self._create_output_entry('LSA1',
                                                                       self.DEFAULT_OUT_LS1)
-        self.lsa2_entry, self.lsa2_browse = self._create_output_entry('LS2',
+        self.lsa2_entry, self.lsa2_browse = self._create_output_entry('LSA2',
                                                                       self.DEFAULT_OUT_LS2)
         self.exit_button = ttk.Button(self, text='Exit POSAC',
                                       bootstyle='secondary', width=15)
@@ -39,14 +45,29 @@ class OFilesTab(tk.Frame):
         entry_frame.pack(pady=real_size(py_ENTRIES))
         label = BoldLabel(entry_frame, text=title, size=9)
         label.pack(side=tk.LEFT)
-        entry = ttk.Entry(entry_frame, width=rreal_size(70))
+        entry = Entry(entry_frame, width=rreal_size(70))
         xpad = pl_ENTRIES_INNER - (len(title) * 8)
         entry.pack(side=tk.LEFT, padx=real_size((xpad, 0)))
         entry.insert(0, default)
-        button = BrowseButton(entry_frame)
+        button = BrowseButton(entry_frame, command=lambda:
+        self.browse_and_modify_entry(f"Save {title.lower().capitalize()} "
+                                     f"Output "
+                                     f"To..",
+                                     entry,
+                                     EXT[title]))
         xpad = pl_ENTRIES_INNER - 30
         button.pack(side=tk.LEFT, padx=real_size((xpad, 0)))
         return entry, button
+
+    def browse_and_modify_entry(self, title, entry, file_types : tuple):
+        output_file = self.gui.save_file_diaglogue(
+            title=title,
+            file_types=[file_types],
+            default_extension=file_types[1][-4:],
+            )
+        if output_file:
+            entry.delete(0, tk.END)
+            entry.insert(0, output_file)
 
     def get_posac_out(self):
         return self.posac_entry.get()

@@ -1,0 +1,432 @@
+# Posac program
+Welcome to the Posac program
+Name of the job
+Input data file
+Number of recordsNumber of internal variables
+Number of external variables
+Item diagrams
+External diagrams
+Frequency
+Structural Posac
+Data Subjects
+Missing value
+Internal variables
+External variables
+External variables ranges
+External Traits
+Posac-axes scoresGraphic characters
+Formfeed
+Balancing weights
+Iterations number
+ASCII files
+
+
+# $ k  Welcome to the Posac program
+Welcome to the POSAC/LSA data analysis system. During this program you will
+be asked for information that POSAC/LSA needs in order to process your data.
+For details on POSAC/LSA, its purpose and operation, as well as for basic bibliography, please refer to What is 
+Posac on the first screen of the program.
+
+
+# $ k Name of the job
+You can enter any name you want to give for the particular run of
+POSAC/LSA. It is for your use. 
+
+
+# $ k Input data file
+Here you must enter the name of the file that contains the data for the 
+Variables, as well as its path. It must exist in the computer or you’ll get an error message.
+
+
+# $ k Number of records
+The number of records (lines) per case in the data file specified above. This
+Number can have a value from 1 to 10 and depends on how your data
+Is set up.
+
+
+
+# $ k Number of internal variables
+Internal variables are those used by POSAC/LSA to create the
+scalogram. You can have anywhere from 2 to 16 of them.
+
+
+
+# $ k Number of external variables
+External variables are those used to define subjects’ external traits.
+Concentrations of subjects characterized by each trait may be depicted
+in the scalogram space, and relationships between space axes and trait
+occurrence are estimated.
+
+
+
+# $ k Item diagrams
+An ITEM DIAGRAM is a reproduction of the POSAC solution map, except
+that instead of the profile ID, the subject’s score in that item (=variable) is
+typed. If you answer ‘Y’ then an item diagram will be provided for each 
+internal variable.
+
+
+
+# $ k external diagrams
+An EXTERNAL TRAIT DIAGRAM is a reproduction of POSAC solution map,
+except that instead of the profile ID, the proportion of subjects (among those
+having that same profile) who share the defined external traits, is represented.
+
+
+
+# $ k Frequency
+If you want POSAC/LSA to ignore profiles whose frequencies are f or less, then 
+specify the value of f here. This is useful when data is too large. Note that POSAC/LSA
+can only process up to 1500 cases and 170 different profiles.
+
+
+
+# $ k Structural Posac
+Structural POSAC/LSA [option S] assigns an equal weight to every profile to be processed.
+It is a more theory-oriented procedure than the alternative, distributional analysis and its
+coefficient of fit is usually lower. 
+Distributional POSAC/LSA [option D] assigns to every processed profile a weight that  corresponds to its 
+observed frequency. This has been the more traditional procedure.
+Profile analysis [option P] is useful if you wish to examine the list of profiles and obtain some profile for 
+information only, without running the entire program.
+
+
+
+# $ k Data Subjects
+Are data Subjects, Identified subjects or Profiles & frequencies. If Identified subjects or 
+Profiles and frequencies, you must fill in the starting and ending columns of field where the 
+subjects' Identifying label, or frequencies, appear. (If there is more than one record (line) 
+per case, this field must be in record No.1 (in the first line). If the default option ‘S’ is 
+chosen, column entries are ignored by the program and you can continue.
+
+
+# $ k Missing value
+If any of the internal or external variables have missing values that are other than zero,or if
+Zero itself is not a missing value, then you must choose ‘N’ in answer to this question. Since
+POSAC/LSA rejects profiles with missing scores in any of the variables (external as well as internal), 
+fewer profiles would be rejected if you define all external-variable values as valid
+ (non-missing).
+
+
+# $ k Next command
+To move forward in the program press Next command and you will pass sequentially through the program 
+screens.
+
+
+
+# $ k Back command
+To move backward in the program press Back command and you will pass backward through the 
+program screens.
+
+
+
+# $ k Run command
+With this command we process all the data and create result files.
+
+
+
+# $ k Internal variables
+INTERNAL VARIABLES are those used by POSAC/LSA to create the scalogram. On this screen you 
+must indicate for each INTERNAL VARIABLE, where it is located in the DATA file.
+REC NUM:          in which record (line) is the variable located
+WIDTH:               field width (number of columns) where the value of the variable is
+                      written (it can be 1 or 2)
+START COL:      The first column of the field where the variable is located
+LABEL:                 you can optionally give a label for the variable if you so desire
+VALID LO HI:       the valid min and max values of the variable; appears only if are non zero 
+                                missing values, or if for some variable zero is not a missing value.                          
+                               
+
+
+# $ k External variables
+External variables are those used to define subjects’ external traits. Concentrations of 
+subjects characterized by each trait may be depicted in the scalogram space, and 
+relationships between POSAC space axes and trait occurrence are estimated. On this screen 
+you must indicate for each EXTERNAL VARIABLE, where it is located in the DATA file.
+REC NUM:          in which record (line) is the variable located
+WIDTH:               field width (number of columns) where the value of the variable is
+                      written (it can be 1 or 2)
+START COL:      The first column of the field where the variable is located
+LABEL:                 you can optionally give a label for the variable if you so desire
+VALID LO HI:       the valid min and max values of the variable; appears only if are non zero 
+                                missing values, or if for some variable zero is not a missing value.
+
+
+
+
+# $ k External variables ranges
+Admissible values of an external variable may be a subset of its valid values. Admissible values are used 
+as a basis (=100%) for computing the occurrence of external traits among subjects with the same profile. 
+If, for all external variables, admissible values coincide with valid values, simply press “Next”. Signify the 
+admissible ranges for all the EXTERNAL VARIABLES. Each variable can have several ranges (up to 10 
+in fact). NUM OF RANGES can thus be from 1 to 10. Following entry of that number, you simply enter the 
+FROM and TO values that define the desired ranges.
+
+
+
+# $ k External Traits
+EXTERNAL TRAITS are defined in terms of EXTERNAL (non-scalogram) VARIABLES, e.g. certain 
+values of ‘education’ can define the trait ‘educated’; combined values of education, of age and of gender 
+can define ‘an educated young woman’ etc.
+For each EXTERNAL TRAIT you will be asked to give a label (title) and then the external variable ranges 
+that define it. This will be done in a manner analogous to the entry of the admissible range values that 
+you just completed (number of ranges, from-to for each external var.). The trait-defining ranges are a 
+subset of the admissible ranges. If a particular variable doesn’t participate in defining an external trait, 
+leave the entire range of admissible values. To define a range of a single value, enter that value twice 
+(e.g. 2-2).
+
+
+
+# $ k Posac axes
+Saving POSAC/LSA – axes scores results in a new data file being created, with the same name as your 
+original data file but with the extension .PAX. This file will contain, in addition to the original data, a new 
+record (line) per case with the recoded X,Y,J,L scores assigned by POSAC’s solution to each of the 
+subjects.
+
+
+# $ k Graphic characters
+If you want to change the characters used by the program to draw frames around diagrams in
+POSAC/LSA output, enter the characters here of your choosing in the following order:
+TOP, BOTTOM, LEFT, RIGHT, TOPLEFT,TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT.
+Otherwise leave blank.
+
+
+
+# $ k formfeed
+In case your printer uses a form feed character that is different from chr(12), then you should
+Enter it in this field, otherwise leave it blank.
+
+
+
+# $ k Balancing weights
+You may change the weights assigned to incomparable and comparable profiles in the POSAC
+solution by specifying two alternative values here.
+
+
+
+# $ k Iterations number
+This is the number times POSAC/LSA loops around in its search for a solution. The larger the
+number, the more time it takes, but the more optimal the solution.
+
+
+
+# $ k ASCII output files
+The ASCII output files technical option creates 3 trimmed files in fixed format with 
+the essentials of POSAC/LSA solution. 
+
+
+1. File SOLUTION.PSC records:
+
+Profile, profile-score, profile-frequency, profile-coordinates: X,Y,J,L.  
+
+Example:
+
+ 2 2 2 2                           8    1 100.00  100.00    200.00  100.00
+ 2 2 2 1                           7    1  60.00   90.00    150.00   70.00
+ 1 2 2 2                           7    1  90.00   60.00    150.00  130.00
+ 2 2 1 1                           6    1  30.00   80.00    110.00   50.00
+ 1 2 2 1                           6    1  50.00   50.00    100.00  100.00
+ 1 1 2 2                           6    1  80.00   30.00    110.00  150.00
+ 1 1 1 2                           5    1  70.00   10.00     80.00  160.00
+ 1 1 2 1                           5    1  40.00   20.00     60.00  120.00
+ 2 1 1 1                           5    1  10.00   70.00     80.00   40.00
+ 1 2 1 1                           5    1  20.00   40.00     60.00   80.00
+ 1 1 1 1                           4    1    .00     .00       .00  100.00
+
+
+2. File MUMATRIX.PSC records the coefficients of monotonicity between the POSAC 
+variables (the lower half of the matrix). 
+
+Example: 
+
+ 1.00
+  .60 1.00
+ -.14  .50 1.00
+ -.38 -.14  .60 1.00
+
+
+3. File ITEMFACT.PSC records for each variable its coefficient of monotonicity with 
+J,L,X,Y,P,Q.  
+
+Example:
+
+   .83  -.97   .00  1.00   .64   .92
+   .90  -.54   .47   .92   .98   .67
+   .90   .54   .92   .47   .98   .67
+   .83   .97  1.00   .00   .64   .92
+
+
+
+# $ k POSACSEP Option
+For each internal variable processed by POSAC, POSACSEP option creates four optimal 
+partitions of the item (variable) diagram separating the high from the low values of that 
+variable. The mathematical theory of Multiple Scaling by POSAC requires that such a 
+partition line to be a decreasing (or non-increasing) step curve. Hence, the four partitions 
+are of the following forms, each form representing a possible role that the variable may 
+have in structuring the POSAC measurement space.
+POLAR:  A straight line (0 bends), which can be X-Polar (vertical line) or Y-Polar 
+(horizontal line);
+ATOAC: An L-shaped or an Inverted L-shaped line (1 bend) representing an attenuating or 
+an accentuating variable, respectively.
+PROMO: A line with 2 bends, dissecting the X axis or the Y axis, representing an X-
+promoting or a Y-promoting variable, respectively.
+MODIF: A line with 3 bends, describable as modifying an attenuating or an accentuating 
+form, representing a T-modifying or a C-modifying variable, respectively.
+POASCSET.TAB file is produced reporting for each variable and each form, the total 
+deviations of profiles from their "correct" (low or high value) region. This table can be used 
+to determine the most likely role that should be assigned to each variable. The forms thus 
+selected by the researcher can be used to create a typology grid on the POSAC space and 
+measurement marks on the X and Y axes.
+   POSACSEP.OUT file provides the algebraic equations for the optimal partition  curves. 
+NOTE that POSACSEP.TAB file and the partitioned-space diagram files (e.g., POLAR01.SCR, 
+PROMO03.SCR) as well as POSACSEP.OUT are written into the POSAC program directory 
+and, unless their file names are changed, are erased after the next run of the program.
+
+
+# $ k POSACSEP thresholds
+In order to run POSACSEP you must specify for each variable a threshold that 
+distinguished high from low values for that variable. In effect, the variable is dichotomized 
+by specifying the threshold to be the lowest value of the higher group of values. For 
+example, if a variable is originally a dichotomy (a binary variable), having only the values 
+{1, 2}, the threshold would be 2. If the variable has 3 values {1,2,3} and if you consider 
+1 & 2 as low and 3 as high, the threshold would be 3 (but if you consider 1 as low and 2 & 
+3 as high, the threshold is 2).
+
+
+# $ k Viewing Results
+     Use the VIEW menu to see results
+     When on a screen diagram:
+*	Press enter to switch between POSAC/LSA diagrams;
+*	Press enter to switch between posacsep diagrams of an item;
+*	Enter Q to return to program.
+
+
+# $ k Handling Result Files
+POSAC, LSA1 and LSA2 outputs are written into the files specified in the output files menu. 
+POSACSEP.TAB is located in the posac program directory. These files may be viewed by 
+Microsoft EDIT,  NOTEPAD or WORD programs. In case WORD is used for opening one of 
+these files, select the MS-DOS (or the US-ASCII) encoding in WORD File Conversion 
+window. For conveniently viewing POSAC, LSA1 and LSA2 outputs, mark the entire 
+document (Ctrl-a) and choose font  Courier New   size 6.
+POSAC, LSA1 and LSA2 screen diagrams are written into files POSAC.SCR, LSA1.SCR and 
+LSA2.SCR respectively, in the directory where POSAC program is located. They can be read 
+by WORD, using the MS-DOS (or the US-ASCII) encoding in the WORD File Conversion 
+window.
+POSACSEP screen diagrams are written into files POLARxx.SCR, ATOACxx.SCR, 
+PROMOxx.SCR and MODIFxx.SCR, where xx stands for the serial number of the variable 
+considered: 01, 02, 03,… . They are written in the directory where POSAC program is 
+located.
+When shown on the screen, a screen diagram may be sent to a laser printer by entering L 
+or to a .PCX file by entering F. A PCX file may be read, for example, by Free Image Editor or 
+it may be converted to other types of graphical files using appropriate converter software.
+
+
+
+# $ k Output Files
+By default, the three full result files for POSAC, LSA1 and LSA2 are written into three 
+separate files having the same name as the input data file, except that their extension (file 
+type) is changed to .POS , .LS1 , and  .LS2,  respectively. By default, these three result files 
+are written into the same directory from which the data file was taken. 
+The path and file names may be changed. However, it is recommended not to change file 
+name extensions.
+ Changing the name of the POSAC result file, automatically changes the names of the LSA1 
+and LSA2 result files into a similar name. Changing the name of the LSA1 or the LSA2 result 
+file does not affect the names of the other files.
+
+
+
+# IDH_MAIN
+ # IDH_FR01
+$ Welcome
+k Posac;Program;data
+# IDH_D01
+$ Job name
+k name;posac
+# IDH_D02
+$ input file
+k input;file
+# IDH_D03
+$ records number
+k record
+# IDH_D04
+$ internal variables number
+k internal;variables
+# IDH_D05
+$ external variables number
+k external;variables
+# IDH_D06
+$ item diagrams
+k item;diagram
+# IDH_D07
+$ external diagram
+k external;diagram
+# IDH_D08
+$ frequency
+k frequency
+# IDH_D09
+$ structural posac
+k structural;distributional;profile
+# IDH_D10
+$ data subjects
+k data;identified;profiles;frequencies
+# IDH_D11
+$ missing value
+k missing;value
+# IDH_D22
+$ next command
+k next;screens
+# IDH_D23
+$ back command
+k back;screens
+# IDH_D24
+$ run command
+k run;result
+# IDH_D12
+$ internal variables
+k internal;variables;rec num;width;start col;valid lo hi
+# IDH_D13
+$ external variables
+k external;variables;rec num;width;start col
+# IDH_D14
+$ external variables ranges
+k external;ranges
+# IDH_D15
+$ external traits
+k external;traits;ranges
+# IDH_D16
+$ posac-axes scores
+k posac-axes;scores
+# IDH_D17
+$ graphic characters
+k graphic;characters
+# IDH_D18
+$ formfeed
+k formfeed
+# IDH_D19
+$ balancing weights
+k profiles;weights
+# IDH_D20
+$ iterations number
+k iterations
+# IDH_D21
+$ ASCII files
+k ASCII;files
+# IDH_D25
+$ POSACSEP Option
+k POSACSEP;POLAR;ATOAC;PROMO;MODIF;POSACSET.TAB
+# IDH_D26
+$ POSACSEP thresholds
+k POSACSEP;thresholds
+# IDH_D27
+$ View Results options
+k view;menu;screen;diagrams
+# IDH_D28
+$ Handling Result Files 
+k handling;result;files
+# IDH_D29
+$ Output Files
+k output;files
+ 
+ 
+ 
+ 

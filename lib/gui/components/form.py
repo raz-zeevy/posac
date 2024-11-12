@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 import tkinter as tk
 
 from lib.gui.components.editable_tree_view import EditableTreeView
+from lib.gui.components.helpables import Helpable
 from lib.utils import real_size, rreal_size
 
 CALIBRI_FONT = ('Calibri', 10)
@@ -29,7 +30,7 @@ class BoldLabel(tk.Label):
             kwargs['font'] = SEGOE_UI_FONT_BOLD
         if 'size' in kwargs:
             kwargs['font'] = (
-            kwargs['font'][0], kwargs['size'], kwargs['font'][2])
+                kwargs['font'][0], kwargs['size'], kwargs['font'][2])
             del kwargs['size']
         super().__init__(parent, **kwargs)
 
@@ -55,34 +56,42 @@ class NavigationButton(ttk.Button):
         super().__init__(parent, **kwargs)
 
 
-class SelectionBox(ttk.Combobox):
+class SelectionBox(Helpable, ttk.Combobox):
     """A button that can be used to navigate to a different page."""
 
-    def __init__(self, parent, **kwargs):
+    def __init__(self, master=None, **kwargs):
         default_index = None
         if 'default' in kwargs:
             default_index = kwargs['values'].index(kwargs['default'])
             del kwargs['default']
         if 'width' not in kwargs:
             kwargs['width'] = 10
-        super().__init__(parent, **kwargs,
-                         state="readonly", )
+        kwargs['state'] = 'readonly'
+        super().__init__(master=master, **kwargs, )
         self.values = kwargs['values']
         if default_index is not None:
             self.current(default_index)
 
 
-class SpinBox(ttk.Spinbox):
-    def __init__(self, parent, **kwargs):
+class SpinBox(Helpable, ttk.Spinbox):
+    def __init__(self, master=None, **kwargs):
         default_value = None
         if 'default' in kwargs:
             default_value = kwargs.pop('default')
         if 'width' not in kwargs:
             kwargs['width'] = 10
-        super().__init__(parent, **kwargs,
+        super().__init__(master=master, **kwargs,
                          state="readonly", )
         if default_value is not None:
             self.set(default_value)
+class Entry(Helpable, ttk.Entry):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master=master, **kwargs)
+
+
+class TableView(Helpable, EditableTreeView):
+    def __init__(self, master=None, root=None, **kwargs):
+        super().__init__(master=master, root=root, **kwargs)
 
 
 def create_labeled_selection_box(master, label_text, values, default,

@@ -1,0 +1,111 @@
+
+                                               **************************************
+                                               *       LATTICE SPACE ANALYSIS       *
+                                               *LSA1 BASED ON POSAC1 BOUNDARY SCALES*
+                                               **************************************
+
+
+
+
+
+               PLOT COORDINATES
+
+  ITEM NUMBER         X           Y
+  -----------         -           -
+
+          1       60.00       80.00    v1                                      
+
+          2      100.00       20.00    v2                                      
+
+          3       60.00       60.00    v3                                      
+
+          4       20.00      100.00    v4                                      
+
+          5       60.00       40.00    v5                                      
+                                                   LSA1 DIAGRAM
+                                     ITEM MAPPING BASED ON POSAC1 BOUNDARY SCALES
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                     4                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             1                                        บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             3                                        บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             5                                        บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                     2บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ                                                                                                      บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+
+
+          COEFFICIENTS OF STRUCTURAL SIMILARITY : E*
+          ------------------------------------------
+
+
+           1    2    3    4    5
+      ษอออออออออออออออออออออออออ
+      บ
+    1 บ    -                                                                                                                   
+      บ
+    2 บ 0.00    -                                                                                                              
+      บ
+    3 บ 1.33 0.33    -                                                                                                         
+      บ
+    4 บ 0.67-1.00 0.33    -                                                                                                    
+      บ
+    5 บ 1.00 0.67 1.33 0.00    -                                                                                               
+
+
+
+  NOTE : FOR TWO-DIMENSIONAL PARTIAL ORDER
+         SCALOGRAMS THE COEFFICIENT OF STRUCTURAL
+         SIMILARITY , E* , IS BETWEEN -1 AND 1 .
+         TO THE EXTENT THE SCALOGRAM DIMENSIONALITY
+         DEVIATES FROM TWO , E* MAY DEVIATE
+         TO VALUES LARGER THAN ONE .

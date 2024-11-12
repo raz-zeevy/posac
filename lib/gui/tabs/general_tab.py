@@ -1,11 +1,12 @@
 import tkinter as tk
 import ttkbootstrap as ttk
-from lib.gui.components.form import Label, BrowseButton
+from lib.gui.components.form import Label, BrowseButton, Entry, SelectionBox
 from lib.utils import real_size
 
 ENTRIES_PAD_Y = 7
 ENTRIES_PAD_RIGHT = 100
 ENTRIES_PAD_LEFT = 40
+
 
 class GeneralTab(tk.Frame):
     DEFAULT_VALUES = dict(job_name="",
@@ -22,6 +23,7 @@ class GeneralTab(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         self._parent = parent
         self._create_widgets()
+        self.gui = self._parent.parent
 
     ###########
     #   GUI   #
@@ -32,7 +34,7 @@ class GeneralTab(tk.Frame):
         self.job_name_frame.pack(fill='x', padx=10, pady=real_size(2))
         self.job_name_entry = self._create_label_entry(
             "What name do you want for this "
-            "Posac job?", width = 40)
+            "Posac job?", width=40)
         self._create_data_input()
         self.lines_per_case_entry = self._create_label_entry(
             "How many lines per case in the data file?",
@@ -70,10 +72,11 @@ class GeneralTab(tk.Frame):
         self.data_input_label.pack(side=tk.LEFT)
         right_frame = tk.Frame(data_input_frame)
         right_frame.pack(side=tk.RIGHT, padx=(0, 30))
-        self.data_input_entry = ttk.Entry(right_frame, width=50)
+        self.data_input_entry = Entry(right_frame, width=50)
         self.data_input_entry.pack(side=tk.LEFT)
         # add a browse button
-        self.browse_button = BrowseButton(right_frame)
+        self.browse_button = BrowseButton(right_frame,
+                                          command=self.browse_data_file)
         self.browse_button.pack(side=tk.LEFT, padx=(40, 0))
 
     def _create_id_location(self):
@@ -91,12 +94,14 @@ class GeneralTab(tk.Frame):
         id_location_right.pack(side=tk.RIGHT, padx=(0, 30))
         from_label = Label(id_location_right, text="From")
         from_label.pack(side=tk.LEFT, padx=(0, 5))
-        self.id_location_from_entry = ttk.Entry(id_location_right, width=5)
+        self.id_location_from_entry = Entry(id_location_right, width=5)
         self.id_location_from_entry.pack(side=tk.LEFT, padx=(0, 5))
         self.id_location_from_entry.insert(0, "0")
         to_label = Label(id_location_right, text="To")
         to_label.pack(side=tk.LEFT, padx=(0, 5))
-        self.id_location_to_entry = ttk.Entry(id_location_right, width=5)
+        self.id_location_to_entry = Entry(id_location_right,
+                                          width=5, help_text="To",
+                                          help_title="asdf")
         self.id_location_to_entry.pack(side=tk.LEFT)
         self.id_location_to_entry.insert(0, "0")
 
@@ -107,7 +112,7 @@ class GeneralTab(tk.Frame):
                    pady=real_size(ENTRIES_PAD_Y))
         label = Label(frame, text=text)
         label.pack(side=tk.LEFT)
-        entry = ttk.Entry(frame, **kwargs)
+        entry = Entry(frame, **kwargs)
         entry.pack(side=tk.RIGHT)
         entry.insert(0, default)
         return entry
@@ -119,37 +124,60 @@ class GeneralTab(tk.Frame):
                    pady=real_size(ENTRIES_PAD_Y))
         label = Label(frame, text=text)
         label.pack(side=tk.LEFT)
-        combo = ttk.Combobox(frame, values=values, **kwargs)
+        combo = SelectionBox(frame, values=values, **kwargs)
         combo.set(default)
         combo.pack(side=tk.RIGHT)
         return combo
+
+    ##########
+    # Browse #
+    ##########
+
+    def browse_data_file(self):
+        data_file = self.gui.browse_file_dialogue(
+            title="Select Data File",
+            file_types=(("Data files", "*.dat"),
+                        ("All files", "*.*"),)
+        )
+        if data_file:
+            self.data_input_entry.delete(0, tk.END)
+            self.data_input_entry.insert(0, data_file)
 
     #############
     #  Getters  #
     #############
 
-    def get_job_name(self): return self.job_name_entry.get()
+    def get_job_name(self):
+        return self.job_name_entry.get()
 
-    def get_data_file(self): return self.data_input_entry.get()
+    def get_data_file(self):
+        return self.data_input_entry.get()
 
-    def get_lines_per_case(self): return int(self.lines_per_case_entry.get())
+    def get_lines_per_case(self):
+        return int(self.lines_per_case_entry.get())
 
     def get_plot_item_diagram(self) -> bool:
-        return self.plot_item_diagram_entry.get() == self.plot_item_diagram_entry.cget("values")[0]
+        return self.plot_item_diagram_entry.get() == \
+            self.plot_item_diagram_entry.cget("values")[0]
 
     def get_plot_external_diagram(self) -> bool:
-        return self.plot_external_diagram_entry.get() == self.plot_external_diagram_entry.cget("values")[0]
+        return self.plot_external_diagram_entry.get() == \
+            self.plot_external_diagram_entry.cget("values")[0]
 
-    #todo: Figure out the frequence data type and return it (int or float)
-    def get_only_freq(self): return int(self.only_freq_entry.get())
+    # todo: Figure out the frequence data type and return it (int or float)
+    def get_only_freq(self):
+        return int(self.only_freq_entry.get())
 
-    def get_posac_type(self): return self.posac_type_combo.get()
+    def get_posac_type(self):
+        return self.posac_type_combo.get()
 
-    def get_subject_type(self): return self.subject_type_combo.get()
+    def get_subject_type(self):
+        return self.subject_type_combo.get()
 
-    def get_id_location(self): return \
-        int(self.id_location_from_entry.get()), \
-        int(self.id_location_to_entry.get())
+    def get_id_location(self):
+        return \
+            int(self.id_location_from_entry.get()), \
+                int(self.id_location_to_entry.get())
 
     def get_all(self):
         return dict(
@@ -196,9 +224,11 @@ class GeneralTab(tk.Frame):
         self.only_freq_entry.delete(0, tk.END)
         self.only_freq_entry.insert(0, value)
 
-    def set_posac_type(self, value): self.posac_type_combo.set(value)
+    def set_posac_type(self, value):
+        self.posac_type_combo.set(value)
 
-    def set_subject_type(self, value): self.subject_type_combo.set(value)
+    def set_subject_type(self, value):
+        self.subject_type_combo.set(value)
 
     def set_id_location(self, val_from, val_to):
         self.id_location_from_entry.delete(0, tk.END)

@@ -5,7 +5,7 @@ from tkinter import filedialog
 from lib.gui.components.form import NavigationButton
 import matplotlib
 from lib.gui.windows.window import Window
-from lib.gui.components.shapes import Line, Circle, DivideAxis
+from lib.gui.components.shapes import Line, Circle, DivideAxis, Edge
 from lib.utils import get_resource, rreal_size, real_size
 
 G_COLOR = '#a4aab3'
@@ -19,7 +19,7 @@ from matplotlib.backends.backend_tkagg import (
 )
 
 BORDER_WIDTH = 0
-OC = 0.05
+OC = 0.00
 
 class DiagramWindow(Window):
     def __init__(self, parent, graph_data_lst: list, **kwargs):
@@ -28,8 +28,8 @@ class DiagramWindow(Window):
         should contain "x", "y", "annotations", "title", "legend",
          "captions", "geom" keys
         """
-        super().__init__(**kwargs, geometry=f"{rreal_size(700)}x"
-                                            f"{rreal_size(800)}")
+        super().__init__(**kwargs, geometry=f"{rreal_size(800)}x"
+                                            f"{rreal_size(700)}")
         self.title("Posac Solution")
         # self.iconbitmap(get_resource("icon.ico"))
         # sets the geometry of toplevel
@@ -224,6 +224,10 @@ class DiagramWindow(Window):
                 x_values, y_values = divide_axis.get_points(1000)
                 axes.plot(x_values, y_values, color=G_COLOR)
 
+            def add_edge(axes, edge: Edge):
+                x_values, y_values = edge.get_points()
+                axes.plot(x_values, y_values, color=G_COLOR)
+
             if 'geoms' not in graph_data:
                 return
             for geom in graph_data["geoms"]:
@@ -233,6 +237,8 @@ class DiagramWindow(Window):
                     add_circle(axes, geom)
                 elif isinstance(geom, DivideAxis):
                     add_divide_axis(axes, geom)
+                elif isinstance(geom, Edge):
+                    add_edge(axes, geom)
                 else:
                     raise ValueError(f"Unknown geometry type: {type(geom)}")
 

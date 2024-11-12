@@ -1,5 +1,5 @@
 from lib.gui.components.form import BoldLabel, SelectionBox
-from lib.gui.components.form import Label
+from lib.gui.components.form import Label, Entry
 from lib.gui.components.help_bar import HelpBar
 from lib.gui.windows.window import Window
 import tkinter as tk
@@ -118,12 +118,12 @@ class OptionsWindow(Window):
         label_power_weights = Label(power_frame, text=t_POWER_WEIGHTS)
         label_power_weights.pack(side='left')
 
-        self.power_weights_low_entry = ttk.Entry(power_frame, width=w_entry)
+        self.power_weights_low_entry = Entry(power_frame, width=w_entry)
         self.power_weights_low_entry.insert(0, str(POWER_WEIGHTS_LOW))
         self.power_weights_low_entry.pack(side='right',
                                           padx=real_size((10, 0)))
 
-        self.power_weights_high_entry = ttk.Entry(power_frame, width=w_entry)
+        self.power_weights_high_entry = Entry(power_frame, width=w_entry)
         self.power_weights_high_entry.insert(0, str(POWER_WEIGHTS_HIGH))
         self.power_weights_high_entry.pack(side='right',
                                            padx=real_size((10, 0)))
@@ -136,7 +136,7 @@ class OptionsWindow(Window):
                    pady=real_size(ENTRIES_PAD_Y))
         label = Label(frame, text=text)
         label.pack(side=tk.LEFT)
-        entry = ttk.Entry(frame, **kwargs)
+        entry = Entry(frame, **kwargs)
         entry.pack(side=tk.RIGHT)
         entry.insert(0, default)
         return entry

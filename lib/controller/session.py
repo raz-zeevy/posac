@@ -15,6 +15,7 @@ class Session:
 
     def _attributes_from_controller(self, controller):
         self.state = controller.gui.get_state()
+        self.state.update(controller.get_state())
 
     def _attributes_from_save(self, path):
         with open(path, 'r') as file:
@@ -31,3 +32,9 @@ class Session:
     def load(self, controller):
         state = self.state
         controller.gui.load_state(state)
+        controller.load_state(state)
+
+    @staticmethod
+    def reset(controller):
+        controller.gui.reset()
+        controller.reset_state()

@@ -1,30 +1,101 @@
-import os
 import subprocess
-
-from lib.controller.graph_generator import generate_graphs
+import warnings
+from lib.controller.graph_generator import generate_graphs, \
+    generate_posacsep_graphs
 from lib.controller.session import Session
 from lib.gui.gui import GUI
 from lib.posac.posac_module import PosacModule
+from lib.utils import IS_PRODUCTION, SET_MODE_TEST
+
+
 class Controller:
     def __init__(self):
         self.gui = GUI()
         self.notebook = self.gui.notebook
         self.bind()
-        self.start_session()
+        self.restart_session()
+        self.gui.navigator.prev_page()
+        SET_MODE_TEST()
 
     def bind(self):
-        self.gui.navigation.button_run.config(command=self.run_posac)
+        #
         self.gui.menu.view_menu.entryconfig("POSAC/LSA Diagrams",
                                             command=self.show_diagram_window)
+        # Run
+        self.gui.navigation.button_run.config(command=self.run_posac)
+        self.gui.icon_menu.m_button_run.config(command=self.run_posac)
+        # Save
+        self.gui.menu.file_menu.entryconfig("Save",
+                                            command=self.show_save_session)
+        self.gui.icon_menu.m_button_save.configure(
+            command=self.show_save_session)
+        self.gui.menu.file_menu.entryconfig("Save As..",
+                                            command=self.show_save_as_session)
+        # Open
+        self.gui.icon_menu.m_button_open.configure(
+            command=self.show_open_session)
+        self.gui.menu.file_menu.entryconfig("Open",
+                                            command=self.show_open_session)
+        # New
+        self.gui.icon_menu.m_button_new.configure(
+            command=lambda: self.show_save_changes_dialogue(
+                callback=self.restart_session)
+        )
+        self.gui.menu.file_menu.entryconfig("New",
+                                            command=lambda: self.show_save_changes_dialogue(
+                                                callback=self.restart_session))
+        # Data file
+        self.bind_submenu(self.gui.menu.data_file_menu,
+                          file=None,
+                          file_getter=self.notebook.general_tab.get_data_file,
+                          excel=True)
+        # Undo
+        self.gui.icon_menu.m_button_undo.configure(command=self.gui.notebook.undo)
+        # Redo
+        self.gui.icon_menu.m_button_redo.configure(command=self.gui.notebook.redo)
+        self.gui.root.protocol("WM_DELETE_WINDOW", self.on_close)
+
+        # Override the default showwarning method with your custom one
+        if IS_PRODUCTION():
+            warnings.showwarning = self.custom_show_warning
+
     def run_process(self):
-        self.gui.run_process()
+        try:
+            self.gui.run_process()
+        except Exception as e:
+            if IS_PRODUCTION():
+                self.gui.show_warning('Error', f"An error occurred: {e}")
+            else:
+                raise e
+
+    ##############
+    # Controller #
+    # State      #
+    ##############
+
+    def get_state(self):
+        return {
+            'controller': {
+                'save_path': self.save_path
+            }
+        }
+
+    def load_state(self, state: dict):
+        self.update_save_path(state['controller']['save_path'])
+
+    def reset_state(self):
+        self.update_save_path("")
+
+    def update_save_path(self, path):
+        self.save_path = path
+        self.gui.set_save_title(self.save_path)
 
     ##############
     # Save Load  #
     # & New      #
     ##############
-    def start_session(self):
-        self.gui.reset()
+    def restart_session(self):
+        Session.reset(self)
 
     def save_session(self, path):
         session = Session(self)
@@ -39,32 +110,31 @@ class Controller:
     # & Windows  #
     ##############
 
-    def open_file(self, file, notepad=False, word=False, excel=False):
-        def open_file_in_notepad(file_path):
-            try:
-                subprocess.run(['notepad', file_path], check=True)
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to open file {file_path}: {e}")
-
-        def open_file_in_word(file_path):
-            try:
-                subprocess.run(['start', 'winword', file_path], shell=True,
+    def open_file(self, file, notepad=False, word=False, excel=False,
+                  file_getter=None):
+        if file_getter:
+            file = file_getter()
+        if not file:
+            self.gui.show_warning('error', "Please specify a file to open.")
+            return
+        try:
+            if notepad:
+                subprocess.run(['notepad', file], check=True)
+            elif word:
+                subprocess.run(['start', 'winword', file], shell=True,
                                check=True)
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to open file {file_path}: {e}")
-
-        def open_file_in_excel(file_path):
-            try:
-                subprocess.run(['start', 'excel', file_path], shell=True,
+            elif excel:
+                subprocess.run(['start', 'excel', file], shell=True,
                                check=True)
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to open file {file_path} : {e}")
-
-        if notepad: open_file_in_notepad(file)
-        elif word: open_file_in_word(file)
-        elif excel: open_file_in_excel(file)
-        else:
-            raise UserWarning("Please specify a program to open the file with")
+            else:
+                raise UserWarning(
+                    "Please specify a program to open the file with")
+        except FileNotFoundError:
+            self.gui.show_warning('error',
+                                  f"Unable to open {file}. Application not "
+                                  f"found.")
+        except subprocess.CalledProcessError as e:
+            self.gui.show_warning('error', f"Failed to open {file}: {e}")
 
     def show_diagram_window(self):
         graph_data_list = generate_graphs(self)
@@ -74,34 +144,101 @@ class Controller:
         #                              lambda e: controller.show_help(
         #                                  "facet_diagrams_screen"))
 
+    def show_posacsep_diagram_window(self, item):
+        graph_data_lst = generate_posacsep_graphs(self, item)
+        self.gui.show_diagram_window(graph_data_lst)
+
+    def show_save_session(self):
+        if not self.save_path:
+            self.show_save_as_session()
+        else:
+            self.save_session(self.save_path)
+
+    def show_save_as_session(self):
+        save_file = self.gui.save_session_dialogue()
+        if save_file:
+            self.update_save_path(save_file)
+            self.save_session(save_file)
+
+    def show_save_session_and_callback(self, callback):
+        self.show_save_session()
+        callback()
+
+    def show_save_changes_dialogue(self, callback):
+        self.gui.show_msg("Would you like to save your current session "
+                          "before starting a new one?",
+                          title="Save Session?",
+                          yes_command=lambda:
+                          self.show_save_session_and_callback(callback),
+                          no_command=callback)
+
+    def show_open_session(self):
+        session_file = self.gui.open_session_dialogue()
+        if session_file:
+            try:
+                self.load_session(session_file)
+            except:
+                self.gui.show_warning("error", f"Failed to open session "
+                                               f"file {session_file}")
+    def custom_show_warning(self, message, category, filename, lineno,
+                            file=None,
+                            line=None):
+        # Convert the warning message to a string and display it using your GUI
+        warning_msg = f"{message}"
+        # Assuming you have a GUI instance available as `self.gui`
+        self.gui.show_warning("Warning", warning_msg)
+
+    def on_close(self):
+        # Prompt the user with a message box
+        if IS_PRODUCTION():
+            result = self.gui.show_msg(
+                "Do you want to save the current session before exiting?",
+                title="Exit",
+                yes_command=self.save_session,
+                buttons=["Yes:primary", "No:secondary", "Cancel:secondary"]
+            )
+            if result == "Yes":
+                self.show_save_session()
+                self.gui.root.destroy()  # Close the application after saving
+            elif result == "No":
+                self.gui.root.destroy()  # Close the application without saving
+            else:
+                pass  # Do nothing (cancel the close operation)
+        else:
+            self.gui.root.destroy()
 
     ################
     # Enable Views #
     ################
 
-    def enable_view_output(self):
-        def bind_submenu(menu, file, excel=False):
-            menu.entryconfig("Notepad", command=lambda: self.open_file(
+    def bind_submenu(self, menu, file, excel=False, file_getter=None):
+        menu.entryconfig("Notepad", command=lambda: self.open_file(
+            file,
+            notepad=True,
+            file_getter=file_getter))
+        menu.entryconfig("Word", command=lambda: self.open_file(
+            file,
+            word=True,
+            file_getter=file_getter))
+        if "Excel" in [menu.entrycget(i, "label") for i in
+                       range(menu.index("end") + 1)]:
+            menu.entryconfig("Excel", command=lambda: self.open_file(
                 file,
-                notepad=True))
-            menu.entryconfig("Word",command=lambda: self.open_file(
-                                                         file,
-                                                         word=True))
-            if "Excel" in [menu.entrycget(i, "label") for i in
-                           range(menu.index("end") + 1)]:
-                menu.entryconfig("Excel",command=lambda: self.open_file(
-                                                             file,
-                                                             excel=True))
+                excel=True,
+                file_getter=file_getter))
 
-        # Menu
-        bind_submenu(self.gui.menu.data_file_menu, file=self.data_file,
-                     excel=True)
-        bind_submenu(self.gui.menu.posac_output_menu, file=self.pos_out)
-        bind_submenu(self.gui.menu.lsa1_output_menu, file=self.ls1_out)
-        bind_submenu(self.gui.menu.lsa2_output_menu, file=self.ls2_out)
-        bind_submenu(self.gui.menu.posacsep_tabe_menu, file=None)
-        bind_submenu(self.gui.menu.posac_axes_menu, file=None)
+    def enable_view_output(self):
+        self.bind_submenu(self.gui.menu.posac_output_menu, file=self.pos_out)
+        self.bind_submenu(self.gui.menu.lsa1_output_menu, file=self.ls1_out)
+        self.bind_submenu(self.gui.menu.lsa2_output_menu, file=self.ls2_out)
+        self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=None)
+        self.bind_submenu(self.gui.menu.posac_axes_menu, file=None)
         self.gui.menu.add_posacsep_items(self.int_vars_num)
+        for i in range(1, self.int_vars_num + 1):
+            self.gui.menu.posacsep.entryconfig(f"Item {i}",
+                                               command=lambda:
+                                               self.show_posacsep_diagram_window(
+                                                   i))
         self.gui.enable_view_results()
 
     ###################
@@ -184,6 +321,7 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         self.ls2_out = self.notebook.output_files_tab.get_lsa2_out()
         # posacsep
         self.posacsep = [2] * 8
+
     def run_posac(self):
         self._update_properties_from_gui()
         posac = PosacModule()
@@ -211,11 +349,13 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                            form_feed=self.form_feed,
                            shemor_directives=self.shemor_directives)
         try:
-            posac.run(self.data_file, self.pos_out, self.ls1_out,
-                      self.ls2_out,
+            posac.run(self.data_file, self.pos_out, self.ls1_out, self.ls2_out,
                       self.posacsep)
-        except:
-            raise
+            self.gui.show_msg("POSAC analysis completed successfully!",
+                              title="POSAC")
+        except Exception as e:
+            self.gui.show_msg(f"An error occurred during POSAC analysis: {e}",
+                              title="Error")
         self.enable_view_output()
 
 

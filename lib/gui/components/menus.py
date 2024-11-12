@@ -2,6 +2,8 @@ import tkinter as tk
 import ttkbootstrap as ttk
 from lib.utils import *
 from PIL import Image, ImageTk
+from tktooltip import ToolTip
+
 
 m_POSACSEP_TABLE = "Posacsep Table"
 m_POSAC_AXES_FILE = "Posac-axes File"
@@ -18,7 +20,7 @@ class Menu(tk.Menu):
         self.file_menu.add_command(label="New", accelerator="Ctrl+N")
         self.file_menu.add_command(label="Open", accelerator="Ctrl+O")
         self.file_menu.add_command(label="Save", accelerator="Ctrl+S")
-        self.file_menu.add_command(label="Save As...")
+        self.file_menu.add_command(label="Save As..")
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit")
         self.add_cascade(label="File", menu=self.file_menu)
@@ -101,16 +103,18 @@ class IconMenu(tk.Frame):
         self.image_references = {}
         from PIL import Image, ImageTk
         self.load_icon_images()
-        self.m_button_new = self.add_button("new.png")
-        self.m_button_open = self.add_button("open.png")
-        self.m_button_save = self.add_button("save.png")
+        self.m_button_new = self.add_button("new.png", tooltip="New")
+        self.m_button_open = self.add_button("open.png", tooltip="Open")
+        self.m_button_save = self.add_button("save.png", tooltip="Save")
         ###
-        self.m_button_run = self.add_button("go.png")
+        self.m_button_run = self.add_button("go.png", tooltip="Run Posac")
         #
-        self.m_button_undo = self.add_button("undo.png")
-        self.m_button_redo = self.add_button("redo.png")
+        self.m_button_undo = self.add_button("undo.png", tooltip="Undo",
+                                             state='disable')
+        self.m_button_redo = self.add_button("redo.png", tooltip="Redo",
+                                             state='disable')
         ###
-        self.m_button_help = self.add_button("help.png")
+        self.m_button_help = self.add_button("help.png", tooltip="Help")
         icon_menu_border = tk.Frame(root,
                                     autostyle=False,
                                     borderwidth=1, relief='flat',
@@ -128,7 +132,7 @@ class IconMenu(tk.Frame):
                                                                      _round=True))
                 self.image_references[file] = ImageTk.PhotoImage(image)
 
-    def add_button(self, image: str, command=None, **kwargs):
+    def add_button(self, image: str, command=None, tooltip=None, **kwargs):
         if not "width" in kwargs:
             kwargs["width"] = real_size(25, _round=True)
         if not "height" in kwargs:
@@ -139,4 +143,6 @@ class IconMenu(tk.Frame):
                            bg='white', relief='raised',
                            borderwidth=2, **kwargs)
         button.pack(side=ttk.LEFT)
+        if tooltip:
+            ToolTip(button, msg=tooltip, delay=0.5)
         return button

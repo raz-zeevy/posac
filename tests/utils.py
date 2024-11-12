@@ -1,6 +1,5 @@
 import difflib
 
-
 def are_files_identical(file1_path, file2_path):
     """
     Compare two files and return True if they are identical (ignoring trailing line breaks).

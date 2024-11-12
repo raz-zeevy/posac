@@ -1,0 +1,178 @@
+{
+  "notebook": {
+    "general": {
+      "job_name": "kedar dj 24v 187pp diff dich: 1 2 3->2, 4 5 ->1",
+      "data_file": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\simple_test\\results\\KEDDIR2.DAT",
+      "lines_per_case": 1,
+      "plot_item_diagram": true,
+      "plot_external_diagram": true,
+      "only_freq": 0,
+      "posac_type": "D",
+      "subject_type": "S",
+      "id_location": {
+        "py/tuple": [
+          0,
+          0
+        ]
+      }
+    },
+    "zero_option": {
+      "zero_option": true
+    },
+    "internal_variables": [
+      [
+        "1",
+        "1",
+        "17",
+        "ut",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "18",
+        "ut",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "19",
+        "ut",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "20",
+        "eq",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "21",
+        "fr",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "22",
+        "fr",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "23",
+        "ca",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "24",
+        "ca",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables": [
+      [
+        "1",
+        "1",
+        "25",
+        "xv1",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables_ranges": {
+      "ranges": [
+        [
+          "6-9"
+        ]
+      ],
+      "traits_num": 4
+    },
+    "traits": [
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait1",
+        "data": [
+          [
+            1,
+            "6-6"
+          ]
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait2",
+        "data": [
+          [
+            1,
+            "7-7"
+          ]
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait3",
+        "data": [
+          [
+            1,
+            "8-8"
+          ]
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait4",
+        "data": [
+          [
+            1,
+            "9-9"
+          ]
+        ]
+      }
+    ],
+    "posacsep": {
+      "posacsep": true,
+      "values": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    "output_files": {
+      "posac": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.pos",
+      "lsa1": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.ls1",
+      "lsa2": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.ls2"
+    }
+  },
+  "navigator": 7,
+  "view_results": true,
+  "options": {
+    "posac_axes": "No",
+    "ascii_output": "No",
+    "special_graphic_char": "",
+    "form_feed": "",
+    "power_weights_low": 4,
+    "power_weights_high": 4,
+    "max_iterations": 15
+  }
+}

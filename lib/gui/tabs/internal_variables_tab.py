@@ -27,10 +27,13 @@ class IVariablesTab(tk.Frame):
                                      'INTERNAL variables are located')
         label.pack(side='top', fill='both', padx=0, pady=(2, 0))
         self.vars_table_frame = tk.Frame(self)
-        self.vars_table = EditableTreeView(self.vars_table_frame,
-                                           columns=self.COLS.values(),
-                                           index_col_name=self.INDEX_COL_NAME,
-                                           add_check_box=True)
+        self.vars_table = TableView(self.vars_table_frame,
+                                    columns=self.COLS.values(),
+                                    index_col_name=self.INDEX_COL_NAME,
+                                    add_check_box=True,
+                                    check_box_callback = lambda row_id, is_on:
+                                    self._on_toggle_row(),
+                                    disable_sub_menu=True)
         self.vars_table.column('Label', stretch=True)
         for col in ['Sel. Var.', 'Line No.', 'Field Width', 'Start Col',
                     'Valid Low', 'Valid High', 'Label']:
@@ -75,6 +78,9 @@ class IVariablesTab(tk.Frame):
     def get_selected_variables(self):
         return [list(row)[1:] for row in
                 self.vars_table.get_check_rows_values()]
+
+    def get_selected_variables_nums(self):
+        return self.vars_table.get_check_rows_indices()
 
     def set_variable(self, i : int, values : list):
         self.vars_table.set_row(i, values)
@@ -127,3 +133,6 @@ class IVariablesTab(tk.Frame):
         for col in ['Label']:
             self.vars_table.column(col, stretch=False)
             self.vars_table.column(col, width=rreal_size(200))
+
+    def _on_toggle_row(self, row_id, is_on):
+        print("toggled row", row_id, is_on)

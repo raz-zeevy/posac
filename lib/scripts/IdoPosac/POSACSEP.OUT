@@ -10,135 +10,296 @@
  ITEM NO.  1
  -----------
 
- For 0 corners: minimum deviation is  4958.06 or 5.159 per profile
- Number of different deviant profiles is  14
- Frequency of deviant profiles is  262 or  27.26% of the total
+ For 0 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
+
+ Dividing line from (  0.00, 85.29) to (100.00, 85.29)
 
 
+ For 1 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
 
- For 1 corners: minimum deviation is  2529.04 or 2.632 per profile
- Number of different deviant profiles is  12
- Frequency of deviant profiles is  192 or  19.98% of the total
-
-
-
- For 2 corners: minimum deviation is  2070.97 or 2.155 per profile
- Number of different deviant profiles is  11
- Frequency of deviant profiles is  173 or  18.00% of the total
+ Dividing line from (  1.52,100.00) to (  1.52, 85.29)
+ Dividing line from (  1.52, 85.29) to (100.00, 85.29)
 
 
+ For 2 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
 
- For 3 corners: minimum deviation is  1848.39 or 1.923 per profile
- Number of different deviant profiles is  12
- Frequency of deviant profiles is  180 or  18.73% of the total
+ Dividing line from (  6.25,100.00) to (  6.25, 85.29)
+ Dividing line from (  6.25, 85.29) to ( 98.43, 85.29)
+ Dividing line from ( 98.43, 85.29) to ( 98.43,  0.00)
 
+
+ For 3 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
+
+ Dividing line from (  2.65,100.00) to (  2.65, 85.29)
+ Dividing line from (  2.65, 85.29) to ( 98.58, 85.29)
+ Dividing line from ( 98.58, 85.29) to ( 98.58, 49.02)
+ Dividing line from ( 98.58, 49.02) to (100.00, 49.02)
 
 
  ITEM NO.  2
  -----------
 
- For 0 corners: minimum deviation is   180.65 or 0.188 per profile
- Number of different deviant profiles is   3
- Frequency of deviant profiles is   54 or   5.62% of the total
+ For 0 corners: minimum deviation is   102.94 or 0.548 per profile
+ Number of different deviant profiles is   6
+ Frequency of deviant profiles is   11 or   5.85% of the total
+
+ Dividing line from (  0.00, 70.59) to (100.00, 70.59)
 
 
+ For 1 corners: minimum deviation is    76.47 or 0.407 per profile
+ Number of different deviant profiles is   6
+ Frequency of deviant profiles is   11 or   5.85% of the total
 
- For 1 corners: minimum deviation is   180.65 or 0.188 per profile
- Number of different deviant profiles is   2
- Frequency of deviant profiles is   28 or   2.91% of the total
-
-
-
- For 2 corners: minimum deviation is   180.65 or 0.188 per profile
- Number of different deviant profiles is   2
- Frequency of deviant profiles is   28 or   2.91% of the total
+ Dividing line from (  0.00, 78.56) to ( 86.51, 78.56)
+ Dividing line from ( 86.51, 78.56) to ( 86.51,  0.00)
 
 
+ For 2 corners: minimum deviation is    64.71 or 0.344 per profile
+ Number of different deviant profiles is   5
+ Frequency of deviant profiles is   10 or   5.32% of the total
 
- For 3 corners: minimum deviation is   180.65 or 0.188 per profile
- Number of different deviant profiles is   2
- Frequency of deviant profiles is   28 or   2.91% of the total
+ Dividing line from (  0.00, 77.25) to ( 79.41, 77.25)
+ Dividing line from ( 79.41, 77.25) to ( 79.41, 43.04)
+ Dividing line from ( 79.41, 43.04) to (100.00, 43.04)
 
+
+ For 3 corners: minimum deviation is    64.71 or 0.344 per profile
+ Number of different deviant profiles is   5
+ Frequency of deviant profiles is   10 or   5.32% of the total
+
+ Dividing line from (  0.00, 77.01) to ( 79.41, 77.01)
+ Dividing line from ( 79.41, 77.01) to ( 79.41, 57.42)
+ Dividing line from ( 79.41, 57.42) to ( 93.67, 57.42)
+ Dividing line from ( 93.67, 57.42) to ( 93.67,  0.00)
 
 
  ITEM NO.  3
  -----------
 
- For 0 corners: minimum deviation is  4967.74 or 5.169 per profile
- Number of different deviant profiles is  13
- Frequency of deviant profiles is  262 or  27.26% of the total
-
-
-
- For 1 corners: minimum deviation is  1338.71 or 1.393 per profile
+ For 0 corners: minimum deviation is   817.65 or 4.349 per profile
  Number of different deviant profiles is   8
- Frequency of deviant profiles is  139 or  14.46% of the total
+ Frequency of deviant profiles is   76 or  40.43% of the total
+
+ Dividing line from (  0.00, 41.18) to (100.00, 41.18)
 
 
+ For 1 corners: minimum deviation is   500.00 or 2.660 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   76 or  40.43% of the total
 
- For 2 corners: minimum deviation is  1241.94 or 1.292 per profile
+ Dividing line from (  0.00, 52.94) to ( 73.53, 52.94)
+ Dividing line from ( 73.53, 52.94) to ( 73.53,  0.00)
+
+
+ For 2 corners: minimum deviation is   232.35 or 1.236 per profile
+ Number of different deviant profiles is   7
+ Frequency of deviant profiles is   60 or  31.91% of the total
+
+ Dividing line from (  0.00, 52.94) to ( 67.65, 52.94)
+ Dividing line from ( 67.65, 52.94) to ( 67.65, 23.65)
+ Dividing line from ( 67.65, 23.65) to (100.00, 23.65)
+
+
+ For 3 corners: minimum deviation is   232.35 or 1.236 per profile
  Number of different deviant profiles is   6
- Frequency of deviant profiles is   79 or   8.22% of the total
+ Frequency of deviant profiles is   29 or  15.43% of the total
 
-
-
- For 3 corners: minimum deviation is  1241.94 or 1.292 per profile
- Number of different deviant profiles is   6
- Frequency of deviant profiles is   79 or   8.22% of the total
-
+ Dividing line from (  0.00, 52.94) to ( 67.65, 52.94)
+ Dividing line from ( 67.65, 52.94) to ( 67.65, 23.73)
+ Dividing line from ( 67.65, 23.73) to ( 90.56, 23.73)
+ Dividing line from ( 90.56, 23.73) to ( 90.56,  0.00)
 
 
  ITEM NO.  4
  -----------
 
- For 0 corners: minimum deviation is   241.94 or 0.252 per profile
- Number of different deviant profiles is   4
- Frequency of deviant profiles is   56 or   5.83% of the total
+ For 0 corners: minimum deviation is   176.47 or 0.939 per profile
+ Number of different deviant profiles is   7
+ Frequency of deviant profiles is   22 or  11.70% of the total
+
+ Dividing line from (  0.00, 20.59) to (100.00, 20.59)
 
 
+ For 1 corners: minimum deviation is   167.65 or 0.892 per profile
+ Number of different deviant profiles is   8
+ Frequency of deviant profiles is   23 or  12.23% of the total
 
- For 1 corners: minimum deviation is   241.94 or 0.252 per profile
- Number of different deviant profiles is   4
- Frequency of deviant profiles is   56 or   5.83% of the total
-
-
-
- For 2 corners: minimum deviation is   241.94 or 0.252 per profile
- Number of different deviant profiles is   3
- Frequency of deviant profiles is   27 or   2.81% of the total
+ Dividing line from (  5.88,100.00) to (  5.88, 20.59)
+ Dividing line from (  5.88, 20.59) to (100.00, 20.59)
 
 
+ For 2 corners: minimum deviation is   167.65 or 0.892 per profile
+ Number of different deviant profiles is   8
+ Frequency of deviant profiles is   23 or  12.23% of the total
 
- For 3 corners: minimum deviation is   241.94 or 0.252 per profile
- Number of different deviant profiles is   4
- Frequency of deviant profiles is   56 or   5.83% of the total
+ Dividing line from (  0.00, 55.89) to (  5.88, 55.89)
+ Dividing line from (  5.88, 55.89) to (  5.88, 20.59)
+ Dividing line from (  5.88, 20.59) to (100.00, 20.59)
 
+
+ For 3 corners: minimum deviation is   167.65 or 0.892 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   32 or  17.02% of the total
+
+ Dividing line from (  0.00, 67.40) to (  5.88, 67.40)
+ Dividing line from (  5.88, 67.40) to (  5.88, 20.59)
+ Dividing line from (  5.88, 20.59) to ( 98.04, 20.59)
+ Dividing line from ( 98.04, 20.59) to ( 98.04,  0.00)
 
 
  ITEM NO.  5
  -----------
 
- For 0 corners: minimum deviation is  4367.74 or 4.545 per profile
+ For 0 corners: minimum deviation is   514.71 or 2.738 per profile
+ Number of different deviant profiles is   7
+ Frequency of deviant profiles is   25 or  13.30% of the total
+
+ Dividing line from ( 26.47,100.00) to ( 26.47,  0.00)
+
+
+ For 1 corners: minimum deviation is    35.29 or 0.188 per profile
+ Number of different deviant profiles is   2
+ Frequency of deviant profiles is    4 or   2.13% of the total
+
+ Dividing line from ( 17.65,100.00) to ( 17.65,  8.82)
+ Dividing line from ( 17.65,  8.82) to (100.00,  8.82)
+
+
+ For 2 corners: minimum deviation is    35.29 or 0.188 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is   11 or   5.85% of the total
+
+ Dividing line from (  0.00, 90.25) to ( 17.65, 90.25)
+ Dividing line from ( 17.65, 90.25) to ( 17.65,  8.82)
+ Dividing line from ( 17.65,  8.82) to (100.00,  8.82)
+
+
+ For 3 corners: minimum deviation is    35.29 or 0.188 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is   15 or   7.98% of the total
+
+ Dividing line from (  0.00, 97.12) to ( 17.65, 97.12)
+ Dividing line from ( 17.65, 97.12) to ( 17.65,  8.82)
+ Dividing line from ( 17.65,  8.82) to ( 88.18,  8.82)
+ Dividing line from ( 88.18,  8.82) to ( 88.18,  0.00)
+
+
+ ITEM NO.  6
+ -----------
+
+ For 0 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+ Dividing line from ( 50.00,100.00) to ( 50.00,  0.00)
+
+
+ For 1 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+ Dividing line from ( 50.00,100.00) to ( 50.00,  1.08)
+ Dividing line from ( 50.00,  1.08) to (100.00,  1.08)
+
+
+ For 2 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+ Dividing line from (  0.00, 98.33) to ( 50.00, 98.33)
+ Dividing line from ( 50.00, 98.33) to ( 50.00,  1.58)
+ Dividing line from ( 50.00,  1.58) to (100.00,  1.58)
+
+
+ For 3 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+ Dividing line from ( 44.19,100.00) to ( 44.19, 98.96)
+ Dividing line from ( 44.19, 98.96) to ( 50.00, 98.96)
+ Dividing line from ( 50.00, 98.96) to ( 50.00,  2.50)
+ Dividing line from ( 50.00,  2.50) to (100.00,  2.50)
+
+
+ ITEM NO.  7
+ -----------
+
+ For 0 corners: minimum deviation is   864.71 or 4.600 per profile
  Number of different deviant profiles is  13
- Frequency of deviant profiles is  231 or  24.04% of the total
+ Frequency of deviant profiles is   77 or  40.96% of the total
+
+ Dividing line from ( 61.76,100.00) to ( 61.76,  0.00)
 
 
+ For 1 corners: minimum deviation is   505.88 or 2.691 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   76 or  40.43% of the total
 
- For 1 corners: minimum deviation is  2487.10 or 2.588 per profile
+ Dividing line from ( 29.02,100.00) to ( 29.02, 26.47)
+ Dividing line from ( 29.02, 26.47) to (100.00, 26.47)
+
+
+ For 2 corners: minimum deviation is   202.94 or 1.079 per profile
+ Number of different deviant profiles is   5
+ Frequency of deviant profiles is   20 or  10.64% of the total
+
+ Dividing line from ( 28.08,100.00) to ( 28.08, 29.41)
+ Dividing line from ( 28.08, 29.41) to ( 73.53, 29.41)
+ Dividing line from ( 73.53, 29.41) to ( 73.53,  0.00)
+
+
+ For 3 corners: minimum deviation is   191.18 or 1.017 per profile
+ Number of different deviant profiles is   6
+ Frequency of deviant profiles is   18 or   9.57% of the total
+
+ Dividing line from (  0.00, 94.12) to ( 21.10, 94.12)
+ Dividing line from ( 21.10, 94.12) to ( 21.10, 41.18)
+ Dividing line from ( 21.10, 41.18) to ( 73.53, 41.18)
+ Dividing line from ( 73.53, 41.18) to ( 73.53,  0.00)
+
+
+ ITEM NO.  8
+ -----------
+
+ For 0 corners: minimum deviation is   520.59 or 2.769 per profile
  Number of different deviant profiles is  11
- Frequency of deviant profiles is  168 or  17.48% of the total
+ Frequency of deviant profiles is   30 or  15.96% of the total
+
+ Dividing line from ( 71.24,100.00) to ( 71.24,  0.00)
 
 
-
- For 2 corners: minimum deviation is  1825.81 or 1.900 per profile
+ For 1 corners: minimum deviation is   347.06 or 1.846 per profile
  Number of different deviant profiles is  11
- Frequency of deviant profiles is  186 or  19.35% of the total
+ Frequency of deviant profiles is   38 or  20.21% of the total
+
+ Dividing line from (  0.00, 75.01) to ( 76.47, 75.01)
+ Dividing line from ( 76.47, 75.01) to ( 76.47,  0.00)
 
 
+ For 2 corners: minimum deviation is   208.82 or 1.111 per profile
+ Number of different deviant profiles is  11
+ Frequency of deviant profiles is   35 or  18.62% of the total
 
- For 3 corners: minimum deviation is  1700.09 or 1.769 per profile
- Number of different deviant profiles is  12
- Frequency of deviant profiles is  193 or  20.08% of the total
+ Dividing line from ( 23.53,100.00) to ( 23.53, 64.71)
+ Dividing line from ( 23.53, 64.71) to ( 76.47, 64.71)
+ Dividing line from ( 76.47, 64.71) to ( 76.47,  0.00)
 
+
+ For 3 corners: minimum deviation is   208.82 or 1.111 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   20 or  10.64% of the total
+
+ Dividing line from ( 23.53,100.00) to ( 23.53, 64.71)
+ Dividing line from ( 23.53, 64.71) to ( 76.47, 64.71)
+ Dividing line from ( 76.47, 64.71) to ( 76.47,  2.91)
+ Dividing line from ( 76.47,  2.91) to (100.00,  2.91)
 
 

@@ -1161,11 +1161,11 @@ C
       YL (NY+2) = 0.0
        
 C      WRITE(*,72) CHAR (7), CHAR (7)
-      CALL graphicsmode (GROK)
-      IF (.NOT. GROK)  THEN
-          WRITE (*,*)  ' NO GRAPHICS AVAILABLE'
-          RETURN
-      END IF
+C     CALL graphicsmode (GROK)
+C     IF (.NOT. GROK)  THEN
+C         WRITE (*,*)  ' NO GRAPHICS AVAILABLE'
+C         RETURN
+C     END IF
 
       ITEMP = 22
       IF (TMPOPEN) THEN     

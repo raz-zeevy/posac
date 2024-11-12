@@ -1,6 +1,6 @@
 import tkinter as tk
 from lib.gui.components.editable_tree_view import EditableTreeView
-from lib.gui.components.form import BoldLabel, SelectionBox, Label
+from lib.gui.components.form import BoldLabel, SelectionBox, Label, TableView
 from lib.utils import real_size, rreal_size
 from lib.controller.validator import Validator
 TOP_LABEL = 'POSACSEP-A PROGRAM FOR OPTIMALLY PARTITIONING POSAC SPACE BY ' \
@@ -18,11 +18,11 @@ NO_POSACESEP_LABEL = 'You must abort PosacSep option from the Dos Window by ' \
 COMBO_LABEL = 'Posacsep choose'
 COMBO_VALUES = ['Yes', 'No']
 COLS = [
+    'Var No.',
     'Var THRESHOLD',
 ]
-
 class PosacsepTab(tk.Frame):
-    DEFAULT_ROW = [2]
+    DEFAULT_VALUE = 2
 
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -42,17 +42,20 @@ class PosacsepTab(tk.Frame):
         self._create_combo_box()
         #
         self.vars_table_frame = tk.Frame(self)
-        self.vars_table = EditableTreeView(self.vars_table_frame,
+        self.vars_table = TableView(self.vars_table_frame,
+                                           index=False,
+                                           auto_index = False,
                                            disable_sub_menu=True,
+                                           disable_cols_edit = [0],
                                            columns=COLS,
-                                           index_col_name='Var No.',
                                            add_check_box=False,
                                            cell_right_padding=0,
                                            validation_callback=Validator.
                                            validate_integer)
-        for col in COLS:
-            self.vars_table.heading(col, text=col, anchor="w")
-            self.vars_table.column(col, width=rreal_size(120), anchor='w')
+        self.vars_table.heading(COLS[0], text=COLS[0], anchor="c")
+        self.vars_table.column(COLS[0], width=rreal_size(50), anchor='c')
+        self.vars_table.heading(COLS[1], text=COLS[1], anchor="w")
+        self.vars_table.column(COLS[1], width=rreal_size(120), anchor='w')
         self.vars_table_frame.pack(fill='y', expand=True,
                                    padx=real_size(10), pady=real_size((0, 0)))
         #
@@ -97,14 +100,15 @@ class PosacsepTab(tk.Frame):
         self.on_posacsep_change()
 
     def get_values(self):
-        return [int(i[0]) for i in self.vars_table.get_all_values()]
+        return [int(i[1]) for i in self.vars_table.get_all_values()]
 
     def get_combo(self):
         return self.combo_box.get() == 'Yes'
 
     def set_values(self, values):
         for i, row in enumerate(values):
-            self.vars_table.set_row(i, [row])
+            self.vars_table.set_row(i, [self.vars_table.get_row(i)[COLS[
+                0]],row])
 
     def get_all(self):
         return dict(
@@ -116,16 +120,18 @@ class PosacsepTab(tk.Frame):
         self.set_combo(kwargs['posacsep'])
         self.set_values(kwargs['values'])
 
-    def reset_to_default(self):
+    def set_to_default(self):
         self.set_combo(True)
         for i in range(len(self.vars_table)):
-            self.vars_table.set_row(i, self.DEFAULT_ROW)
+            self.vars_table.set_row(i, [
+                self.vars_table.get_row(i)[COLS[0]],
+                self.DEFAULT_VALUE])
 
     # API
 
-    def add_internal_variable(self):
+    def add_internal_variable(self, var_num):
         self.vars_table.add_row(
-            values=self.DEFAULT_ROW
+            values=[var_num, self.DEFAULT_VALUE]
         )
 
     def remove_internal_variable(self):

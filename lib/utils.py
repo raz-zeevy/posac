@@ -82,10 +82,9 @@ def get_script_dir_path():
 # Output Paths
 SCRIPT_NESTING_PREFIX = "..\\..\\..\\"
 p_OUTPUT_DIR = "output"
-OUTPUT_MONO_MAT_FILE = "MONOASC.MAT"
-OUTPUT_PEARSON_MAT_FILE = "PEARASC.MAT"
 OUTPUT_FILE_NAME = "DJK21.FSS"
 p_OUTPUT_FILE = os.path.join(p_OUTPUT_DIR, OUTPUT_FILE_NAME)
+P_POSACSEP_DIR = os.path.join(get_script_dir_path(), "POSACSEP.OUT")
 
 # Input paths
 RUN_FILES_DIR = "..\\run_files"

@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import os
-import tkinter
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-from lib.utils import get_resource
-import ttkbootstrap as ttkb
+
+from lib.utils import rreal_size
+
+"""
+It's not possible in the current impolemention to have checkbox without index
+that's why the method set_index() is for.
+"""
 
 # Default Paths
 p_INSERT_ROW_BELOW_IMG = "insert_row_below.png"
@@ -18,7 +22,6 @@ def get_image(path):
     img_path = os.path.join(current_dir, path)
     return Image.open(img_path)
 
-
 class EditableTreeView(ttk.Treeview):
     # Style Constants
     CHECK_BOX_SIZE = (15, 15)
@@ -27,11 +30,13 @@ class EditableTreeView(ttk.Treeview):
 
     def __init__(self, master=None, add_check_box=False,
                  disable_sub_menu = False,
+                 disable_cols_edit = [],
                  auto_index=True, index=True, index_col_name="Index",
                  sub_index_col=1,
                  cell_right_padding=CELL_RIGHT_PADDING,
                  row_height=ROW_HEIGHT,
                  check_box_size=CHECK_BOX_SIZE,
+                 check_box_callback: callable = None,
                  validation_callback : callable = None,
                  **kw):
         """
@@ -65,7 +70,9 @@ class EditableTreeView(ttk.Treeview):
         self._entry_popup = None
         self._checkbox_mode = add_check_box
         self._init_scrollbars(master)
+        self.disable_cols_edit = disable_cols_edit
         self.validation_callback = validation_callback
+        self.check_box_callback = check_box_callback
         #
         if not disable_sub_menu:
             self.bind("<Button-3>",
@@ -189,6 +196,8 @@ class EditableTreeView(ttk.Treeview):
         # Update the checkbox image
         self.item(row_id, image=image)
         self._reset_sub_index()
+        if self.check_box_callback:
+            self.check_box_callback(row_id, self._checkboxes_states[row_id])
 
     def _reset_sub_index(self):
         index = 0
@@ -261,6 +270,8 @@ class EditableTreeView(ttk.Treeview):
             self._entry_popup.destroy()
         # get visible column_id
         column_id = self.identify_column(event.x)
+        if self.col_num(column_id) in self.disable_cols_edit:
+            return
         visible_column_name = self._display_columns[int(column_id[
                                                         1:]) - 1]
 
@@ -284,6 +295,7 @@ class EditableTreeView(ttk.Treeview):
         self._entry_popup.insert(0, self.set(item_id)[
             self._cur_focus_v_col_name])
         self._entry_popup.select_range(0, tk.END)
+        self._entry_popup.focus_set()  # Add this line to focus on the Entry widget
         self._entry_popup.bind("<Return>", lambda e: self._on_return(item_id,
                                                                      column_id,
                                                                      self._entry_popup))
@@ -296,8 +308,8 @@ class EditableTreeView(ttk.Treeview):
                                lambda e: self._on_escape(
                                ))  # Destroy the popup when focus is lost
         x, y, width, height = self.bbox(item_id, column_id)
-        self._entry_popup.place(x=x, y=y, anchor="nw", width=width,
-                                height=height)
+        self._entry_popup.place(x=x, y=y, anchor="nw", width=rreal_size(width),
+                                height=rreal_size(height))
     def _on_return(self, item_id,
                    column_id,
                    entry_widget):
@@ -424,6 +436,10 @@ class EditableTreeView(ttk.Treeview):
         return [self.item(iid, "values") for iid in self.get_children() if
                 self._checkboxes_states.get(iid, True)]
 
+    def get_check_rows_indices(self):
+        return [i+1 for i, iid in enumerate(self.get_children()) if
+         self._checkboxes_states.get(iid, True)]
+
     def to_df(self):
         try:
             import pandas as pd
@@ -504,7 +520,8 @@ class EditableTreeView(ttk.Treeview):
             col_name = self._col_names[identifier]
         else:
             col_name = identifier
-        if col_name not in self._display_columns: return
+        if col_name not in self._display_columns:
+            return
         self._display_columns.remove(col_name)
         self["displaycolumns"] = self._display_columns
 
@@ -512,11 +529,19 @@ class EditableTreeView(ttk.Treeview):
         if not col_name and not index: raise ValueError("Either col_name or "
                                                         "index must be "
                                                         "provided")
-        if index:
+        if index is not None:
             col_name = self._col_names[index]
         if col_name not in self._display_columns:
-            self._display_columns.append(col_name)
+            col_i = self.get_col_display_i(col_name)
+            self._display_columns.insert(col_i, col_name)
         self["displaycolumns"] = self._display_columns
+
+    def get_col_display_i(self, col_name):
+        col_i = self._col_names.index(col_name)
+        for i, col in enumerate(self._display_columns):
+            if self._col_names.index(col) > col_i:
+                return i
+        return -1
 
     ############
     # Checkbox #
@@ -524,6 +549,15 @@ class EditableTreeView(ttk.Treeview):
 
     def toggle_checkbox(self, row_id):
         self._toggle_checkbox(row_id)
+
+    #########
+    # Utils #
+    #########
+
+    @staticmethod
+    def col_num(col_id):
+        """Returns the col number (0...n) from col_id"""
+        return int(col_id[1:]) - 1
 
     #########
     # Style #

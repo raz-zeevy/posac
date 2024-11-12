@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from lib.gui.components.editable_tree_view import EditableTreeView
-from lib.gui.components.form import BoldLabel, DataButton
+from lib.gui.components.form import BoldLabel, DataButton, TableView
 from lib.utils import rreal_size, real_size
 
 
@@ -30,10 +30,11 @@ class EVariablesTab(tk.Frame):
                                      'press next.', )
         label.pack(side='top', fill='both', padx=0, pady=(2, 0))
         self.vars_table_frame = tk.Frame(self)
-        self.vars_table = EditableTreeView(self.vars_table_frame,
+        self.vars_table = TableView(self.vars_table_frame,
                                            columns=self.COLS.values(),
                                            index_col_name=self.INDEX_COL_NAME,
                                            add_check_box=True,
+                                           disable_sub_menu=True,
                                            cell_right_padding=10)
         self.vars_table.column('Label', stretch=True)
         for col in ['Sel. Var.', 'Line No.', 'Field Width', 'Start Col',

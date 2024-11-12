@@ -1,9 +1,10 @@
 from lib.controller.validator import Validator
 from lib.gui.components.editable_tree_view import EditableTreeView
+from lib.gui.components.form import TableView
 from lib.utils import rreal_size
 
 
-class RangesTable(EditableTreeView):
+class RangesTable(TableView):
     INDEX_COL_NAME = 'Ext. Var. No.'
     COLS = {
         'ranges': 'Ranges',

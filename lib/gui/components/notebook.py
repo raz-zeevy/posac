@@ -9,10 +9,75 @@ from lib.gui.tabs.posacsep_tab import PosacsepTab
 from lib.gui.tabs.traits_tab import TraitsTab
 from lib.gui.tabs.zero_option_tab import ZeroOptionTab
 
+class GenericCommand():
+    def __init__(self, name, execute_fn, undo_fn, notebook, callback=None,
+                 *args, **kwargs):
+        self.name = name
+        self.execute_fn = execute_fn
+        self.undo_fn = undo_fn
+        self.notebook = notebook  # Reference to the notebook instance
+        self.args = args
+        self.kwargs = kwargs
+        if callback:
+            self.command_exe_callback = callback
+
+    def execute(self):
+        self.execute_fn(*self.args, **self.kwargs)
+        self.notebook.undo_stack.append(self)
+        self.command_exe_callback()
+
+    def undo(self):
+        self.undo_fn()
+        self.notebook.redo_stack.append(self)
+        self.command_exe_callback()
+
+    def print_stacks(self):
+        print("Undo Stack:", self.notebook.undo_stack)
+        print("Redo Stack:", self.notebook.redo_stack)
+
+    def command_exe_callback(self):
+        pass
+
+    def __repr__(self):
+        return self.name
+def undoable(method):
+    def wrapper(self, *args, **kwargs):
+        # Define the undo actions based on method names
+        undo_actions = {
+            "add_internal_variable": self._remove_internal_variable,
+            "remove_internal_variable": lambda:
+            self._add_internal_variable(*args, **kwargs),
+            "add_external_variable": self._remove_external_variable,
+            "remove_external_variable": lambda :
+            self._add_external_variable(*args, **kwargs),
+        }
+        # Get the function name
+        func_name = method.__name__
+
+        # Retrieve the corresponding undo function from the dictionary
+        undo_fn = undo_actions.get(func_name)
+
+        # Create the command
+        command = GenericCommand(
+            name=func_name,
+            execute_fn=lambda *args, **kwargs: method(self, *args, **kwargs),
+            undo_fn=undo_fn,
+            notebook=self, # Pass the notebook instance
+            callback = self.undoable_command_callback,
+            *args, **kwargs
+        )
+        # Execute the command and add it to the undo stack
+        command.execute()
+    return wrapper
 
 class PosacNotebook(tkinter.ttk.Notebook):
-    def __init__(self, root):
+    def __init__(self, root, parent):
+        self.parent = parent
         super().__init__(root)
+        #
+        self.undo_stack = []
+        self.redo_stack = []
+        #
         self.general_tab = GeneralTab(self)
         self.add(self.general_tab, text='General')
         self.zero_option_tab = ZeroOptionTab(self)
@@ -44,6 +109,9 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.internal_variables_tab.clear_button.config(
             command=self.clear_internal_variables
         )
+        self.internal_variables_tab._on_toggle_row = \
+            self.update_posacsep_vars
+        #
         self.external_variables_tab.add_button.config(
             command=self.add_external_variable
         )
@@ -63,14 +131,51 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.zero_option_tab._on_change = lambda: self.toggle_zero_option(
                 self.zero_option_tab._zero_option_combo.get() == 'Yes')
 
-    # Internal Variables
-    def add_internal_variable(self, values_: list = [], check=True):
-        self.internal_variables_tab.add_variable(values_, check)
-        self.posacsep_tab.add_internal_variable()
+    ################
+    # Flow Control #
+    ################
 
+    def undo(self):
+        print("Undo")
+        if self.undo_stack:
+            command = self.undo_stack.pop()
+            command.undo()
+
+    def redo(self):
+        if self.redo_stack:
+            command = self.redo_stack.pop()
+            command.execute()
+
+    def undoable_command_callback(self):
+        if self.undo_stack:
+            self.parent.icon_menu.m_button_undo.config(state='normal')
+        else:
+            self.parent.icon_menu.m_button_undo.config(state='disabled')
+        if self.redo_stack:
+            self.parent.icon_menu.m_button_redo.config(state='normal')
+        else:
+            self.parent.icon_menu.m_button_redo.config(state='disabled')
+
+    #################
+    # POSAC Methods #
+    #################
+
+    # Internal Variables
+    @undoable
+    def add_internal_variable(self, values_: list = [], check=True):
+        self._add_internal_variable(values_, check)
+
+    def _add_internal_variable(self, values_: list = [], check=True):
+        self.internal_variables_tab.add_variable(values_, check)
+        self.update_posacsep_vars()
+
+    @undoable
     def remove_internal_variable(self):
+        self._remove_internal_variable()
+
+    def _remove_internal_variable(self):
         self.internal_variables_tab.remove_variable()
-        self.posacsep_tab.remove_internal_variable()
+        self.update_posacsep_vars()
 
     def clear_internal_variables(self):
         self.internal_variables_tab.clear_variables()
@@ -78,12 +183,20 @@ class PosacNotebook(tkinter.ttk.Notebook):
 
     # External Variables
 
+    @undoable
     def add_external_variable(self, values_: list = [], check=True):
+        self._add_external_variable(values_,check)
+
+    def _add_external_variable(self, values_: list = [], check=True):
         self.external_variables_tab.add_variable(values_, check)
         self.external_variables_ranges_tab.add_range()
         self.traits_tab.add_external_variable()
 
+    @undoable
     def remove_external_variable(self):
+        self._remove_external_variable()
+
+    def _remove_external_variable(self):
         self.external_variables_tab.remove_variable()
         self.external_variables_ranges_tab.remove_range()
         self.traits_tab.remove_external_variable()
@@ -103,8 +216,15 @@ class PosacNotebook(tkinter.ttk.Notebook):
             traits_num,
             self.external_variables_tab.get_vars_num())
 
+    def update_posacsep_vars(self):
+        """
+        Called when selection is changed on internal vars page
+        :return:
+        """
+        self.posacsep_tab.clear_internal_variables()
+        for var in self.internal_variables_tab.get_selected_variables_nums():
+            self.posacsep_tab.add_internal_variable(var)
     def toggle_zero_option(self, value):
-        print(f'TOGGLED, {value}')
         if not value:
             self.internal_variables_tab.show_low_high()
             self.external_variables_tab.show_low_high()
@@ -112,12 +232,16 @@ class PosacNotebook(tkinter.ttk.Notebook):
             self.internal_variables_tab.hide_low_high()
             self.external_variables_tab.hide_low_high()
 
+    #########
+    # State #
+    #########
+
     def reset_to_default(self):
         self.clear_internal_variables()
         self.clear_external_variables()
         self.general_tab.set_default()
         self.output_files_tab.reset_default()
-        self.posacsep_tab.reset_to_default()
+        self.posacsep_tab.set_to_default()
         self.traits_tab.reset_default()
         self.zero_option_tab.reset_default()
 
@@ -146,3 +270,4 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.traits_tab.set_traits(state['traits'])
         self.posacsep_tab.set_all(**state['posacsep'])
         self.output_files_tab.set_all(**state['output_files'])
+

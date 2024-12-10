@@ -1,4 +1,7 @@
 secret
 __pycache__
+**/__pycache__/**
 /venv
 tests/output
+/build
+/dist

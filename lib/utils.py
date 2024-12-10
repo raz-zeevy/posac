@@ -1,14 +1,15 @@
 import os
 from lib import config
 
-WINDOW_HEIGHT = 600
-WINDOW_WIDTH = 750
+WINDOW_HEIGHT = 650
+WINDOW_WIDTH = 800
 
 def get_window_width():
     return real_size(WINDOW_WIDTH)
 
 def get_window_height():
     return real_size(WINDOW_HEIGHT)
+
 def rreal_size(args):
     return real_size(args, _round=True)
 
@@ -90,9 +91,11 @@ P_POSACSEP_DIR = os.path.join(get_script_dir_path(), "POSACSEP.OUT")
 RUN_FILES_DIR = "..\\run_files"
 RUN_FILES_DIR = os.path.join(get_script_dir_path(), RUN_FILES_DIR)
 DRV_IN_NAME = "POSACINP.DRV"
-DATA_FILE_NAME = "FSSADATA.DAT"
+DATA_FILE_NAME = "POSACDATA.DAT"
+DATA_FILE_NAME_ORG = "POSACDATA_ORG.DAT"
 p_POSAC_DRV = os.path.join(RUN_FILES_DIR, DRV_IN_NAME)
 p_DATA_FILE = os.path.join(RUN_FILES_DIR, DATA_FILE_NAME)
+p_DATA_FILE_ORG = os.path.join(RUN_FILES_DIR, DATA_FILE_NAME_ORG)
 INPUT_MATRIX_FORMAT = "(8F10.7)"
 
 # Results

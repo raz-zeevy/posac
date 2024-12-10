@@ -73,8 +73,8 @@ class TraitsTab(tk.Frame):
     def _create_no_traits_label(self):
         self.not_traits_frame = tk.Frame(self)
         label = BoldLabel(self.not_traits_frame,
-                          text='Define Number of traits (previous '
-                               'screen)', size=11)
+                          text='You must define the number of traits in the previous '
+                               'screen', size=11)
         label.pack(pady=real_size(py_TOP_INPUTS))
 
     def _create_table(self):

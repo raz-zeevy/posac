@@ -35,8 +35,7 @@ class EVRangesTab(tk.Frame):
         self.main_frame = tk.Frame(self)
         label = BoldLabel(self.main_frame,
                           text='Admissible ranges for the external '
-                               'variables. If no ranges are specified, '
-                               'press next.', )
+                               'variables.', )
         label.pack(side='top', fill='both', padx=0, pady=(2, 0))
         # Ranges Table
         self.ranges_table_frame = tk.Frame(self.main_frame)

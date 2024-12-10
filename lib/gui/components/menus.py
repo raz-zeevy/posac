@@ -3,7 +3,9 @@ import ttkbootstrap as ttk
 from lib.utils import *
 from PIL import Image, ImageTk
 from tktooltip import ToolTip
+import logging
 
+logger = logging.getLogger(__name__)
 
 m_POSACSEP_TABLE = "Posacsep Table"
 m_POSAC_AXES_FILE = "Posac-axes File"
@@ -26,7 +28,7 @@ class Menu(tk.Menu):
         self.add_cascade(label="File", menu=self.file_menu)
         # View Menu
         self.view_menu = tk.Menu(self)
-        self.data_file_menu = self.add_submenus(self.view_menu, label="Data "
+        self.data_file_menu = self.add_submenus(self.view_menu, label="Input Data "
                                                                    "File",
                                   excel=True)
         self.posac_output_menu = self.add_submenus(self.view_menu,
@@ -122,27 +124,40 @@ class IconMenu(tk.Frame):
         icon_menu_border.pack(side=ttk.TOP, fill='x')
 
     def load_icon_images(self):
-        icons_dir = get_path("lib/assets/toolbar")
-        # load all png files from ./assets/toolbar to image_references
-        for file in os.listdir(get_path(icons_dir)):
-            if file.endswith(".png") or file.endswith(".ico"):
-                image_path = os.path.join(icons_dir, file)
-                image = Image.open(image_path, "r").resize(real_size((19,
-                                                                      19),
-                                                                     _round=True))
-                self.image_references[file] = ImageTk.PhotoImage(image)
+        """Load toolbar icons"""
+        try:
+            icons_dir = get_path("lib/assets/toolbar")
+            # load all png files from ./assets/toolbar to image_references
+            for file in os.listdir(get_path(icons_dir)):
+                if file.endswith(".png") or file.endswith(".ico"):
+                    image_path = os.path.join(icons_dir, file)
+                    try:
+                        image = Image.open(image_path, "r").resize(real_size((19, 19), _round=True))
+                        self.image_references[file] = ImageTk.PhotoImage(image)
+                    except Exception as e:
+                        logger.warning(f"Failed to load icon {file}: {e}")
+        except Exception as e:
+            logger.error(f"Failed to load icons: {e}")
+            # Fallback to no icons
+            self.image_references = {}
 
     def add_button(self, image: str, command=None, tooltip=None, **kwargs):
         if not "width" in kwargs:
             kwargs["width"] = real_size(25, _round=True)
         if not "height" in kwargs:
             kwargs["height"] = real_size(25, _round=True)
-        button = tk.Button(self,
-                           autostyle=False,
-                           image=self.image_references[image],
-                           bg='white', relief='raised',
-                           borderwidth=2, **kwargs)
-        button.pack(side=ttk.LEFT)
-        if tooltip:
-            ToolTip(button, msg=tooltip, delay=0.5)
-        return button
+        
+        try:
+            img = self.image_references.get(image)
+            button = tk.Button(self,
+                              autostyle=False,
+                              image=img if img else None,
+                              bg='white', relief='raised',
+                              borderwidth=2, **kwargs)
+            button.pack(side=ttk.LEFT)
+            if tooltip:
+                ToolTip(button, msg=tooltip, delay=0.5)
+            return button
+        except Exception as e:
+            logger.error(f"Failed to create button {image}: {e}")
+            return None

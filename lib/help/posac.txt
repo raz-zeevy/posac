@@ -131,7 +131,8 @@ must indicate for each INTERNAL VARIABLE, where it is located in the DATA file.
 REC NUM:          in which record (line) is the variable located
 WIDTH:               field width (number of columns) where the value of the variable is
                       written (it can be 1 or 2)
-START COL:      The first column of the field where the variable is located
+<b>START COL</b>:      The first column of the field where the variable is
+located
 LABEL:                 you can optionally give a label for the variable if you so desire
 VALID LO HI:       the valid min and max values of the variable; appears only if are non zero 
                                 missing values, or if for some variable zero is not a missing value.                          
@@ -332,100 +333,6 @@ name extensions.
  Changing the name of the POSAC result file, automatically changes the names of the LSA1 
 and LSA2 result files into a similar name. Changing the name of the LSA1 or the LSA2 result 
 file does not affect the names of the other files.
-
-
-
-# IDH_MAIN
- # IDH_FR01
-$ Welcome
-k Posac;Program;data
-# IDH_D01
-$ Job name
-k name;posac
-# IDH_D02
-$ input file
-k input;file
-# IDH_D03
-$ records number
-k record
-# IDH_D04
-$ internal variables number
-k internal;variables
-# IDH_D05
-$ external variables number
-k external;variables
-# IDH_D06
-$ item diagrams
-k item;diagram
-# IDH_D07
-$ external diagram
-k external;diagram
-# IDH_D08
-$ frequency
-k frequency
-# IDH_D09
-$ structural posac
-k structural;distributional;profile
-# IDH_D10
-$ data subjects
-k data;identified;profiles;frequencies
-# IDH_D11
-$ missing value
-k missing;value
-# IDH_D22
-$ next command
-k next;screens
-# IDH_D23
-$ back command
-k back;screens
-# IDH_D24
-$ run command
-k run;result
-# IDH_D12
-$ internal variables
-k internal;variables;rec num;width;start col;valid lo hi
-# IDH_D13
-$ external variables
-k external;variables;rec num;width;start col
-# IDH_D14
-$ external variables ranges
-k external;ranges
-# IDH_D15
-$ external traits
-k external;traits;ranges
-# IDH_D16
-$ posac-axes scores
-k posac-axes;scores
-# IDH_D17
-$ graphic characters
-k graphic;characters
-# IDH_D18
-$ formfeed
-k formfeed
-# IDH_D19
-$ balancing weights
-k profiles;weights
-# IDH_D20
-$ iterations number
-k iterations
-# IDH_D21
-$ ASCII files
-k ASCII;files
-# IDH_D25
-$ POSACSEP Option
-k POSACSEP;POLAR;ATOAC;PROMO;MODIF;POSACSET.TAB
-# IDH_D26
-$ POSACSEP thresholds
-k POSACSEP;thresholds
-# IDH_D27
-$ View Results options
-k view;menu;screen;diagrams
-# IDH_D28
-$ Handling Result Files 
-k handling;result;files
-# IDH_D29
-$ Output Files
-k output;files
  
  
  

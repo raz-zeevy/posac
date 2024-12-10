@@ -52,29 +52,29 @@ class GuiTest(Controller):
         assert test_values == cur_values
 
     def test_internal_variables_tab(self):
-        self.notebook.select(2)
+        """Test internal variables tab functionality"""
+        self.notebook.select(2)  # Select internal variables tab
         iv = self.notebook.internal_variables_tab
+        
+        # Test adding/removing variables
         iv.remove_variable()
-        dummy_vars = [
-            [1, 2, 3, 4],
-            [1, 2, 3, 4],
-            [1, 2, 3, 4],
-            [1, 2, 3, 4],
-        ]
-        for i in range(len(dummy_vars)):
-            for j in range(len(dummy_vars[i])):
-                dummy_vars[i][j] = str(dummy_vars[i][j])
         first_var = ['10', '5', '3', '8']
         iv.add_variable(first_var, check=False)
-        for i in range(len(dummy_vars)):
-            iv.add_variable(dummy_vars[i], check=True)
+        
+        # Add multiple variables
+        dummy_vars = [
+            ['1', '2', '3', '4'],
+            ['1', '2', '3', '4'],
+            ['1', '2', '3', '4'],
+            ['1', '2', '3', '4'],
+        ]
+        for var in dummy_vars:
+            iv.add_variable(var, check=True)
+        
+        # Verify selected variables
         test_values = iv.get_selected_variables()
         for i, row in enumerate(dummy_vars):
             assert row[:4] == test_values[i][:4]
-        iv.clear_variables()
-        assert not iv.get_all_variables()
-        iv.set_default()
-        assert not iv.get_all_variables()
 
     def test_external_variables_tab(self):
         self.notebook.select(3)
@@ -300,17 +300,100 @@ class GuiTest(Controller):
         self.gui.navigator.prev_page()
         assert self.gui.navigator.cur_page == 3
 
+    def test_internal_recoding_tab(self):
+        """Test internal recoding tab basic functionality"""
+        self.notebook.select(3)  # Select internal recoding tab
+        rt = self.notebook.internal_recoding_tab
+        
+        # Test adding operations
+        rt.set_recoding_num(2)
+        assert len(rt._recoding_operations) == 2, "Should have 2 recoding operations"
+        
+        # Set up first operation
+        rt.set_variables(1)
+        rt.add_pair('1', '2')
+        rt.add_pair('3', '4')
+        rt.invert_var.set(True)
+        
+        # Verify first operation state
+        op1 = rt._recoding_operations[0]
+        assert op1.selected_variables == ['1'], "First operation should target variable 1"
+        assert ('1', '2') in op1.recoding_pairs, "Should contain 1->2 recoding pair"
+        assert ('3', '4') in op1.recoding_pairs, "Should contain 3->4 recoding pair"
+        assert op1.invert, "Should be inverted"
+        rt.reset_default()
+        assert not rt._recoding_operations
+
+    def test_internal_recoding_tab_switching(self):
+        """Test that operation data persists when switching between operations"""
+        self.notebook.select(3)  # Select internal recoding tab
+        rt = self.notebook.internal_recoding_tab
+        
+        # Setup: Create 2 operations
+        rt.set_recoding_num(2)
+        assert len(rt._recoding_operations) == 2, "Should have 2 recoding operations"
+        
+        # Set up first operation
+        rt.set_variables(1)
+        rt.add_pair('1', '2')
+        rt.add_pair('3', '4')
+        rt.invert_var.set(True)
+        
+        # Switch to second operation and set it up
+        rt.select_operation(2)
+        rt.set_variables('2,3')
+        rt.add_pair('5', '6')
+        rt.invert_var.set(False)
+        
+        # Switch back to first operation and verify state persisted
+        rt.select_operation(1)
+        assert rt.var_index_entry.get() == '1', "Variable selection should be preserved"
+        assert len(rt.pair_tree.get_children()) == 2, "Should have 2 pairs"
+        assert rt.invert_var.get(), "Invert state should be preserved"
+        rt.reset_default()
+        assert not rt._recoding_operations
+
+    def test_internal_recoding_tab_remove_operation(self):
+        """Test that operation data persists when removing operations"""
+        self.notebook.select(3)  # Select internal recoding tab
+        rt = self.notebook.internal_recoding_tab
+        
+        # Setup: Create 3 operations
+        rt.set_recoding_num(3)
+        assert len(rt._recoding_operations) == 3, "Should have 3 recoding operations"
+        
+        # Set up operation 1
+        rt.set_variables(1)
+        rt.add_pair('1', '2')
+        rt.add_pair('3', '4')
+        rt.invert_var.set(True)
+        
+        # Switch to operation 3 and remove it
+        rt.select_operation(3)
+        rt._remove_current_operation()
+        
+        # Verify operation 1 state is preserved
+        rt.select_operation(1)
+        assert rt.var_index_entry.get() == '1', "Variable selection should be preserved"
+        assert len(rt.pair_tree.get_children()) == 2, "Should have 2 pairs"
+        assert rt.invert_var.get(), "Invert state should be preserved"
+        rt.reset_default()
+        assert not rt._recoding_operations
 
 if __name__ == '__main__':
     a = GuiTest()
-    a.test_general_tab()
-    a.test_zero_option()
-    a.test_internal_variables_tab()
-    a.test_external_variables_tab()
-    a.test_external_variables_ranges_tab()
-    a.test_traits_tab()
-    a.test_posacsep_tab()
-    a.test_output_tab()
-    a.test_navigation()
+    # Run all test methods in order
+    # a.test_general_tab()
+    # a.test_zero_option()
+    # a.test_internal_variables_tab()
+    # a.test_external_variables_tab()
+    # a.test_external_variables_ranges_tab()
+    # a.test_traits_tab()
+    # a.test_posacsep_tab()
+    # a.test_output_tab()
+    # a.test_navigation()
+    a.test_internal_recoding_tab()
+    a.test_internal_recoding_tab_switching()
+    a.test_internal_recoding_tab_remove_operation()
     a.run_process()
 

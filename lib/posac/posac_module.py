@@ -2,9 +2,13 @@ import os
 import subprocess
 from contextlib import contextmanager
 from typing import List, Dict
-
+import numpy as np
+from lib.gui.tabs.internal_recoding_tab import RecodingOperation
+from lib.posac.data_loader import create_posac_data_file
+from lib.posac.data_loader import load_other_formats as load_data_manual
 from lib.posac.posac_input_writer import PosacInputWriter
 from lib.utils import *
+from lib.posac.recoding import apply_recoding
 
 NO_POSACSEP = """
 STOP POSAC Completed
@@ -40,13 +44,58 @@ def cwd(path):
     finally:
         os.chdir(oldpwd)
 
+class PosacDataError(Exception):
+    """Custom exception for POSAC data handling errors"""
+    pass
 
 class PosacModule:
     def __init__(self):
         self.posacsep = [2] * 8  # Example list, replace with actual values
         # self.posacsep = []
 
+    def prepare_data_file(self, data_file: str,
+                          lines_per_var,
+                          manual_format,
+                          recoding_operations: List[RecodingOperation]):
+        """Prepare data files for POSAC analysis.
+        
+        Creates two files if recoding is applied:
+        - POSACDATA_ORG.DAT: Original data without recoding
+        - POSACDATA.DAT: Data after applying recoding operations
+        
+        Raises:
+            PosacDataError: If there are issues with data loading or file creation
+            ValueError: If input parameters are invalid
+        """
+        try:
+            # First load the data
+            data_matrix = load_data_manual(data_file, 
+                                         lines_per_var=lines_per_var,
+                                         manual_format=manual_format, 
+                                         safe_mode=False)
+            
+            # If we have recoding operations, save both original and recoded data
+            if recoding_operations:
+                try:
+                    create_posac_data_file(data_matrix, p_DATA_FILE_ORG)
+                    recoded_matrix = apply_recoding(data_matrix, recoding_operations)
+                    create_posac_data_file(recoded_matrix, p_DATA_FILE)
+                except (ValueError, IOError) as e:
+                    raise PosacDataError(f"Failed to apply recoding or save files: {str(e)}")
+            else:
+                try:
+                    # Just save the original data
+                    create_posac_data_file(data_matrix, p_DATA_FILE)
+                except IOError as e:
+                    raise PosacDataError(f"Failed to save data file: {str(e)}")
+                    
+        except Exception as e:
+            raise PosacDataError(f"Error preparing data files: {str(e)}")
+    
     def create_files(self,
+                     data_file: str,
+                     lines_per_var: int,
+                     recoding_operations: List[str],
                      job_name: str,
                      num_variables: int,
                      idata: int,
@@ -79,6 +128,7 @@ class PosacModule:
                      form_feed: str = None,
                      shemor_directives: List[str] = None):
         input_writer = PosacInputWriter()
+        self.prepare_data_file(data_file, lines_per_var, variables_details, recoding_operations)
         input_writer.create_posac_input_file(job_name=job_name,
                                              num_variables=num_variables,
                                              idata=idata,
@@ -110,8 +160,9 @@ class PosacModule:
                                              boxstring=boxstring,
                                              form_feed=form_feed,
                                              shemor_directives=shemor_directives)
-    def run(self, data_file : str,
-            posac_out: str,
+
+        
+    def run(self, posac_out: str,
             lsa1_out,
             lsa2_out,
             posacsep):
@@ -125,7 +176,9 @@ class PosacModule:
                 return os.path.abspath(path)
             else:
                 return SCRIPT_NESTING_PREFIX + path
+            
         posac_input_drv_file = p_POSAC_DRV
+        data_file = p_DATA_FILE
         # Define the command and arguments
         arguments = [
             get_path(posac_input_drv_file),  # A file in a specific format (see

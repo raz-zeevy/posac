@@ -4,8 +4,13 @@ import os
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from .utils.utils import rreal_size, real_size
 
-from lib.utils import rreal_size
+p_CHECKBOX_ON = "assets/checkbox_on.png"
+
+p_CHECKBOX_OFF = "assets/checkbox_off.png"
+
+p_DELETE_ROW_IMG = "assets/delete_row.png"
 
 """
 It's not possible in the current impolemention to have checkbox without index
@@ -13,8 +18,8 @@ that's why the method set_index() is for.
 """
 
 # Default Paths
-p_INSERT_ROW_BELOW_IMG = "insert_row_below.png"
-p_INSERT_ROW_ABOVE_IMG = "insert_row_above.png"
+p_INSERT_ROW_BELOW_IMG = "assets/insert_row_below.png"
+p_INSERT_ROW_ABOVE_IMG = "assets/insert_row_above.png"
 #
 
 def get_image(path):
@@ -116,11 +121,11 @@ class EditableTreeView(ttk.Treeview):
                         # foreground="white",
                         bordercolor="black",
                         borderwidth=1,
-                        padding=(cell_right_padding, 3, 0, 3),
+                        padding=(rreal_size(cell_right_padding), rreal_size(3), 0, rreal_size(3)),
                         # Padding: (left, top, right, bottom)
                         )
         style.configure("Treeview",
-                        rowheight=row_height,  # Adjust the row height as needed
+                        rowheight=rreal_size(row_height),  # Adjust the row height as needed
                         )
         # style.configure("Treeview.Cell",
         #                 padding=(CELL_RIGHT_PADDING, 0, 0, 0),  # Adjust the row height as needed
@@ -133,7 +138,7 @@ class EditableTreeView(ttk.Treeview):
         cols = list(kw.get("columns", []))
         index_col_name = kw.get("index_col_name")
         self.heading("#0", text=index_col_name)
-        self.column("#0", width=70, anchor='w', stretch=False)
+        self.column("#0", width=rreal_size(70), anchor='w', stretch=False)
         for col in cols:
             self.heading(col, text=col, anchor="w")
             self.column(col, width=60, anchor='w')
@@ -170,12 +175,12 @@ class EditableTreeView(ttk.Treeview):
         self._checkboxes_states = {}
         self.bind("<ButtonRelease-1>", self._on_check_click)
         self.bind("<Motion>", self._on_motion)
-        checkbox_off_image = get_image("checkbox_off.png")
-        checkbox_off_image = checkbox_off_image.resize(self.CHECK_BOX_SIZE,
+        checkbox_off_image = get_image(p_CHECKBOX_OFF)
+        checkbox_off_image = checkbox_off_image.resize(rreal_size(self.CHECK_BOX_SIZE),
                                                        Image.LANCZOS)
         self._checkbox_off_image = ImageTk.PhotoImage(checkbox_off_image)
-        checkbox_on_image = get_image("checkbox_on.png")
-        checkbox_on_image = checkbox_on_image.resize(self.CHECK_BOX_SIZE,
+        checkbox_on_image = get_image(p_CHECKBOX_ON)
+        checkbox_on_image = checkbox_on_image.resize(rreal_size(self.CHECK_BOX_SIZE),
                                                      Image.LANCZOS)
         self._checkbox_on_image = ImageTk.PhotoImage(checkbox_on_image)
         self.insert = self._insert_with_checkbox
@@ -286,30 +291,52 @@ class EditableTreeView(ttk.Treeview):
         self._enter_edit_mode(row_id, column_id)
 
     def _enter_edit_mode(self, item_id, column_id):
+        """Enter edit mode for a cell in the treeview.
+        
+        This method creates a popup entry widget for editing the cell's value.
+        It handles all event bindings and ensures validation happens exactly once
+        per edit operation.
+        
+        Args:
+            item_id: The ID of the row being edited
+            column_id: The ID of the column being edited
+        """
         if self._cur_focus_col in [f"#{i}" for i in self._indices]:
             return
-        # get the column alignment
+        
+        # Configure entry widget
         aligns = dict(w='left', c='center', e='right')
         align = aligns[self.column(column_id)['anchor']]
         self._entry_popup = tk.Entry(self, justify=align)
-        self._entry_popup.insert(0, self.set(item_id)[
-            self._cur_focus_v_col_name])
+        self._entry_popup.insert(0, self.set(item_id)[self._cur_focus_v_col_name])
         self._entry_popup.select_range(0, tk.END)
-        self._entry_popup.focus_set()  # Add this line to focus on the Entry widget
-        self._entry_popup.bind("<Return>", lambda e: self._on_return(item_id,
-                                                                     column_id,
-                                                                     self._entry_popup))
-        self._entry_popup.bind("<KP_Enter>", lambda e: self._on_return(item_id,
-                                                                       column_id,
-                                                                       self._entry_popup))
-        self._entry_popup.bind("<Escape>",
-                               lambda e: self._on_escape())
-        self._entry_popup.bind("<FocusOut>",
-                               lambda e: self._on_escape(
-                               ))  # Destroy the popup when focus is lost
+        self._entry_popup.focus_set()
+        
+        # Add flag to prevent multiple validations for a single edit
+        self._validating = False
+        
+        def handle_edit(event=None):
+            """Handle edit completion from any event (Return, FocusOut, etc.).
+            
+            Uses a flag to ensure validation only happens once, even if multiple
+            events fire in quick succession (e.g., Return followed by FocusOut).
+            """
+            if not self._validating:
+                self._validating = True
+                self._on_return(item_id, column_id, self._entry_popup)
+                self._validating = False
+        
+        # Bind all edit completion events to the same handler
+        # This ensures consistent behavior regardless of how the edit is completed
+        self._entry_popup.bind("<Return>", handle_edit)
+        self._entry_popup.bind("<KP_Enter>", handle_edit)
+        self._entry_popup.bind("<Escape>", lambda e: self._on_escape())
+        self._entry_popup.bind("<FocusOut>", handle_edit)
+        
+        # Position the entry widget over the cell
         x, y, width, height = self.bbox(item_id, column_id)
-        self._entry_popup.place(x=x, y=y, anchor="nw", width=rreal_size(width),
-                                height=rreal_size(height))
+        self._entry_popup.place(x=x, y=y, anchor="nw", width=rreal_size(width), height=rreal_size(height))
+        
     def _on_return(self, item_id,
                    column_id,
                    entry_widget):
@@ -318,16 +345,25 @@ class EditableTreeView(ttk.Treeview):
         """
         if entry_widget:
             if self.validation_callback:
-                if not self.validation_callback(entry_widget.get(),
-                                                int(column_id[1:]),
-                                                list(self.set(item_id).values())):
+                valid = self.validation_callback(entry_widget.get(),
+                                                 int(column_id[1:]),
+                                                 list(self.set(item_id).values()))
+                if not valid:
+                    self._on_escape()
                     return
             self.set(item_id, column_id, entry_widget.get())
         self._on_escape()
+        
     def _on_escape(self):
         if self._entry_popup:
+            # Unbind all events before destroying to prevent double triggers
+            self._entry_popup.unbind("<Return>")
+            self._entry_popup.unbind("<KP_Enter>")
+            self._entry_popup.unbind("<Escape>")
+            self._entry_popup.unbind("<FocusOut>")
             self._entry_popup.destroy()
         self._entry_popup = None
+        
     def _on_right_click(self, event):
         # Select row under mouse
         iid = self.identify_row(event.y)
@@ -341,15 +377,15 @@ class EditableTreeView(ttk.Treeview):
 
     def _build_context_menu(self):
         insert_row_above_img = get_image(p_INSERT_ROW_ABOVE_IMG)
-        insert_row_above_img = insert_row_above_img.resize((15, 15),
+        insert_row_above_img = insert_row_above_img.resize((rreal_size(15), rreal_size(15)),
                                                            Image.LANCZOS)
         self.insert_row_above_img = ImageTk.PhotoImage(insert_row_above_img)
         insert_row_below_img = get_image(p_INSERT_ROW_BELOW_IMG)
-        insert_row_below_img = insert_row_below_img.resize((15, 15),
+        insert_row_below_img = insert_row_below_img.resize((rreal_size(15), rreal_size(15)),
                                                            Image.LANCZOS)
         self.insert_row_below_img = ImageTk.PhotoImage(insert_row_below_img)
-        delete_row_img = get_image("delete_row.png")
-        delete_row_img = delete_row_img.resize((15, 15), Image.LANCZOS)
+        delete_row_img = get_image(p_DELETE_ROW_IMG)
+        delete_row_img = delete_row_img.resize(rreal_size((15, 15)), Image.LANCZOS)
         self.delete_row_img = ImageTk.PhotoImage(delete_row_img)
         self.context_menu = tk.Menu(self, tearoff=0)
         self.context_menu.add_command(label="Insert Row Before",
@@ -415,16 +451,6 @@ class EditableTreeView(ttk.Treeview):
     def get_checked_rows(self):
         return [self.set(iid) for iid in self.get_children() if
                 self._checkboxes_states.get(iid, True)]
-
-    # def set(self, row_id, column=None, value=None):
-    #     if isinstance(column, str):
-    #         column = self._col_names.index(column)
-    #     if column and value:
-    #         self.item(row_id, values=(self.item(row_id, "values")[:column] +
-    #                                   [value] +
-    #                                   self.item(row_id, "values")[column + 1:]))
-    #     return self.item(row_id, "values")
-
     def row_ids(self):
         for iid in self.get_children():
             yield iid
@@ -465,7 +491,15 @@ class EditableTreeView(ttk.Treeview):
     # Add/Remove/Insert #
     #####################
     def _reindex(self):
-        """ reindex the treeview """
+        """
+        This method is used to reindex the treeview.
+        - It iterates over all the children of the treeview.
+        - Updates the text of each item with its index (1-based).
+        - Sets the tag of each item to 'oddrow' or 'evenrow' based on its
+            index for alternate row coloring.
+        - If the treeview is configured with a checkbox column,
+            it resets the sub-index of the checkboxes.
+        """
         for i, iid in enumerate(self.get_children()):
             text = str(i + 1)
             if len(self._indices) == 2: text = "  " + text

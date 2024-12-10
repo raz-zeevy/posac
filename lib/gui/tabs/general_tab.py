@@ -1,6 +1,6 @@
 import tkinter as tk
 import ttkbootstrap as ttk
-from lib.gui.components.form import Label, BrowseButton, Entry, SelectionBox
+from lib.gui.components.form import Label, BrowseButton, Entry, SelectionBox, SpinBox
 from lib.utils import real_size
 
 ENTRIES_PAD_Y = 7
@@ -47,16 +47,16 @@ class GeneralTab(tk.Frame):
             "Do you want external diagrams plotted?", ["Yes", "No"],
             default="Yes",
             width=5)
-        self.only_freq_entry = self._create_label_entry(
+        self.only_freq_entry = self._create_label_spinbox(
             "To process only profiles with frequency>f, enter value of f",
-            default=0, width=6)
+            from_=0, to=99, default=0, width=6)
         self.posac_type_combo = self._create_label_combo(
             "Run Distributional Posac, Structural Posac or just Profiles? (D/S/P)",
             ["D", "S", "P"],
             default="D",
             width=5)
         self.subject_type_combo = self._create_label_combo(
-            "Data Subjects, Identified Subjects or Profiles and frequencies? (S/I/P)",
+            "Are Data Subjects, Identified Subjects or Profiles and frequencies? (S/I/P)",
             ["S", "I", "P"],
             default="S",
             width=5)
@@ -84,7 +84,7 @@ class GeneralTab(tk.Frame):
         id_location_frame.pack(fill='x', padx=(ENTRIES_PAD_LEFT, 0),
                                pady=real_size(ENTRIES_PAD_Y))
         self.id_location = Label(id_location_frame, text=
-        "If data are identidies subjects or "
+        "If data are identified subjects or "
         "Profiles and Frquencies, where in "
         "record 1 are the id label/frequencies "
         "located? (columns from-to)",
@@ -129,6 +129,16 @@ class GeneralTab(tk.Frame):
         combo.pack(side=tk.RIGHT)
         return combo
 
+    def _create_label_spinbox(self, text, **kwargs):
+        frame = tk.Frame(self)
+        frame.pack(fill='x', padx=(ENTRIES_PAD_LEFT, ENTRIES_PAD_RIGHT),
+                   pady=real_size(ENTRIES_PAD_Y))
+        label = Label(frame, text=text)
+        label.pack(side=tk.LEFT)
+        spinbox = SpinBox(frame, **kwargs)
+        spinbox.pack(side=tk.RIGHT)
+        return spinbox
+    
     ##########
     # Browse #
     ##########
@@ -136,7 +146,7 @@ class GeneralTab(tk.Frame):
     def browse_data_file(self):
         data_file = self.gui.browse_file_dialogue(
             title="Select Data File",
-            file_types=(("Data files", "*.dat"),
+            file_types=(("Data files", "*.dat;*.prn;*.txt"),
                         ("All files", "*.*"),)
         )
         if data_file:

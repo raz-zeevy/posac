@@ -1,3 +1,8 @@
+import pytest
+
+# Mark this module to be skipped by pytest
+pytestmark = pytest.mark.skip("GUI tests should not run with pytest")
+
 from lib.controller.controller import Controller
 
 
@@ -10,11 +15,11 @@ class WindowsTest(Controller):
         self.gui.show_options_window()
         self.gui.technical_options.notebook.select(2)
         self.gui.technical_options.notebook.select(1)
-        # self.gui.technical_options.on_closing()
         print("done")
 
 
-def test_posac_ls_graphs():
+# Rename to not start with "test_" to avoid pytest picking it up
+def run_posac_ls_graphs():
     from tests.scenarios_test import ScenTest
     a = ScenTest()
     a.simple_test()
@@ -22,7 +27,7 @@ def test_posac_ls_graphs():
     a.run_process()
 
 
-def test_posacsep_graphs():
+def run_posacsep_graphs():
     from tests.scenarios_test import ScenTest
     a = ScenTest()
     a.simple_test()
@@ -43,4 +48,4 @@ if __name__ == '__main__':
     # a = WindowsTest()
     # a.test_options()
     # a.run_process()
-    test_posacsep_graphs()
+    run_posacsep_graphs()

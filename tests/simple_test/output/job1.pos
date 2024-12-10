@@ -38,12 +38,12 @@
 
  NAME OF THE JOB .............kedar dj 24v 187pp diff dich: 1 2 3->2, 4 5 ->1  
  NUMBER OF VARIABLES .........   9
- INPUT FILE ..................C:\Users\Raz_Z\Projects\Shmuel\posac\tests\simpl
+ INPUT FILE ..................C:\Users\Raz_Z\Projects\Shmuel\posac\lib\./scrip
  PROCEDURE ...................DISTRIBUTIONAL
  PRINT ITEM DIAGRAMS .............YES
  PRINT EXTERNAL TRAIT MAPS .......YES
  LIMIT NO. OF ITERATIONS ( 0=15 )...15
- THE INPUT FORMAT IS .........(T17,I1,T18,I1,T19,I1,T20,I1,T21,I1,T22,I1,T23,I1,T24,I1,T25,I1)
+ THE INPUT FORMAT IS .........(T1,I2,T3,I2,T5,I2,T7,I2,T9,I2,T11,I2,T13,I2,T15,I2,T17,I2)
  MISSING VALUE ...............   0
 
 
@@ -93,10 +93,10 @@ INTERNAL POSAC
          9              ( 9, 9) 
 
 
- NUMBER OF CASES IN FILE ....................... 187
+ NUMBER OF CASES IN FILE ....................... 186
  NUMBER OF CASES WITH SYSTEM-MISSING VALUES ....   0
- NUMBER OF READ CASES .......................... 187
- NUMBER OF CASES WITH USER-MISSING VALUES ......   1
+ NUMBER OF READ CASES .......................... 186
+ NUMBER OF CASES WITH USER-MISSING VALUES ......   0
  NUMBER OF RETAINED CASES ...................... 186
 
 

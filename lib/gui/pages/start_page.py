@@ -57,9 +57,8 @@ class StartPage(tk.Frame):
                                       width=15)
         what_is_posac_button.pack()
 
-        exit_button = Button(exit_frame, text="Exit",
-                             command=self._parent.quit, width=15)
-        exit_button.pack()
+        self.exit_button = Button(exit_frame, text="Exit", width=15)
+        self.exit_button.pack()
 
     def pack(self, *args, **kwargs):
         # Restart the animation every time the frame is packed

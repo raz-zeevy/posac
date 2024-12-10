@@ -2,7 +2,7 @@ from lib.controller.validator import Validator
 from lib.gui.components.editable_tree_view import EditableTreeView
 from lib.gui.components.form import TableView
 from lib.utils import rreal_size
-
+from tkinter import messagebox
 
 class RangesTable(TableView):
     INDEX_COL_NAME = 'Ext. Var. No.'
@@ -14,6 +14,7 @@ class RangesTable(TableView):
     NUM_RANGES = 10
 
     def __init__(self, master, **kw):
+        self.master = master
         columns = list(self.COLS.values()) + [f"{i} {self.FROM_TO}" for i in
                                               range(1, self.NUM_RANGES + 1)]
         super().__init__(master, columns=columns, disable_sub_menu=True,
@@ -50,22 +51,58 @@ class RangesTable(TableView):
 
     def validate(self, value, col_index, row_values):
         """
-        :param value:
+        Validates table cell input with specific error messages for each case
+        :param value: The value being entered
         :param col_index: 1 -> n
-        :param row_values:
-        :return:
+        :param row_values: Current row values
+        :return: bool
         """
+        if not value: 
+            return True
 
-        # validate that the value is in the format of %d-%d
-        if not value: return True
+        # Validate Ranges column (col_index 1)
         if col_index == 1:
             try:
-                int(value)
-            except:
+                num = int(value)
+            except ValueError:
+                messagebox.showwarning(
+                    "Invalid Input",
+                    "Please enter a valid number for ranges"
+                )
                 return False
-            if int(value) > self.NUM_RANGES:
+
+            if num > self.NUM_RANGES:
+                messagebox.showwarning(
+                    "Invalid Range Count",
+                    f"Number of ranges cannot exceed {self.NUM_RANGES}"
+                )
                 return False
-            non_empty_ranges = [x for x in row_values[1:] if x]
-            return len(non_empty_ranges) <= int(value)
-        return Validator.validate_range_string(value, col_index - 1,
-                                               row_values)
+
+            return True
+
+        # For range columns (col_index > 1)
+        if value.strip():
+            # First check if we're allowed to have a range in this position
+            num_ranges = int(row_values[0]) if row_values[0].strip() else 0
+            if col_index - 1 > num_ranges:
+                messagebox.showwarning(
+                    "Invalid Range Position",
+                    f"Cannot add range #{col_index-1} when only {num_ranges} ranges are specified.\n"
+                    f"Please increase the number of ranges first."
+                )
+                return False
+
+            # Then validate the range format
+            res = Validator.validate_range_string(value, col_index - 1, row_values)
+            if not res:
+                range_num = col_index - 1
+                messagebox.showwarning(
+                    "Invalid Range Format",
+                    f"Invalid format for range #{range_num}\n"
+                    "Range must be in format: number-number\n"
+                    "Examples: 1-5, 2-9, etc.\n"
+                    "First number must be less than or equal to second number."
+                )
+                return False
+
+        return True

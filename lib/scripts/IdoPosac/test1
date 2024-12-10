@@ -1,0 +1,225 @@
+
+                                        *******************************************************
+                                        *                      POSACSEP                       *
+                                        *   A PROGRAM FOR OPTIMALLY PARTITIONING POSAC SPACE  *
+                                        *               BY EACH ITEM (VARIABLE)               *
+                                        *******************************************************
+
+
+
+ ITEM NO.  1
+ -----------
+
+ For 0 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
+
+
+
+ For 1 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
+
+
+
+ For 2 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
+
+
+
+ For 3 corners: minimum deviation is    20.59 or 0.110 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is    3 or   1.60% of the total
+
+
+
+ ITEM NO.  2
+ -----------
+
+ For 0 corners: minimum deviation is   102.94 or 0.548 per profile
+ Number of different deviant profiles is   6
+ Frequency of deviant profiles is   11 or   5.85% of the total
+
+
+
+ For 1 corners: minimum deviation is    76.47 or 0.407 per profile
+ Number of different deviant profiles is   6
+ Frequency of deviant profiles is   11 or   5.85% of the total
+
+
+
+ For 2 corners: minimum deviation is    64.71 or 0.344 per profile
+ Number of different deviant profiles is   5
+ Frequency of deviant profiles is   10 or   5.32% of the total
+
+
+
+ For 3 corners: minimum deviation is    64.71 or 0.344 per profile
+ Number of different deviant profiles is   5
+ Frequency of deviant profiles is   10 or   5.32% of the total
+
+
+
+ ITEM NO.  3
+ -----------
+
+ For 0 corners: minimum deviation is   817.65 or 4.349 per profile
+ Number of different deviant profiles is   8
+ Frequency of deviant profiles is   76 or  40.43% of the total
+
+
+
+ For 1 corners: minimum deviation is   500.00 or 2.660 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   76 or  40.43% of the total
+
+
+
+ For 2 corners: minimum deviation is   232.35 or 1.236 per profile
+ Number of different deviant profiles is   7
+ Frequency of deviant profiles is   60 or  31.91% of the total
+
+
+
+ For 3 corners: minimum deviation is   232.35 or 1.236 per profile
+ Number of different deviant profiles is   6
+ Frequency of deviant profiles is   29 or  15.43% of the total
+
+
+
+ ITEM NO.  4
+ -----------
+
+ For 0 corners: minimum deviation is   176.47 or 0.939 per profile
+ Number of different deviant profiles is   7
+ Frequency of deviant profiles is   22 or  11.70% of the total
+
+
+
+ For 1 corners: minimum deviation is   167.65 or 0.892 per profile
+ Number of different deviant profiles is   8
+ Frequency of deviant profiles is   23 or  12.23% of the total
+
+
+
+ For 2 corners: minimum deviation is   167.65 or 0.892 per profile
+ Number of different deviant profiles is   8
+ Frequency of deviant profiles is   23 or  12.23% of the total
+
+
+
+ For 3 corners: minimum deviation is   167.65 or 0.892 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   32 or  17.02% of the total
+
+
+
+ ITEM NO.  5
+ -----------
+
+ For 0 corners: minimum deviation is   514.71 or 2.738 per profile
+ Number of different deviant profiles is   7
+ Frequency of deviant profiles is   25 or  13.30% of the total
+
+
+
+ For 1 corners: minimum deviation is    35.29 or 0.188 per profile
+ Number of different deviant profiles is   2
+ Frequency of deviant profiles is    4 or   2.13% of the total
+
+
+
+ For 2 corners: minimum deviation is    35.29 or 0.188 per profile
+ Number of different deviant profiles is   3
+ Frequency of deviant profiles is   11 or   5.85% of the total
+
+
+
+ For 3 corners: minimum deviation is    35.29 or 0.188 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is   15 or   7.98% of the total
+
+
+
+ ITEM NO.  6
+ -----------
+
+ For 0 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+
+
+ For 1 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+
+
+ For 2 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+
+
+ For 3 corners: minimum deviation is    32.35 or 0.172 per profile
+ Number of different deviant profiles is   4
+ Frequency of deviant profiles is    5 or   2.66% of the total
+
+
+
+ ITEM NO.  7
+ -----------
+
+ For 0 corners: minimum deviation is   864.71 or 4.600 per profile
+ Number of different deviant profiles is  13
+ Frequency of deviant profiles is   77 or  40.96% of the total
+
+
+
+ For 1 corners: minimum deviation is   505.88 or 2.691 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   76 or  40.43% of the total
+
+
+
+ For 2 corners: minimum deviation is   202.94 or 1.079 per profile
+ Number of different deviant profiles is   5
+ Frequency of deviant profiles is   20 or  10.64% of the total
+
+
+
+ For 3 corners: minimum deviation is   191.18 or 1.017 per profile
+ Number of different deviant profiles is   6
+ Frequency of deviant profiles is   18 or   9.57% of the total
+
+
+
+ ITEM NO.  8
+ -----------
+
+ For 0 corners: minimum deviation is   520.59 or 2.769 per profile
+ Number of different deviant profiles is  11
+ Frequency of deviant profiles is   30 or  15.96% of the total
+
+
+
+ For 1 corners: minimum deviation is   347.06 or 1.846 per profile
+ Number of different deviant profiles is  11
+ Frequency of deviant profiles is   38 or  20.21% of the total
+
+
+
+ For 2 corners: minimum deviation is   208.82 or 1.111 per profile
+ Number of different deviant profiles is  11
+ Frequency of deviant profiles is   35 or  18.62% of the total
+
+
+
+ For 3 corners: minimum deviation is   208.82 or 1.111 per profile
+ Number of different deviant profiles is   9
+ Frequency of deviant profiles is   20 or  10.64% of the total
+
+
+

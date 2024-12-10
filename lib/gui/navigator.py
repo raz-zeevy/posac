@@ -8,15 +8,18 @@ class Navigator:
         #
         self.max_page = len(self.gui.notebook.tabs()) - 1
         self.min_page = -1
-        self.ex_vrs_tbs = [4, 5]
-        self.traits_tab_num = 5
+        self.ex_vrs_tbs = [5, 6]
+        self.traits_tab_num = 6
 
     def _bind(self):
         self.navigation.button_next.config(command=self.next_tab_clicked)
         self.navigation.button_previous.config(command=self.prev_tab_clicked)
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_switch)
+        # Add keyboard navigation bindings
+        self.gui.root.bind('<Left>', lambda e: self.prev_tab_clicked())
+        self.gui.root.bind('<Right>', lambda e: self.next_tab_clicked())
         self.gui.menu.entryconfig("Options",
-                                           command=self.gui.show_options_window)
+                                command=self.gui.show_options_window)
     def _update_buttons(self):
         if self.cur_page == self.min_page:
             self.navigation.button_previous.config(state="disabled")
@@ -71,11 +74,12 @@ class Navigator:
 
 
     def next_page(self):
-        # if on traits page and
         if self.cur_page == self.max_page:
             return
         if self.cur_page == -1:
             self.show_notebook()
+            
+        # Skip external variables tabs if no external variables
         if self.cur_page == self.ex_vrs_tbs[0] - 1 and \
                 not self.notebook.exist_external_variables():
             self.cur_page += len(self.ex_vrs_tbs) + 1
@@ -87,11 +91,14 @@ class Navigator:
     def prev_page(self):
         if self.cur_page == self.min_page:
             return
+            
+        # Skip external variables tabs if no external variables
         if self.cur_page == self.ex_vrs_tbs[-1] + 1 and \
                 not self.notebook.exist_external_variables():
             self.cur_page -= len(self.ex_vrs_tbs) + 1
         else:
             self.cur_page -= 1
+            
         self._update_buttons()
         if self.cur_page > self.min_page:
             self.notebook.select(self.cur_page)

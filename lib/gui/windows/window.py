@@ -1,4 +1,7 @@
 import ttkbootstrap as ttk
+from lib.gui.const import p_ICON
+from lib.utils import get_resource
+
 
 class Window(ttk.Toplevel):
     def __init__(self, **kwargs):
@@ -6,6 +9,7 @@ class Window(ttk.Toplevel):
         if "geometry" in kwargs:
             geom = kwargs.pop("geometry")
         super().__init__(**kwargs)
+        self.iconbitmap(get_resource(p_ICON))
         if geom: self.geometry(geom)
         self.center_window()
         self.protocol("WM_DELETE_WINDOW", self.on_closing)

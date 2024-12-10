@@ -36,25 +36,22 @@
 
 
 
- NAME OF THE JOB .............jneed 5 compound vars                            
- NUMBER OF VARIABLES .........   5
- INPUT FILE ..................C:\Users\Raz_Z\Projects\Shmuel\posac\tests\jneed
+ NAME OF THE JOB .............jneeds                                           
+ NUMBER OF VARIABLES .........   2
+ INPUT FILE ..................C:\Users\Raz_Z\Projects\Shmuel\posac\lib\./scrip
  PROCEDURE ...................DISTRIBUTIONAL
  PRINT ITEM DIAGRAMS .............YES
  PRINT EXTERNAL TRAIT MAPS .......YES
  LIMIT NO. OF ITERATIONS ( 0=15 )...15
- THE INPUT FORMAT IS .........(T67,I1,T75,I1,T83,I1,T91,I1,T99,I1)
+ THE INPUT FORMAT IS .........(T1,I2,T3,I2)
  MISSING VALUE ...............   0
 
 
 INTERNAL POSAC
    VARIABLE                 VARIABLE LABEL
 --------------       ----------------------------------------
-   ITEM   1:         v1                                      
-   ITEM   2:         v2                                      
-   ITEM   3:         v3                                      
-   ITEM   4:         v4                                      
-   ITEM   5:         v5                                      
+   ITEM   1:         jn1                                     
+   ITEM   2:         jn2                                     
 
  EXTERNAL VARIABLE      CATEGORY INTERVALS
  -----------------      ------------------
@@ -67,107 +64,23 @@ INTERNAL POSAC
  NUMBER OF RETAINED CASES ...................... 961
 
 
- THERE ARE  32 DIFFERENT PROFILES
+ THERE ARE   4 DIFFERENT PROFILES
 
 
   ID   PROFILE
   --   -------
 
-   1   2 2 2 2 2                                 SCO= 10   FREQ= 128   GREATER THAN PROFILES:  2  3  4  5  6
+   1   2 2                                       SCO=  4   FREQ=  96   GREATER THAN PROFILES:  2  3
                                                                        SMALLER THAN PROFILES:  -
 
-   2   2 1 2 2 2                                 SCO=  9   FREQ=  42   GREATER THAN PROFILES:  8 12 13 16
+   2   2 1                                       SCO=  3   FREQ= 126   GREATER THAN PROFILES:  4
                                                                        SMALLER THAN PROFILES:  1
 
-   3   2 2 1 2 2                                 SCO=  9   FREQ=  14   GREATER THAN PROFILES:  7  8 10 14
+   3   1 2                                       SCO=  3   FREQ= 119   GREATER THAN PROFILES:  4
                                                                        SMALLER THAN PROFILES:  1
 
-   4   2 2 2 1 2                                 SCO=  9   FREQ=  29   GREATER THAN PROFILES:  7  9 12 15
-                                                                       SMALLER THAN PROFILES:  1
-
-   5   2 2 2 2 1                                 SCO=  9   FREQ=  13   GREATER THAN PROFILES:  9 10 11 16
-                                                                       SMALLER THAN PROFILES:  1
-
-   6   1 2 2 2 2                                 SCO=  9   FREQ=  23   GREATER THAN PROFILES: 11 13 14 15
-                                                                       SMALLER THAN PROFILES:  1
-
-   7   2 2 1 1 2                                 SCO=  8   FREQ=  16   GREATER THAN PROFILES: 20 21 26
-                                                                       SMALLER THAN PROFILES:  3  4
-
-   8   2 1 1 2 2                                 SCO=  8   FREQ=  19   GREATER THAN PROFILES: 17 23 26
-                                                                       SMALLER THAN PROFILES:  2  3
-
-   9   2 2 2 1 1                                 SCO=  8   FREQ=   6   GREATER THAN PROFILES: 19 20 24
-                                                                       SMALLER THAN PROFILES:  4  5
-
-  10   2 2 1 2 1                                 SCO=  8   FREQ=  13   GREATER THAN PROFILES: 17 20 25
-                                                                       SMALLER THAN PROFILES:  3  5
-
-  11   1 2 2 2 1                                 SCO=  8   FREQ=  13   GREATER THAN PROFILES: 22 24 25
-                                                                       SMALLER THAN PROFILES:  5  6
-
-  12   2 1 2 1 2                                 SCO=  8   FREQ=  21   GREATER THAN PROFILES: 18 19 26
-                                                                       SMALLER THAN PROFILES:  2  4
-
-  13   1 1 2 2 2                                 SCO=  8   FREQ=  21   GREATER THAN PROFILES: 18 22 23
-                                                                       SMALLER THAN PROFILES:  2  6
-
-  14   1 2 1 2 2                                 SCO=  8   FREQ=   7   GREATER THAN PROFILES: 21 23 25
-                                                                       SMALLER THAN PROFILES:  3  6
-
-  15   1 2 2 1 2                                 SCO=  8   FREQ=  18   GREATER THAN PROFILES: 18 21 24
-                                                                       SMALLER THAN PROFILES:  4  6
-
-  16   2 1 2 2 1                                 SCO=  8   FREQ=  17   GREATER THAN PROFILES: 17 19 22
-                                                                       SMALLER THAN PROFILES:  2  5
-
-  17   2 1 1 2 1                                 SCO=  7   FREQ=  15   GREATER THAN PROFILES: 27 30
-                                                                       SMALLER THAN PROFILES:  8 10 16
-
-  18   1 1 2 1 2                                 SCO=  7   FREQ=  20   GREATER THAN PROFILES: 28 29
-                                                                       SMALLER THAN PROFILES: 12 13 15
-
-  19   2 1 2 1 1                                 SCO=  7   FREQ=   8   GREATER THAN PROFILES: 28 30
-                                                                       SMALLER THAN PROFILES:  9 12 16
-
-  20   2 2 1 1 1                                 SCO=  7   FREQ=  17   GREATER THAN PROFILES: 30 31
-                                                                       SMALLER THAN PROFILES:  7  9 10
-
-  21   1 2 1 1 2                                 SCO=  7   FREQ=  15   GREATER THAN PROFILES: 29 31
-                                                                       SMALLER THAN PROFILES:  7 14 15
-
-  22   1 1 2 2 1                                 SCO=  7   FREQ=  32   GREATER THAN PROFILES: 27 28
-                                                                       SMALLER THAN PROFILES: 11 13 16
-
-  23   1 1 1 2 2                                 SCO=  7   FREQ=  16   GREATER THAN PROFILES: 27 29
-                                                                       SMALLER THAN PROFILES:  8 13 14
-
-  24   1 2 2 1 1                                 SCO=  7   FREQ=  27   GREATER THAN PROFILES: 28 31
-                                                                       SMALLER THAN PROFILES:  9 11 15
-
-  25   1 2 1 2 1                                 SCO=  7   FREQ=   7   GREATER THAN PROFILES: 27 31
-                                                                       SMALLER THAN PROFILES: 10 11 14
-
-  26   2 1 1 1 2                                 SCO=  7   FREQ=  11   GREATER THAN PROFILES: 29 30
-                                                                       SMALLER THAN PROFILES:  7  8 12
-
-  27   1 1 1 2 1                                 SCO=  6   FREQ=  45   GREATER THAN PROFILES: 32
-                                                                       SMALLER THAN PROFILES: 17 22 23 25
-
-  28   1 1 2 1 1                                 SCO=  6   FREQ=  54   GREATER THAN PROFILES: 32
-                                                                       SMALLER THAN PROFILES: 18 19 22 24
-
-  29   1 1 1 1 2                                 SCO=  6   FREQ=  29   GREATER THAN PROFILES: 32
-                                                                       SMALLER THAN PROFILES: 18 21 23 26
-
-  30   2 1 1 1 1                                 SCO=  6   FREQ=  21   GREATER THAN PROFILES: 32
-                                                                       SMALLER THAN PROFILES: 17 19 20 26
-
-  31   1 2 1 1 1                                 SCO=  6   FREQ=  26   GREATER THAN PROFILES: 32
-                                                                       SMALLER THAN PROFILES: 20 21 24 25
-
-  32   1 1 1 1 1                                 SCO=  5   FREQ= 218   GREATER THAN PROFILES:  -
-                                                                       SMALLER THAN PROFILES: 27 28 29 30 31 20 21 24 25
+   4   1 1                                       SCO=  2   FREQ= 620   GREATER THAN PROFILES:  -
+                                                                       SMALLER THAN PROFILES:  2  3  1
 
 
  BALANCING WEIGHT POWER ......   4.000  FOR INCOMPARABLES
@@ -180,72 +93,35 @@ INTERNAL POSAC
                   BETWEEN THE ITEMS
 
 
-           1    2    3    4    5
-      ษอออออออออออออออออออออออออ
+           1    2
+      ษออออออออออ
       บ
     1 บ 1.00
       บ
-    2 บ 0.66 1.00
-      บ
-    3 บ 0.57 0.59 1.00
-      บ
-    4 บ 0.67 0.45 0.61 1.00
-      บ
-    5 บ 0.76 0.65 0.67 0.61 1.00
+    2 บ 0.60 1.00
 
    * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
 
- Using intermediate optimum.
 
 
-
-
- NUMBER OF ITERATIONS ........  15
+ NUMBER OF ITERATIONS ........   2
  TIME OF LAST ITERATION ......     0.000  SECONDS
 
  PROPORTION OF PROFILE-PAIRS CORRECTLY REPRESENTED
- CORREP COEFFICIENT .......... 0.8781
+ CORREP COEFFICIENT .......... 1.0000
 
  SCORE--DISTANCE WEIGHTED COEFFICIENT
- SCODIS COEFFICIENT .......... 0.9811
+ SCODIS COEFFICIENT .......... 1.0000
 
 
                                                                    BASE COORDINATES       TRANSFORMED COORDINATES
 
   ID   PROFILE                                  SCO  FREQ               X         Y               JOINT   LATERAL
   --   -------                                  ---  ----               -         -               -----   -------
-   1   2 2 2 2 2                                 10   128          100.00    100.00              200.00    100.00
-   2   2 1 2 2 2                                  9    42           96.77     48.39              145.16    148.39
-   3   2 2 1 2 2                                  9    14           67.74     77.42              145.16     90.32
-   4   2 2 2 1 2                                  9    29           58.06     96.77              154.84     61.29
-   5   2 2 2 2 1                                  9    13           83.87     70.97              154.84    112.90
-   6   1 2 2 2 2                                  9    23           74.19     74.19              148.39    100.00
-   7   2 2 1 1 2                                  8    16           16.13     90.32              106.45     25.81
-   8   2 1 1 2 2                                  8    19           87.10     12.90              100.00    174.19
-   9   2 2 2 1 1                                  8     6           12.90     93.55              106.45     19.35
-  10   2 2 1 2 1                                  8    13           51.61     61.29              112.90     90.32
-  11   1 2 2 2 1                                  8    13           64.52     54.84              119.35    109.68
-  12   2 1 2 1 2                                  8    21           54.84     58.06              112.90     96.77
-  13   1 1 2 2 2                                  8    21           90.32     29.03              119.35    161.29
-  14   1 2 1 2 2                                  8     7           48.39     67.74              116.13     80.65
-  15   1 2 2 1 2                                  8    18           32.26     87.10              119.35     45.16
-  16   2 1 2 2 1                                  8    17           93.55     19.35              112.90    174.19
-  17   2 1 1 2 1                                  7    15           80.65      6.45               87.10    174.19
-  18   1 1 2 1 2                                  7    20           38.71     38.71               77.42    100.00
-  19   2 1 2 1 1                                  7     8           41.94     35.48               77.42    106.45
-  20   2 2 1 1 1                                  7    17            9.68     83.87               93.55     25.81
-  21   1 2 1 1 2                                  7    15            6.45     80.65               87.10     25.81
-  22   1 1 2 2 1                                  7    32           70.97     16.13               87.10    154.84
-  23   1 1 1 2 2                                  7    16           77.42      9.68               87.10    167.74
-  24   1 2 2 1 1                                  7    27           25.81     64.52               90.32     61.29
-  25   1 2 1 2 1                                  7     7           45.16     45.16               90.32    100.00
-  26   2 1 1 1 2                                  7    11           35.48     41.94               77.42     93.55
-  27   1 1 1 2 1                                  6    45           61.29      3.23               64.52    158.06
-  28   1 1 2 1 1                                  6    54           29.03     22.58               51.61    106.45
-  29   1 1 1 1 2                                  6    29           19.35     32.26               51.61     87.10
-  30   2 1 1 1 1                                  6    21           22.58     25.81               48.39     96.77
-  31   1 2 1 1 1                                  6    26            3.23     51.61               54.84     51.61
-  32   1 1 1 1 1                                  5   218            0.00      0.00                0.00    100.00
+   1   2 2                                        4    96          100.00    100.00              200.00    100.00
+   2   2 1                                        3   126           33.33     66.67              100.00     66.67
+   3   1 2                                        3   119           66.67     33.33              100.00    133.33
+   4   1 1                                        2   620            0.00      0.00                0.00    100.00
 
 
   COEFFICIENT OF WEAK MONOTONICITY BETWEEN EACH OBSERVED ITEM AND THE FACTORS :
@@ -253,68 +129,65 @@ INTERNAL POSAC
 
   ITEM     J     L     X     Y     P     Q
   ----     -     -     -     -     -     -
-    1   0.95 -0.00  0.85  0.86  0.89  0.92
-    2   0.94 -0.96  0.50  1.00  0.89  0.90
-    3   0.94  0.16  0.87  0.81  0.94  0.85
-    4   0.93  0.96  1.00  0.48  0.83  0.93
-    5   0.95 -0.12  0.83  0.89  0.92  0.90
+    1   1.00 -1.00  0.89  1.00  1.00  1.00
+    2   1.00  1.00  1.00  0.89  1.00  1.00
                          TWO-DIMENSIONAL CONFIGURATION OF THE SCALOGRAM (BASE COORDINATES)
 
-                                                  ID FROM   1 TO  32
+                                                  ID FROM   1 TO   4
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
    100..บ                                                                                                     1บ
         บ                                                                                                      บ
-        บ                                                           4                                          บ
-        บ             9                                                                                        บ
         บ                                                                                                      บ
-        บ                 7                                                                                    บ
-        บ                                15                                                                    บ
         บ                                                                                                      บ
-        บ          20                                                                                          บ
         บ                                                                                                      บ
-        บ      21                                                                                              บ
-        บ                                                                     3                                บ
         บ                                                                                                      บ
-        บ                                                                           6                          บ
         บ                                                                                                      บ
-        บ                                                                                     5                บ
-        บ                                                14                                                    บ
         บ                                                                                                      บ
-        บ                          24                                                                          บ
-        บ                                                    10                                                บ
         บ                                                                                                      บ
-        บ                                                      12                                              บ
         บ                                                                                                      บ
-        บ                                                                11                                    บ
-        บ    31                                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   2                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
     50..บ                                                                                                      บ
-        บ                                                                                                 2    บ
-        บ                                              25                                                      บ
         บ                                                                                                      บ
-        บ                                    26                                                                บ
         บ                                                                                                      บ
-        บ                                      18                                                              บ
-        บ                                          19                                                          บ
         บ                                                                                                      บ
-        บ                    29                                                                                บ
-        บ                                                                                          13          บ
         บ                                                                                                      บ
-        บ                      30                                                                              บ
         บ                                                                                                      บ
-        บ                              28                                                                      บ
-        บ                                                                                              16      บ
         บ                                                                                                      บ
-        บ                                                                      22                              บ
         บ                                                                                                      บ
-        บ                                                                                         8            บ
-        บ                                                                              23                      บ
+        บ                                                                   3                                  บ
         บ                                                                                                      บ
-        บ                                                                                17                    บ
-        บ                                                              27                                      บ
         บ                                                                                                      บ
-     0..บ32                                                                                                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 4                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -327,53 +200,53 @@ INTERNAL POSAC
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
    100..บ                                                                                                     2บ
         บ                                                                                                      บ
-        บ                                                           2                                          บ
-        บ             2                                                                                        บ
         บ                                                                                                      บ
-        บ                 2                                                                                    บ
-        บ                                 1                                                                    บ
         บ                                                                                                      บ
-        บ           2                                                                                          บ
         บ                                                                                                      บ
-        บ       1                                                                                              บ
-        บ                                                                     2                                บ
         บ                                                                                                      บ
-        บ                                                                           1                          บ
         บ                                                                                                      บ
-        บ                                                                                     2                บ
-        บ                                                 1                                                    บ
         บ                                                                                                      บ
-        บ                           1                                                                          บ
-        บ                                                     2                                                บ
         บ                                                                                                      บ
-        บ                                                       2                                              บ
         บ                                                                                                      บ
-        บ                                                                 1                                    บ
-        บ     1                                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   2                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
     50..บ                                                                                                      บ
-        บ                                                                                                 2    บ
-        บ                                               1                                                      บ
         บ                                                                                                      บ
-        บ                                     2                                                                บ
         บ                                                                                                      บ
-        บ                                       1                                                              บ
-        บ                                           2                                                          บ
         บ                                                                                                      บ
-        บ                     1                                                                                บ
-        บ                                                                                           1          บ
         บ                                                                                                      บ
-        บ                       2                                                                              บ
         บ                                                                                                      บ
-        บ                               1                                                                      บ
-        บ                                                                                               2      บ
         บ                                                                                                      บ
-        บ                                                                       1                              บ
         บ                                                                                                      บ
-        บ                                                                                         2            บ
-        บ                                                                               1                      บ
+        บ                                                                   1                                  บ
         บ                                                                                                      บ
-        บ                                                                                 2                    บ
-        บ                                                               1                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
         บ                                                                                                      บ
      0..บ 1                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
@@ -388,236 +261,53 @@ INTERNAL POSAC
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
    100..บ                                                                                                     2บ
         บ                                                                                                      บ
-        บ                                                           2                                          บ
-        บ             2                                                                                        บ
         บ                                                                                                      บ
-        บ                 2                                                                                    บ
-        บ                                 2                                                                    บ
         บ                                                                                                      บ
-        บ           2                                                                                          บ
         บ                                                                                                      บ
-        บ       2                                                                                              บ
-        บ                                                                     2                                บ
         บ                                                                                                      บ
-        บ                                                                           2                          บ
         บ                                                                                                      บ
-        บ                                                                                     2                บ
-        บ                                                 2                                                    บ
         บ                                                                                                      บ
-        บ                           2                                                                          บ
-        บ                                                     2                                                บ
         บ                                                                                                      บ
-        บ                                                       1                                              บ
         บ                                                                                                      บ
-        บ                                                                 2                                    บ
-        บ     2                                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   1                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
     50..บ                                                                                                      บ
-        บ                                                                                                 1    บ
-        บ                                               2                                                      บ
         บ                                                                                                      บ
-        บ                                     1                                                                บ
         บ                                                                                                      บ
-        บ                                       1                                                              บ
-        บ                                           1                                                          บ
         บ                                                                                                      บ
-        บ                     1                                                                                บ
-        บ                                                                                           1          บ
         บ                                                                                                      บ
-        บ                       1                                                                              บ
         บ                                                                                                      บ
-        บ                               1                                                                      บ
-        บ                                                                                               1      บ
         บ                                                                                                      บ
-        บ                                                                       1                              บ
         บ                                                                                                      บ
-        บ                                                                                         1            บ
-        บ                                                                               1                      บ
+        บ                                                                   2                                  บ
         บ                                                                                                      บ
-        บ                                                                                 1                    บ
-        บ                                                               1                                      บ
         บ                                                                                                      บ
-     0..บ 1                                                                                                    บ
-        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
-          .                                                 .                                                 .
-          .                                                 .                                                 .
-          0                                                50                                                100
-                                             DIAGRAM OF ITEM NUMBER  3
-
-
-
-
-        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                     2บ
         บ                                                                                                      บ
-        บ                                                           2                                          บ
-        บ             2                                                                                        บ
         บ                                                                                                      บ
-        บ                 1                                                                                    บ
-        บ                                 2                                                                    บ
         บ                                                                                                      บ
-        บ           1                                                                                          บ
         บ                                                                                                      บ
-        บ       1                                                                                              บ
-        บ                                                                     1                                บ
         บ                                                                                                      บ
-        บ                                                                           2                          บ
         บ                                                                                                      บ
-        บ                                                                                     2                บ
-        บ                                                 1                                                    บ
         บ                                                                                                      บ
-        บ                           2                                                                          บ
-        บ                                                     1                                                บ
         บ                                                                                                      บ
-        บ                                                       2                                              บ
         บ                                                                                                      บ
-        บ                                                                 2                                    บ
-        บ     1                                                                                                บ
-    50..บ                                                                                                      บ
-        บ                                                                                                 2    บ
-        บ                                               1                                                      บ
         บ                                                                                                      บ
-        บ                                     1                                                                บ
         บ                                                                                                      บ
-        บ                                       2                                                              บ
-        บ                                           2                                                          บ
         บ                                                                                                      บ
-        บ                     1                                                                                บ
-        บ                                                                                           2          บ
         บ                                                                                                      บ
-        บ                       1                                                                              บ
-        บ                                                                                                      บ
-        บ                               2                                                                      บ
-        บ                                                                                               2      บ
-        บ                                                                                                      บ
-        บ                                                                       2                              บ
-        บ                                                                                                      บ
-        บ                                                                                         1            บ
-        บ                                                                               1                      บ
-        บ                                                                                                      บ
-        บ                                                                                 1                    บ
-        บ                                                               1                                      บ
-        บ                                                                                                      บ
-     0..บ 1                                                                                                    บ
-        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
-          .                                                 .                                                 .
-          .                                                 .                                                 .
-          0                                                50                                                100
-                                             DIAGRAM OF ITEM NUMBER  4
-
-
-
-
-        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                     2บ
-        บ                                                                                                      บ
-        บ                                                           1                                          บ
-        บ             1                                                                                        บ
-        บ                                                                                                      บ
-        บ                 1                                                                                    บ
-        บ                                 1                                                                    บ
-        บ                                                                                                      บ
-        บ           1                                                                                          บ
-        บ                                                                                                      บ
-        บ       1                                                                                              บ
-        บ                                                                     2                                บ
-        บ                                                                                                      บ
-        บ                                                                           2                          บ
-        บ                                                                                                      บ
-        บ                                                                                     2                บ
-        บ                                                 2                                                    บ
-        บ                                                                                                      บ
-        บ                           1                                                                          บ
-        บ                                                     2                                                บ
-        บ                                                                                                      บ
-        บ                                                       1                                              บ
-        บ                                                                                                      บ
-        บ                                                                 2                                    บ
-        บ     1                                                                                                บ
-    50..บ                                                                                                      บ
-        บ                                                                                                 2    บ
-        บ                                               2                                                      บ
-        บ                                                                                                      บ
-        บ                                     1                                                                บ
-        บ                                                                                                      บ
-        บ                                       1                                                              บ
-        บ                                           1                                                          บ
-        บ                                                                                                      บ
-        บ                     1                                                                                บ
-        บ                                                                                           2          บ
-        บ                                                                                                      บ
-        บ                       1                                                                              บ
-        บ                                                                                                      บ
-        บ                               1                                                                      บ
-        บ                                                                                               2      บ
-        บ                                                                                                      บ
-        บ                                                                       2                              บ
-        บ                                                                                                      บ
-        บ                                                                                         2            บ
-        บ                                                                               2                      บ
-        บ                                                                                                      บ
-        บ                                                                                 2                    บ
-        บ                                                               2                                      บ
-        บ                                                                                                      บ
-     0..บ 1                                                                                                    บ
-        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
-          .                                                 .                                                 .
-          .                                                 .                                                 .
-          0                                                50                                                100
-                                             DIAGRAM OF ITEM NUMBER  5
-
-
-
-
-        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                     2บ
-        บ                                                                                                      บ
-        บ                                                           2                                          บ
-        บ             1                                                                                        บ
-        บ                                                                                                      บ
-        บ                 2                                                                                    บ
-        บ                                 2                                                                    บ
-        บ                                                                                                      บ
-        บ           1                                                                                          บ
-        บ                                                                                                      บ
-        บ       2                                                                                              บ
-        บ                                                                     2                                บ
-        บ                                                                                                      บ
-        บ                                                                           2                          บ
-        บ                                                                                                      บ
-        บ                                                                                     1                บ
-        บ                                                 2                                                    บ
-        บ                                                                                                      บ
-        บ                           1                                                                          บ
-        บ                                                     1                                                บ
-        บ                                                                                                      บ
-        บ                                                       2                                              บ
-        บ                                                                                                      บ
-        บ                                                                 1                                    บ
-        บ     1                                                                                                บ
-    50..บ                                                                                                      บ
-        บ                                                                                                 2    บ
-        บ                                               1                                                      บ
-        บ                                                                                                      บ
-        บ                                     2                                                                บ
-        บ                                                                                                      บ
-        บ                                       2                                                              บ
-        บ                                           1                                                          บ
-        บ                                                                                                      บ
-        บ                     2                                                                                บ
-        บ                                                                                           2          บ
-        บ                                                                                                      บ
-        บ                       1                                                                              บ
-        บ                                                                                                      บ
-        บ                               1                                                                      บ
-        บ                                                                                               1      บ
-        บ                                                                                                      บ
-        บ                                                                       1                              บ
-        บ                                                                                                      บ
-        บ                                                                                         2            บ
-        บ                                                                               2                      บ
-        บ                                                                                                      บ
-        บ                                                                                 1                    บ
-        บ                                                               1                                      บ
         บ                                                                                                      บ
      0..บ 1                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ

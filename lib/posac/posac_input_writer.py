@@ -94,9 +94,27 @@ class PosacInputWriter:
         f.write("".join([f"{param:4}" for param in params]) + "\n")
 
     def write_input_format(self, f, variables_details: List[Dict]):
-        input_format = "(" + ",".join([f"T{var['col']},I{var['width']}" for
-                                       var in
-                                       variables_details]) + ")"
+        """Write the input format string where all variables are on the same line.
+        Each variable takes 2 characters and position is based on its index.
+        
+        Example:
+            For variables with indices 1,2,3 the format will be:
+            "(T1,I1,T3,I1,T5,I1)"
+        """
+        input_format = "(" + ",".join([
+            f"T{(int(var['index'])-1)*2+1},I2" 
+            for var in variables_details
+        ]) + ")"
+        f.write(f"{input_format}\n")
+
+    def write_legacy_input_format(self, f, variables_details: List[Dict]):
+        """Legacy method for backward compatibility.
+        Uses explicit column and width from variables_details.
+        """
+        input_format = "(" + ",".join([
+            f"T{var['col']},I{var['width']}" 
+            for var in variables_details
+        ]) + ")"
         f.write(f"{input_format}\n")
 
     def write_min_max_category(self, f, min_category: int,

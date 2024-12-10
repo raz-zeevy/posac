@@ -6,7 +6,8 @@ from ttkbootstrap.dialogs import Messagebox
 
 from lib.gui.components.editable_tree_view import EditableTreeView
 from lib.gui.components.helpables import Helpable
-from lib.gui.components.notebook import PosacNotebook
+from lib.gui.notebook import PosacNotebook
+from lib.gui.const import p_ICON
 from lib.gui.pages.start_page import StartPage
 from lib.gui.windows.about_window import AboutWindow
 from lib.gui.windows.diagram_window import DiagramWindow
@@ -17,9 +18,8 @@ from lib.gui.components.help_bar import HelpBar
 from lib.gui.components.navigation import Navigation
 from lib.gui.navigator import Navigator
 
-ROOT_TITLE = "Posac Program-v3.00"
+ROOT_TITLE = f"Posac Program-v{os.environ.get('APP_VERSION')}"
 THEME_NAME = 'sandstone'
-p_ICON = 'icon.ico'
 
 def gui_only(func, *args, **kwargs):
     def wrapper(self, *args, **kwargs):
@@ -36,7 +36,7 @@ class GUI():
         )
         self.root.title(ROOT_TITLE)
         # set the icon
-        # self.root.iconbitmap(get_resource(p_ICON))
+        self.root.iconbitmap(get_resource(p_ICON))
         # self.root.config(cursor="question_arrow")
         # Initialize an attribute to store images
         self.image_references = {}

@@ -1,5 +1,6 @@
 import subprocess
 import warnings
+import logging
 from lib.controller.graph_generator import generate_graphs, \
     generate_posacsep_graphs
 from lib.controller.session import Session
@@ -7,15 +8,23 @@ from lib.gui.gui import GUI
 from lib.posac.posac_module import PosacModule
 from lib.utils import IS_PRODUCTION, SET_MODE_TEST
 
+logger = logging.getLogger(__name__)
 
 class Controller:
     def __init__(self):
+        # Setup logging
+        if not logger.handlers:
+            logger.setLevel(logging.DEBUG)
+            handler = logging.StreamHandler()
+            formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
+        
         self.gui = GUI()
         self.notebook = self.gui.notebook
         self.bind()
         self.restart_session()
         self.gui.navigator.prev_page()
-        SET_MODE_TEST()
 
     def bind(self):
         #
@@ -24,6 +33,8 @@ class Controller:
         # Run
         self.gui.navigation.button_run.config(command=self.run_posac)
         self.gui.icon_menu.m_button_run.config(command=self.run_posac)
+        # Add Escape key binding
+        self.gui.root.bind('<Escape>', lambda e: self.on_close())
         # Save
         self.gui.menu.file_menu.entryconfig("Save",
                                             command=self.show_save_session)
@@ -53,8 +64,12 @@ class Controller:
         self.gui.icon_menu.m_button_undo.configure(command=self.gui.notebook.undo)
         # Redo
         self.gui.icon_menu.m_button_redo.configure(command=self.gui.notebook.redo)
+        # Exit
         self.gui.root.protocol("WM_DELETE_WINDOW", self.on_close)
-
+        self.gui.notebook.output_files_tab.exit_button.config(
+            command=self.on_close)
+        self.gui.start_page.exit_button.config(
+            command=self.on_close)
         # Override the default showwarning method with your custom one
         if IS_PRODUCTION():
             warnings.showwarning = self.custom_show_warning
@@ -137,12 +152,11 @@ class Controller:
             self.gui.show_warning('error', f"Failed to open {file}: {e}")
 
     def show_diagram_window(self):
-        graph_data_list = generate_graphs(self)
-        print("DIAGRAM OPEN")
-        self.gui.show_diagram_window(graph_data_list)
-        # self.gui.diagram_window.bind("<F1>",
-        #                              lambda e: controller.show_help(
-        #                                  "facet_diagrams_screen"))
+        logger.debug("Attempting to show diagram window")
+        graph_data_lst = generate_graphs(self)
+        logger.debug(f"Generated {len(graph_data_lst)} graphs")
+        self.gui.show_diagram_window(graph_data_lst)
+        logger.debug("Diagram window displayed")
 
     def show_posacsep_diagram_window(self, item):
         graph_data_lst = generate_posacsep_graphs(self, item)
@@ -249,6 +263,8 @@ class Controller:
         self.data_file = self.notebook.general_tab.get_data_file()
         self.job_name = self.notebook.general_tab.get_job_name()
         self.int_vars_num = self.notebook.internal_variables_tab.get_vars_num()
+        self.lines_per_case = self.notebook.general_tab.get_lines_per_case()
+        self.recoding_operations = self.notebook.internal_recoding_tab.get_operations()
         ext_vars_num = self.notebook.external_variables_tab.get_vars_num()
         self.num_variables = self.int_vars_num + ext_vars_num
         st = self.notebook.general_tab.get_subject_type()
@@ -325,7 +341,10 @@ C                         BY THE USER  (SEE LINE I. BELOW)
     def run_posac(self):
         self._update_properties_from_gui()
         posac = PosacModule()
-        posac.create_files(job_name=self.job_name,
+        posac.create_files(data_file=self.data_file,
+                           lines_per_var=self.lines_per_case,
+                           recoding_operations=self.recoding_operations,
+                           job_name=self.job_name,
                            num_variables=self.num_variables,
                            idata=self.idata, lowfreq=self.lowfreq,
                            missing=self.missing, ipower=self.ipower,
@@ -349,7 +368,7 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                            form_feed=self.form_feed,
                            shemor_directives=self.shemor_directives)
         try:
-            posac.run(self.data_file, self.pos_out, self.ls1_out, self.ls2_out,
+            posac.run(self.pos_out, self.ls1_out, self.ls2_out,
                       self.posacsep)
             self.gui.show_msg("POSAC analysis completed successfully!",
                               title="POSAC")

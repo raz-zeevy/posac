@@ -36,7 +36,7 @@ powershell -Command "(Get-Content setup_debug.iss) | ForEach-Object { $_ -replac
 
 :: Build debug version
 echo Building debug version...
-@REM python -m PyInstaller app_debug.spec --noconfirm
+python -m PyInstaller app_debug.spec --noconfirm
 if errorlevel 1 (
     echo Error: PyInstaller build failed
     exit /b 1

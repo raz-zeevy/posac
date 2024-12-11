@@ -18,7 +18,7 @@ from lib.gui.components.help_bar import HelpBar
 from lib.gui.components.navigation import Navigation
 from lib.gui.navigator import Navigator
 
-ROOT_TITLE = f"Posac Program-v{os.environ.get('APP_VERSION')}"
+ROOT_TITLE = f"Posac Program-v{os.environ.get('VERSION')}"
 THEME_NAME = 'sandstone'
 
 def gui_only(func, *args, **kwargs):

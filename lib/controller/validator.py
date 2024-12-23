@@ -1,4 +1,5 @@
 from lib.utils import *
+import os
 
 class Validator():
     def __init__(self, gui):
@@ -97,3 +98,44 @@ class Validator():
             return False
             
         return True
+
+    @staticmethod
+    @mode_dependent
+    def validate_for_run(controller):
+        """Validates all required fields before running POSAC analysis"""
+        errors = []
+        
+        # Data file validation
+        data_file = controller.notebook.general_tab.get_data_file()
+        if not data_file:
+            errors.append("Data file is required")
+        elif not os.path.exists(data_file):
+            errors.append(f"Data file not found: {data_file}")
+            
+        # Job name validation
+        job_name = controller.notebook.general_tab.get_job_name()
+        if not job_name or job_name.isspace():
+            errors.append("Job name is required")
+            
+        # Internal variables validation
+        int_vars = controller.notebook.internal_variables_tab.get_vars_num()
+        if int_vars <= 0:
+            errors.append("At least one internal variable must be configured")
+            
+        # Lines per case validation
+        lines_per_case = controller.notebook.general_tab.get_lines_per_case()
+        try:
+            if int(lines_per_case) <= 0:
+                errors.append("Lines per case must be a positive number")
+        except (ValueError, TypeError):
+            errors.append("Lines per case must be a valid number")
+
+        # Output files validation
+        pos_out = controller.notebook.output_files_tab.get_posac_out()
+        ls1_out = controller.notebook.output_files_tab.get_lsa1_out()
+        ls2_out = controller.notebook.output_files_tab.get_lsa2_out()
+        
+        if not all([pos_out, ls1_out, ls2_out]):
+            errors.append("All output file paths must be specified")
+            
+        return errors    

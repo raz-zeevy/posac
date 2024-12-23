@@ -2,6 +2,7 @@ import tkinter as tk
 import ttkbootstrap as ttk
 from lib.gui.components.form import Label, BrowseButton, Entry, SelectionBox, SpinBox
 from lib.utils import real_size
+from lib.help.posac_help import Help
 
 ENTRIES_PAD_Y = 7
 ENTRIES_PAD_RIGHT = 100
@@ -34,32 +35,37 @@ class GeneralTab(tk.Frame):
         self.job_name_frame.pack(fill='x', padx=10, pady=real_size(2))
         self.job_name_entry = self._create_label_entry(
             "What name do you want for this "
-            "Posac job?", width=40)
+            "Posac job?", width=40, help=Help.NAME_OF_JOB)
         self._create_data_input()
-        self.lines_per_case_entry = self._create_label_entry(
+        self.lines_per_case_entry = self._create_label_spinbox(
             "How many lines per case in the data file?",
-            default=1, width=6)
+            from_=1,
+            to=999,
+            default=1,
+            width=6,
+            help=Help.LINES_PER_CASE
+        )
         self.plot_item_diagram_entry = self._create_label_combo(
             "Do you want item diagrams plotted?", ["Yes", "No"],
             default="Yes",
-            width=5)
+            width=5, help=Help.ITEM_DIAGRAMS)
         self.plot_external_diagram_entry = self._create_label_combo(
             "Do you want external diagrams plotted?", ["Yes", "No"],
             default="Yes",
-            width=5)
+            width=5, help=Help.EXTERNAL_DIAGRAMS)
         self.only_freq_entry = self._create_label_spinbox(
             "To process only profiles with frequency>f, enter value of f",
-            from_=0, to=99, default=0, width=6)
+            from_=0, to=99, default=0, width=6, help=Help.FREQUENCY)
         self.posac_type_combo = self._create_label_combo(
             "Run Distributional Posac, Structural Posac or just Profiles? (D/S/P)",
             ["D", "S", "P"],
             default="D",
-            width=5)
+            width=5, help=Help.STRUCTURAL_POSAC)
         self.subject_type_combo = self._create_label_combo(
             "Are Data Subjects, Identified Subjects or Profiles and frequencies? (S/I/P)",
             ["S", "I", "P"],
             default="S",
-            width=5)
+            width=5, help=Help.DATA_SUBJECTS)
         #
         self._create_id_location()
 
@@ -72,7 +78,7 @@ class GeneralTab(tk.Frame):
         self.data_input_label.pack(side=tk.LEFT)
         right_frame = tk.Frame(data_input_frame)
         right_frame.pack(side=tk.RIGHT, padx=(0, 30))
-        self.data_input_entry = Entry(right_frame, width=50)
+        self.data_input_entry = Entry(right_frame, width=50, help=Help.INPUT_DATA_FILE)
         self.data_input_entry.pack(side=tk.LEFT)
         # add a browse button
         self.browse_button = BrowseButton(right_frame,
@@ -82,28 +88,41 @@ class GeneralTab(tk.Frame):
     def _create_id_location(self):
         id_location_frame = tk.Frame(self)
         id_location_frame.pack(fill='x', padx=(ENTRIES_PAD_LEFT, 0),
-                               pady=real_size(ENTRIES_PAD_Y))
+                             pady=real_size(ENTRIES_PAD_Y))
         self.id_location = Label(id_location_frame, text=
         "If data are identified subjects or "
         "Profiles and Frquencies, where in "
         "record 1 are the id label/frequencies "
         "located? (columns from-to)",
-                                 wraplength=400)
+                               wraplength=400)
         self.id_location.pack(side=tk.LEFT, padx=(0, 30))
+        
         id_location_right = tk.Frame(id_location_frame)
         id_location_right.pack(side=tk.RIGHT, padx=(0, 30))
+        
         from_label = Label(id_location_right, text="From")
         from_label.pack(side=tk.LEFT, padx=(0, 5))
-        self.id_location_from_entry = Entry(id_location_right, width=5)
+        
+        self.id_location_from_entry = SpinBox(
+            id_location_right,
+            width=5,
+            from_=0,
+            to=999,
+            default=0
+        )
         self.id_location_from_entry.pack(side=tk.LEFT, padx=(0, 5))
-        self.id_location_from_entry.insert(0, "0")
+        
         to_label = Label(id_location_right, text="To")
         to_label.pack(side=tk.LEFT, padx=(0, 5))
-        self.id_location_to_entry = Entry(id_location_right,
-                                          width=5, help_text="To",
-                                          help_title="asdf")
+        
+        self.id_location_to_entry = SpinBox(
+            id_location_right,
+            width=5,
+            from_=0,
+            to=999,
+            default=0
+        )
         self.id_location_to_entry.pack(side=tk.LEFT)
-        self.id_location_to_entry.insert(0, "0")
 
     def _create_label_entry(self, text, **kwargs):
         frame = tk.Frame(self)
@@ -164,7 +183,10 @@ class GeneralTab(tk.Frame):
         return self.data_input_entry.get()
 
     def get_lines_per_case(self):
-        return int(self.lines_per_case_entry.get())
+        try:
+            return int(self.lines_per_case_entry.get())
+        except ValueError:
+            return 0  # Return invalid value for validation to catch
 
     def get_plot_item_diagram(self) -> bool:
         return self.plot_item_diagram_entry.get() == \
@@ -185,9 +207,13 @@ class GeneralTab(tk.Frame):
         return self.subject_type_combo.get()
 
     def get_id_location(self):
-        return \
-            int(self.id_location_from_entry.get()), \
+        try:
+            return (
+                int(self.id_location_from_entry.get()),
                 int(self.id_location_to_entry.get())
+            )
+        except ValueError:
+            return (0, 0)
 
     def get_all(self):
         return dict(
@@ -215,8 +241,15 @@ class GeneralTab(tk.Frame):
         self.data_input_entry.insert(0, value)
 
     def set_lines_per_case(self, value):
-        self.lines_per_case_entry.delete(0, tk.END)
-        self.lines_per_case_entry.insert(0, value)
+        try:
+            value = int(value)
+            if value < 1:
+                value = 1
+            self.lines_per_case_entry.delete(0, tk.END)
+            self.lines_per_case_entry.insert(0, str(value))
+        except ValueError:
+            self.lines_per_case_entry.delete(0, tk.END)
+            self.lines_per_case_entry.insert(0, "1")
 
     def set_plot_item_diagram(self, value):
         if value:
@@ -241,10 +274,22 @@ class GeneralTab(tk.Frame):
         self.subject_type_combo.set(value)
 
     def set_id_location(self, val_from, val_to):
-        self.id_location_from_entry.delete(0, tk.END)
-        self.id_location_from_entry.insert(0, val_from)
-        self.id_location_to_entry.delete(0, tk.END)
-        self.id_location_to_entry.insert(0, val_to)
+        try:
+            val_from = int(val_from)
+            val_to = int(val_to)
+            if val_from < 0:
+                val_from = 0
+            if val_to < 0:
+                val_to = 0
+            self.id_location_from_entry.delete(0, tk.END)
+            self.id_location_from_entry.insert(0, str(val_from))
+            self.id_location_to_entry.delete(0, tk.END)
+            self.id_location_to_entry.insert(0, str(val_to))
+        except ValueError:
+            self.id_location_from_entry.delete(0, tk.END)
+            self.id_location_from_entry.insert(0, "0")
+            self.id_location_to_entry.delete(0, tk.END)
+            self.id_location_to_entry.insert(0, "0")
 
     def set(self, **kwargs):
         if 'job_name' in kwargs: self.set_job_name(kwargs['job_name'])

@@ -8,6 +8,7 @@ from lib.gui.components.form import Label, SelectionBox,\
     BoldLabel, Entry
 from lib.gui.components.ranges_table import RangesTable
 
+from lib.help.posac_help import Help
 from lib.utils import real_size
 
 px_TOP_INPUTS = 50
@@ -21,9 +22,9 @@ class TraitsTab(tk.Frame):
         TRAITS = 'traits'
 
     class TraitData:
-        def __init__(self, label, data):
-            self.label = label
-            self.data = data
+        def __init__(self, label: str, data: List[List]):
+            self.label : str = label
+            self.data : List[List] = data
 
         def __str__(self):
             return f'{self.label}: {self.data}'
@@ -36,7 +37,7 @@ class TraitsTab(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-        self._parent = parent
+        self.notebook = parent
         self._traits = []
         self.main_frame = None
         self._current_trait = 1
@@ -108,7 +109,8 @@ class TraitsTab(tk.Frame):
                                pady=real_size(2))
         # Traits Table
         self.ranges_table_frame = tk.Frame(self.main_frame)
-        self.traits_table = RangesTable(self.ranges_table_frame)
+        self.traits_table = RangesTable(self.ranges_table_frame,
+                                        help=Help.EXTERNAL_TRAITS)
         self.ranges_table_frame.pack(fill='both', expand=True, padx=10,
                                      pady=(0, 0))
         # Bottom Label
@@ -139,14 +141,23 @@ class TraitsTab(tk.Frame):
     def get_traits(self):
         return self._traits
 
-    def get_traits_values(self):
+    def get_traits_values(self) -> List[dict]:
+        """
+        This function returns the traits values in the format that is 
+        expected by the POSAC input writer
+        the data is the ranges for traits without the first two columns
+        (external variable index and number of ranges)
+        """
         traits = []
         for trait in self._traits:
             trait_value = {}
-            trait_value['data'] = [var[1:] for var in trait.data]
+            trait_value['data'] = [var[2:] for var in trait.data]
             trait_value['label'] = trait.label
             traits.append(trait_value)
         return traits
+
+    def get_traits_num(self):
+        return len(self._traits)
 
     #######
     # Set #
@@ -221,3 +232,8 @@ class TraitsTab(tk.Frame):
     def clear_external_variables(self):
         self._traits = []
         self.update_traits_num(0, 0)
+        
+    def add_trait(self, label : str, data : List[List]):
+        self._traits.append(self.TraitData(label, data))
+        self.select_trait(len(self._traits))
+        self.update_traits_num(len(self._traits), len(data))

@@ -1,6 +1,7 @@
 import tkinter as tk
 from lib.gui.components.form import Label, BoldLabel, DataButton
 from lib.gui.components.variables_table import VariablesTable
+from lib.help.posac_help import Help
 from lib.utils import *
 
 class EVariablesTab(tk.Frame):
@@ -22,7 +23,8 @@ class EVariablesTab(tk.Frame):
             self.notebook,
             self.vars_table_frame,
             new_default_label="extvar",
-            check_box_callback=None  # External variables don't need checkbox callback
+            check_box_callback=None,  # External variables don't need checkbox callback,
+            help=Help.EXTERNAL_VARS
         )
         self.vars_table_frame.pack(fill='both', expand=True, padx=10, pady=(0, 0))
         

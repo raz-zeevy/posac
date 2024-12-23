@@ -1,8 +1,9 @@
 import tkinter as tk
 from typing import List
 import ttkbootstrap as ttk
-from lib.gui.components.form import Label, BoldLabel, SpinBox, SelectionBox
-from lib.utils import real_size, rreal_size
+from lib.gui.components.form import Entry, Label, BoldLabel, SpinBox, SelectionBox, TreeView
+from lib.help.posac_help import Help
+from lib.utils import WINDOW_WIDTH, real_size, rreal_size
 
 class RecodingOperation:
     def __init__(self):
@@ -10,6 +11,9 @@ class RecodingOperation:
         self.recoding_pairs = []
         self.invert = False
 
+    def __repr__(self):
+        return f"RecodingOperation(selected_variables={self.selected_variables}, recoding_pairs={self.recoding_pairs}, invert={self.invert})"
+    
 class InternalRecodingTab(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -56,6 +60,22 @@ class InternalRecodingTab(tk.Frame):
         
         # Recoding Content Frame - Hidden when no operations
         self.recoding_content = tk.Frame(self.main_frame)
+        self.intro_frame = tk.Frame(self.recoding_content)
+        self.intro_frame.pack(fill='x', padx=10, pady=real_size(5))
+        # Instruction Label
+        instruction_label = Label(
+            self.intro_frame,
+            text=(
+                "To recode variables, enter the indices of selected variables "
+                "(e.g., 1, 5, 8-13) in the 'Variable Indices' box."
+                "Select one of the following options: "
+                "Free Recoding: Assign new values to existing (old) values. "
+                "Value Reversal: Reverse the order of existing valid values of the variable/s."
+            ),
+            wraplength=rreal_size(WINDOW_WIDTH)-real_size(100),
+            justify="left"
+        )
+        instruction_label.pack(side="left", pady=(10, 5), padx=10)
         
         # Operation Selection and Variable Selection in same frame
         selection_frame = tk.Frame(self.recoding_content)
@@ -71,34 +91,62 @@ class InternalRecodingTab(tk.Frame):
         
         # Variable Selection (Right side)
         Label(selection_frame, text="Variable Indices:").pack(side='left', padx=(0, 5))
-        self.var_index_entry = ttk.Entry(selection_frame, width=20)
+        self.var_index_entry = Entry(selection_frame, width=20,
+                                     help = Help.RECODE_FUNCTION)
         self.var_index_entry.pack(side='left')
 
+        # Operation Type Selection
+        self.operation_type_frame = tk.Frame(self.recoding_content)
+        self.operation_type_frame.pack(fill='x', padx=10, pady=(5,0))
+        
+        Label(self.operation_type_frame, text="Recoding Type:").pack(side='left', padx=(0, 5))
+        self.operation_type = ttk.Combobox(
+            self.operation_type_frame, 
+            values=["Free Recoding", "Value Reversal"],
+            state="readonly"
+        )
+        self.operation_type.set("Free Recoding")  # default value
+        self.operation_type.pack(side='left')
+        self.operation_type.bind('<<ComboboxSelected>>', self._on_type_change)
+
         # Manual Recoding Frame
-        manual_recoding_frame = ttk.LabelFrame(self.recoding_content, text="Manual Recoding")
-        manual_recoding_frame.pack(fill='both', expand=True, padx=10, pady=(10, 10))
+        self.manual_recoding_frame = ttk.LabelFrame(self.recoding_content, text="Free Recoding")
+        self.manual_recoding_frame.pack(fill='both', expand=True, padx=10, pady=(10, 10))
 
         # Input Frame for Old and New Values
-        input_frame = ttk.Frame(manual_recoding_frame)
+        input_frame = ttk.Frame(self.manual_recoding_frame)
         input_frame.pack(fill='x', padx=10, pady=real_size(5))
 
         # Old Values Entry
         old_values_frame = ttk.LabelFrame(input_frame, text="Old Values")
         old_values_frame.pack(side='left', fill='x', expand=True, padx=(0, 5))
-        self.old_values_entry = ttk.Entry(old_values_frame)
+        self.old_values_entry = Entry(old_values_frame, help = Help.RECODE_FUNCTION)
         self.old_values_entry.pack(fill='x', padx=5, pady=5)
 
-        # New Value Entry
+        # New Value Entry 
         new_value_frame = ttk.LabelFrame(input_frame, text="New Value")
         new_value_frame.pack(side='left', fill='x', expand=True, padx=(5, 0))
-        self.new_value_entry = ttk.Entry(new_value_frame)
+        self.new_value_entry = Entry(new_value_frame, help = Help.RECODE_FUNCTION)
         self.new_value_entry.pack(fill='x', padx=5, pady=5)
 
         # Treeview Frame
-        self._create_treeview(manual_recoding_frame)
+        self._create_treeview(self.manual_recoding_frame)
 
         # Inversion Frame
-        self._create_inversion_option()
+        self.inversion_frame = ttk.LabelFrame(self.recoding_content, text="Value Reversal")
+        
+        invert_label = Label(
+            self.inversion_frame,
+            text="Reverse the order of existing valid values of the variable/s.",
+            wraplength=rreal_size(450),
+            justify="left"
+        )
+        invert_label.pack(side='left', padx=real_size(10), pady=real_size(3))
+
+        self.invert_var = tk.BooleanVar()
+        self.invert_var.trace_add('write', lambda *args: self._update_current_operation())
+        self.invert_check = ttk.Checkbutton(self.inversion_frame, variable=self.invert_var, bootstyle="round-toggle")
+        self.invert_check.pack(side='right', padx=real_size((0, 40)))
 
     def _create_treeview(self, parent_frame):
         tree_frame = ttk.Frame(parent_frame)
@@ -116,7 +164,8 @@ class InternalRecodingTab(tk.Frame):
 
         # Treeview
         columns = ('Old Values', 'New Value')
-        self.pair_tree = ttk.Treeview(tree_frame, columns=columns, show='headings', height=7)
+        self.pair_tree = TreeView(tree_frame, columns=columns, show='headings', height=7,
+                                  help=Help.RECODE_FUNCTION)
         self.pair_tree.heading('Old Values', text='Old Values')
         self.pair_tree.heading('New Value', text='New Value')
         self.pair_tree.column('Old Values', anchor='center')
@@ -127,23 +176,6 @@ class InternalRecodingTab(tk.Frame):
         scrollbar = ttk.Scrollbar(tree_frame, orient='vertical', command=self.pair_tree.yview)
         self.pair_tree.configure(yscroll=scrollbar.set)
         scrollbar.pack(side='right', fill='y')
-
-    def _create_inversion_option(self):
-        inversion_frame = ttk.LabelFrame(self.recoding_content, text="Inversion")
-        inversion_frame.pack(fill='x', padx=10, pady=(0, 10))
-
-        invert_label = Label(
-            inversion_frame,
-            text="Select to reverse the values after recoding. If no recoding pairs are defined, the inversion will apply to the original values.",
-            wraplength=rreal_size(450),
-            justify="left"
-        )
-        invert_label.pack(side='left', padx=real_size(10), pady=real_size(3))
-
-        self.invert_var = tk.BooleanVar()
-        self.invert_var.trace_add('write', lambda *args: self._update_current_operation())
-        invert_check = ttk.Checkbutton(inversion_frame, variable=self.invert_var, bootstyle="round-toggle")
-        invert_check.pack(side='right', padx=real_size((0, 40)))
 
     def _switch_frames(self, context: str):
         """Modified to show/hide only the recoding content"""
@@ -218,24 +250,33 @@ class InternalRecodingTab(tk.Frame):
             current_op.recoding_pairs = self.get_recoding_pairs()
             current_op.invert = self.invert_var.get()
 
+    def _clear_pairs(self):
+        """Clear all pairs from the treeview"""
+        self.pair_tree.delete(*self.pair_tree.get_children())
+
     def _switch_to_operation(self, operation_num):
-        """Switch to the specified operation without saving current state.
-        This is an internal method used when we want to change operations without saving the current state,
-        such as after removing an operation or when the state has already been saved.
-        
-        Args:
-            operation_num: The 1-based index of the operation to switch to
-        """
+        """Switch to the specified operation without saving current state."""
         operation = self._recoding_operations[operation_num - 1]
         self._current_operation = operation_num
-        # Update UI with operation data
+        
+        # Clear existing UI state
+        self._clear_pairs()
         self.var_index_entry.delete(0, tk.END)
+        
+        # Load new operation state
         self.var_index_entry.insert(0, ','.join(map(str, operation.selected_variables)))
         
-        self.pair_tree.delete(*self.pair_tree.get_children())
-        for old_val, new_val in operation.recoding_pairs:
-            self.pair_tree.insert('', 'end', values=(old_val, new_val))
-        
+        # Set operation type and load pairs
+        if operation.recoding_pairs:
+            self.operation_type.set("Free Recoding")
+            for old_val, new_val in operation.recoding_pairs:
+                self.pair_tree.insert('', 'end', values=(old_val, new_val))
+        elif operation.invert:
+            self.operation_type.set("Value Reversal")
+        else:
+            self.operation_type.set("Free Recoding")
+            
+        self._on_type_change()
         self.invert_var.set(operation.invert)
         self.operation_box.set(str(operation_num))
     
@@ -346,18 +387,13 @@ class InternalRecodingTab(tk.Frame):
         current_op.recoding_pairs = self.get_recoding_pairs()
 
     def _add_operation(self):
-        """Add a new recoding operation and switch to it.
-        This method:
-        1. Saves current operation state
-        2. Adds new operation at the end
-        3. Updates operation numbering
-        4. Switches to the newly created operation
-        """
+        """Add a new recoding operation and switch to it."""
         # Save current state before adding new operation
         self._save_current_operation()
         
         # Add new operation
-        self._recoding_operations.append(RecodingOperation)
+        new_operation = RecodingOperation()  # Create fresh operation
+        self._recoding_operations.append(new_operation)
         num_operations = len(self._recoding_operations)
         
         # Update UI - values should be 1 to num_operations
@@ -410,4 +446,17 @@ class InternalRecodingTab(tk.Frame):
         self._current_operation = 0
         self.pair_tree.delete(*self.pair_tree.get_children())
         self._switch_frames('no_recodings')
+
+    def _on_type_change(self, event=None):
+        selected_type = self.operation_type.get()
+        if selected_type == "Free Recoding":
+            self.manual_recoding_frame.pack(fill='both', expand=True, padx=10, pady=(10, 10))
+            self.inversion_frame.pack_forget()
+            self.invert_var.set(False)  # Turn off inversion
+            self.invert_check.config(state='normal')  # Enable toggle for next time
+        else:  # Inversion
+            self.manual_recoding_frame.pack_forget()
+            self.inversion_frame.pack(fill='x', padx=10, pady=(10, 10))
+            self.invert_var.set(True)  # Turn on inversion
+            self.invert_check.config(state='disabled')  # Disable toggle
 

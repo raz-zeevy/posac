@@ -2,7 +2,8 @@
 Welcome to the Posac program
 Name of the job
 Input data file
-Number of recordsNumber of internal variables
+Number of records
+Number of internal variables
 Number of external variables
 Item diagrams
 External diagrams
@@ -35,11 +36,11 @@ POSAC/LSA. It is for your use.
 
 # $ k Input data file
 Here you must enter the name of the file that contains the data for the 
-Variables, as well as its path. It must exist in the computer or you’ll get an error message.
+Variables, as well as its path. It must exist in the computer or youï¿½ll get an error message.
 
 
-# $ k Number of records
-The number of records (lines) per case in the data file specified above. This
+# $ k Lines Per Case
+The number of lines per case in the data file specified above. This
 Number can have a value from 1 to 10 and depends on how your data
 Is set up.
 
@@ -52,7 +53,7 @@ scalogram. You can have anywhere from 2 to 16 of them.
 
 
 # $ k Number of external variables
-External variables are those used to define subjects’ external traits.
+External variables are those used to define subjectsï¿½ external traits.
 Concentrations of subjects characterized by each trait may be depicted
 in the scalogram space, and relationships between space axes and trait
 occurrence are estimated.
@@ -61,8 +62,8 @@ occurrence are estimated.
 
 # $ k Item diagrams
 An ITEM DIAGRAM is a reproduction of the POSAC solution map, except
-that instead of the profile ID, the subject’s score in that item (=variable) is
-typed. If you answer ‘Y’ then an item diagram will be provided for each 
+that instead of the profile ID, the subjectï¿½s score in that item (=variable) is
+typed. If you answer ï¿½Yï¿½ then an item diagram will be provided for each 
 internal variable.
 
 
@@ -96,13 +97,13 @@ information only, without running the entire program.
 Are data Subjects, Identified subjects or Profiles & frequencies. If Identified subjects or 
 Profiles and frequencies, you must fill in the starting and ending columns of field where the 
 subjects' Identifying label, or frequencies, appear. (If there is more than one record (line) 
-per case, this field must be in record No.1 (in the first line). If the default option ‘S’ is 
+per case, this field must be in record No.1 (in the first line). If the default option ï¿½Sï¿½ is 
 chosen, column entries are ignored by the program and you can continue.
 
 
 # $ k Missing value
 If any of the internal or external variables have missing values that are other than zero,or if
-Zero itself is not a missing value, then you must choose ‘N’ in answer to this question. Since
+Zero itself is not a missing value, then you must choose ï¿½Nï¿½ in answer to this question. Since
 POSAC/LSA rejects profiles with missing scores in any of the variables (external as well as internal), 
 fewer profiles would be rejected if you define all external-variable values as valid
  (non-missing).
@@ -140,7 +141,7 @@ VALID LO HI:       the valid min and max values of the variable; appears only if
 
 
 # $ k External variables
-External variables are those used to define subjects’ external traits. Concentrations of 
+External variables are those used to define subjectsï¿½ external traits. Concentrations of 
 subjects characterized by each trait may be depicted in the scalogram space, and 
 relationships between POSAC space axes and trait occurrence are estimated. On this screen 
 you must indicate for each EXTERNAL VARIABLE, where it is located in the DATA file.
@@ -158,7 +159,7 @@ VALID LO HI:       the valid min and max values of the variable; appears only if
 # $ k External variables ranges
 Admissible values of an external variable may be a subset of its valid values. Admissible values are used 
 as a basis (=100%) for computing the occurrence of external traits among subjects with the same profile. 
-If, for all external variables, admissible values coincide with valid values, simply press “Next”. Signify the 
+If, for all external variables, admissible values coincide with valid values, simply press ï¿½Nextï¿½. Signify the 
 admissible ranges for all the EXTERNAL VARIABLES. Each variable can have several ranges (up to 10 
 in fact). NUM OF RANGES can thus be from 1 to 10. Following entry of that number, you simply enter the 
 FROM and TO values that define the desired ranges.
@@ -167,21 +168,21 @@ FROM and TO values that define the desired ranges.
 
 # $ k External Traits
 EXTERNAL TRAITS are defined in terms of EXTERNAL (non-scalogram) VARIABLES, e.g. certain 
-values of ‘education’ can define the trait ‘educated’; combined values of education, of age and of gender 
-can define ‘an educated young woman’ etc.
+values of ï¿½educationï¿½ can define the trait ï¿½educatedï¿½; combined values of education, of age and of gender 
+can define ï¿½an educated young womanï¿½ etc.
 For each EXTERNAL TRAIT you will be asked to give a label (title) and then the external variable ranges 
 that define it. This will be done in a manner analogous to the entry of the admissible range values that 
 you just completed (number of ranges, from-to for each external var.). The trait-defining ranges are a 
-subset of the admissible ranges. If a particular variable doesn’t participate in defining an external trait, 
+subset of the admissible ranges. If a particular variable doesnï¿½t participate in defining an external trait, 
 leave the entire range of admissible values. To define a range of a single value, enter that value twice 
 (e.g. 2-2).
 
 
 
 # $ k Posac axes
-Saving POSAC/LSA – axes scores results in a new data file being created, with the same name as your 
+Saving POSAC/LSA ï¿½ axes scores results in a new data file being created, with the same name as your 
 original data file but with the extension .PAX. This file will contain, in addition to the original data, a new 
-record (line) per case with the recoded X,Y,J,L scores assigned by POSAC’s solution to each of the 
+record (line) per case with the recoded X,Y,J,L scores assigned by POSACï¿½s solution to each of the 
 subjects.
 
 
@@ -315,7 +316,7 @@ by WORD, using the MS-DOS (or the US-ASCII) encoding in the WORD File Conversion
 window.
 POSACSEP screen diagrams are written into files POLARxx.SCR, ATOACxx.SCR, 
 PROMOxx.SCR and MODIFxx.SCR, where xx stands for the serial number of the variable 
-considered: 01, 02, 03,… . They are written in the directory where POSAC program is 
+considered: 01, 02, 03,ï¿½ . They are written in the directory where POSAC program is 
 located.
 When shown on the screen, a screen diagram may be sent to a laser printer by entering L 
 or to a .PCX file by entering F. A PCX file may be read, for example, by Free Image Editor or 
@@ -333,7 +334,50 @@ name extensions.
  Changing the name of the POSAC result file, automatically changes the names of the LSA1 
 and LSA2 result files into a similar name. Changing the name of the LSA1 or the LSA2 result 
 file does not affect the names of the other files.
- 
- 
- 
- 
+
+
+# $ k Recode Function
+The Recode function allows you to modify the numerical values of a variable or a set of variables according to your specifications. Below are examples illustrating how this function can be used:
+Example 1: Grouping Values
+If a variable is defined with values 1, 2, 3, 4, and 5, you may want to group these values into new categories. For instance:
+â€¢	Change 1 and 2 to the new value 1
+â€¢	Change 3 to 2
+â€¢	Change 4 and 5 to 3
+This type of recoding can be useful, for example, to reduce the number of distinct values, which is often advisable when running analyses like POSAC.
+Example 2: Reversing Values
+If a variable is defined with values 1, 2, 3, 4, and 5, you might want to reverse the order of these values. Thus:
+â€¢	Change 1 to 5
+â€¢	Change 2 to 4
+â€¢	Keep 3 as 3
+â€¢	Change 4 to 2
+â€¢	Change 5 to 1
+Reversing values may be needed ensure that all processed variables have a Common Meaning Range (See Shye & Elizur, 1994), which aligns with the principles of Facet Theory.
+Example 3: Grouping and Reversing Values
+If a variable is defined with values 1, 2, 3, 4, 5, and 6, you might want to both group and reverse these values. For example:
+â€¢	Group 1 and 2 into 3
+â€¢	Change 3 to 2
+â€¢	Group 4, 5, and 6 into 1
+Steps to Recode a Variable
+To recode a variable or a set of variables, follow these steps:
+1.	Specify the variable(s): Identify the variable(s) you wish to recode.
+2.	List recoding operations: Define the current ("old") values and the new values to which they should be changed.
+For instance, based on Example 3, the recoding operations would look like this:
+Old Value(s)		New Value
+1, 2	â†’	3
+3	â†’	2
+4â€“6	â†’	1
+By following this process, you can efficiently recode variables to meet the specific requirements of your analysis.
+If you only need to reverse the valid values of a variable (or a set of variables), you can use the Reverse Values shortcut function.
+However, keep in mind that this function only reverses the values that actually appear in the input data file. For example, if a variable is defined to include the values 1, 2, 3, 4, 5, and 6, but only the values 3, 4, 5, and 6 are present in the data file, the Reverse Values function will perform the following changes:
+â€¢	3 becomes 6
+â€¢	4 becomes 5
+â€¢	5 becomes 4
+â€¢	6 becomes 3
+Unused values (e.g., 1 and 2 in this example) will not be considered or reversed.
+Reference
+Shye, S. & Elizur. D. (1994). Introduction to Facet Theory: Content design and intrinsic data analysis in behavioral research. Thousand Oaks, CA: Sage.
+
+
+
+
+

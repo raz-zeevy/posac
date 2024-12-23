@@ -4,6 +4,8 @@ from abc import ABC
 from tkinter import ttk
 import ttkbootstrap as ttkb
 
+from lib.utils import real_size, rreal_size
+
 def absolute_x(widget):
     if widget == widget.winfo_toplevel():
         return 0
@@ -37,18 +39,22 @@ class Helpable(ABC):
 
     def __init__(self, help_title="Help Title",
                  help_text="Help Text",
+                 help : dict = None,
                  **kwargs):
         if not self.root:
-            raise UserWarning("HelpMixin.init(root) must be called before creating any Helpable widgets.")
+            raise UserWarning("Helpable.init(root) must be called before creating any Helpable widgets.")
         self.title_font = self.TITLE_FONT
         self.help_title = help_title
         self.help_text = help_text
+        if help:
+            self.help_title = help['help_title']
+            self.help_text = help['help_text']
         self.help_frame = None
         self.shadow_frame = None
         super().__init__(**kwargs)
-        # if not help_text: return
-        self.bind("<FocusIn>", self._bind_help)
-        self.bind("<FocusOut>", self._unbind_help)
+        
+        # Directly bind F1 to the widget/frame
+        self.bind("<F1>", self._show_help)
 
     def help_style(self, **kwargs):
         """
@@ -60,17 +66,6 @@ class Helpable(ABC):
         self.TITLE_COLOR = kwargs.get('title_color', self.TITLE_COLOR)
         self.SHADOW_BG_COLOR = kwargs.get('shadow_bg_color', self.SHADOW_BG_COLOR)
         self.TITLE_FONT = kwargs.get('title_font', self.TITLE_FONT)
-        self.style.configure('Help.TFrame', background=self.BG_COLOR)
-        self.style.configure('Shadow.TFrame', background=self.SHADOW_BG_COLOR)
-        self.style.configure('Help.TLabel', background=self.BG_COLOR,
-                         foreground=self.TITLE_COLOR)
-        self.style.configure('HelpText.TLabel', background=self.BG_COLOR)
-
-    def _bind_help(self, event=None):
-        self.bind("<F1>", self._show_help)
-
-    def _unbind_help(self, event=None):
-        self.unbind("<F1>")
 
     def _show_help(self, event=None):
         print(f"showing: {self.help_title}")
@@ -78,6 +73,14 @@ class Helpable(ABC):
             self._destroy()
         self._show_help_frame()
         self.master.bind_all("<Button-1>", self._click_outside)
+        self.master.bind_all("<Escape>", self._close_help)
+
+    def _close_help(self, event=None):
+        """Close help window and clean up bindings"""
+        if self.help_frame and self.help_frame.winfo_exists():
+            self._destroy()
+            self.master.unbind_all("<Button-1>")
+            self.master.unbind_all("<Escape>")
 
     def _show_help_frame(self):
         self.root.update_idletasks()
@@ -86,51 +89,99 @@ class Helpable(ABC):
         widget_y = absolute_y(self)
         widget_width = self.winfo_width()
         widget_height = self.winfo_height()
-        available_width = max(200, widget_width)  # Ensure a minimum width for the help frame
-        available_width = 200
-
-        print(f"widget_x: {widget_x}, widget_y: {widget_y}, widget_width: {widget_width}, widget_height: {widget_height}")
-
-        bg_color = self.BG_COLOR
-
+        
+        # Fixed reasonable width with real_size adjustments
+        available_width = rreal_size(300)
+        max_height = rreal_size(300)  # Maximum height before adding scrollbar
+        padding = real_size(4)
+        shadow_offset = real_size(5)
+        
         # Create main help frame
         self.help_frame = ttk.Frame(self.root, border=1,
-                                    relief="raised", padding=4)
-        help_frame_x = min(widget_x, self.root.winfo_width() - available_width)
-        help_frame_y = min(widget_y + widget_height + 5, self.root.winfo_height() - self.help_frame.winfo_height())
-        self.help_frame.place(x=help_frame_x, y=help_frame_y, width=available_width)
+                                  relief="raised", padding=padding)
+        
+        # Create a canvas with scrollbar for the content
+        canvas = tk.Canvas(self.help_frame, 
+                         width=available_width-rreal_size(20),
+                         highlightthickness=0)
+        scrollbar = ttk.Scrollbar(self.help_frame, orient="vertical",
+                                command=canvas.yview)
+        content_frame = ttk.Frame(canvas)
 
-        title_label = ttkb.Label(self.help_frame, text=self.help_title
-                                , anchor="w", font=self.TITLE_FONT,
-                                 bootstyle="primary")
-        title_label.pack(fill="x", padx=5, pady=(5, 0))
+        # Configure canvas
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add the title and text to the content frame
+        title_label = ttkb.Label(content_frame, text=self.help_title,
+                              anchor="w", font=self.TITLE_FONT,
+                              bootstyle="primary")
+        title_label.pack(fill="x", padx=real_size(5), 
+                        pady=(real_size(5), 0))
 
-        text_label = ttk.Label(self.help_frame,
-                               text=self.help_text,
-                               wraplength=available_width, justify="left")
-        text_label.pack(fill="x", padx=5, pady=5)
+        text_label = ttk.Label(content_frame,
+                             text=self.help_text,
+                             wraplength=available_width - rreal_size(30),
+                             justify="left")
+        text_label.pack(fill="x", padx=real_size(5), 
+                       pady=real_size(5))
 
-        self.update_idletasks()  # Ensure geometry is up-to-date again
-        help_frame_height = self.help_frame.winfo_height()
+        # Create window for the content frame
+        canvas.create_window((0, 0), window=content_frame, anchor="nw")
+        
+        # Update geometry and add scrollbar if needed
+        content_frame.update_idletasks()
+        content_height = content_frame.winfo_reqheight()
+        canvas_height = min(content_height, max_height)
+        
+        canvas.configure(height=canvas_height)
+        canvas.configure(scrollregion=canvas.bbox("all"))
+        
+        # Pack the canvas and scrollbar if needed
+        canvas.pack(side="left", fill="both", expand=True)
+        needs_scrollbar = content_height > max_height
+        if needs_scrollbar:
+            scrollbar.pack(side="right", fill="y")
 
-        # Create shadow frame after help frame is fully laid out
+        # Position the help frame
+        help_frame_x = min(widget_x, self.root.winfo_width() - available_width - rreal_size(10))
+        help_frame_y = widget_y + widget_height + shadow_offset
+        
+        # Adjust y position if too close to bottom
+        if help_frame_y + canvas_height > self.root.winfo_height():
+            help_frame_y = max(rreal_size(10), widget_y - canvas_height - shadow_offset)
+            
+        self.help_frame.place(x=help_frame_x, y=help_frame_y)
+
+        # Create shadow frame with adjusted width for non-scrollbar case
+        shadow_width = available_width + shadow_offset
+        if not needs_scrollbar:
+            shadow_width -= shadow_offset  # Reduce shadow width when no scrollbar
+
         self.shadow_frame = ttk.Frame(self.root, style='Shadow.TFrame',
                                     relief="flat")
-        self.shadow_frame.place(x=help_frame_x + 5,
-                                y=help_frame_y + 5,
-                                width=available_width+5,
-                                height=help_frame_height)
+        self.shadow_frame.place(x=help_frame_x + shadow_offset,
+                              y=help_frame_y + shadow_offset,
+                              width=shadow_width,
+                              height=canvas_height)
 
-        print(f"Help frame created at ({help_frame_x}, {help_frame_y})")
-        print(f"Shadow frame created at ({widget_x + 5}, {widget_y + widget_height + 10})")
+        # Ensure help frame stays on top
+        self.help_frame.lift()
 
-        def ensure_visibility():
-            self.help_frame.lift()
-            print(f"Help frame width: {self.help_frame.winfo_width()}, height: {self.help_frame.winfo_height()}")
-            print(f"Shadow frame width: {self.shadow_frame.winfo_width()}, height: {self.shadow_frame.winfo_height()}")
-            print(f"Help frame visible at ({absolute_x(self.help_frame)}, {absolute_y(self.help_frame)})")
-
-        self.master.after_idle(ensure_visibility)
+        # Add mouse wheel binding with smooth scrolling
+        def _on_mousewheel(event):
+            delta = -1 * (event.delta / 120)
+            canvas.yview_scroll(int(delta), "units")
+            
+        # Add keyboard navigation
+        def _on_key(event):
+            if event.keysym == "Up":
+                canvas.yview_scroll(-1, "units")
+            elif event.keysym == "Down":
+                canvas.yview_scroll(1, "units")
+                
+        canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        canvas.bind_all("<Up>", _on_key)
+        canvas.bind_all("<Down>", _on_key)
 
     def _click_outside(self, event):
         # Check if the click was outside the help frame
@@ -193,6 +244,12 @@ class ExampleUse(tk.Frame):
         self.id_location_to_entry = HelpableEntry(id_location_right, width=5, help_title="ID Location To", help_text="Enter the ending column for ID location.")
         self.id_location_to_entry.pack(side=tk.LEFT)
         self.id_location_to_entry.insert(0, "0")
+
+
+class HelpableFrame(tk.Frame, Helpable):
+    def __init__(self, master=None, help_title="Help Title", help_text="Help Text", help=None, **kwargs):
+        tk.Frame.__init__(self, master, **kwargs)
+        Helpable.__init__(self, help_title=help_title, help_text=help_text, help=help)
 
 
 if __name__ == "__main__":

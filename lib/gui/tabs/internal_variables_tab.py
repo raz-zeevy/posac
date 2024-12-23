@@ -1,6 +1,7 @@
 import tkinter as tk
 from lib.gui.components.form import Label, BoldLabel, DataButton
 from lib.gui.components.variables_table import VariablesTable
+from lib.help.posac_help import Help
 from lib.utils import *
 
 class IVariablesTab(tk.Frame):
@@ -20,7 +21,8 @@ class IVariablesTab(tk.Frame):
         self.vars_table = VariablesTable(
             self.notebook,
             self.vars_table_frame,
-            check_box_callback=lambda row_id, is_on: self._on_toggle_row()
+            check_box_callback=lambda row_id, is_on: self._on_toggle_row(),
+            help=Help.INTERNAL_VARS
         )
         self.vars_table_frame.pack(fill='both', expand=True, padx=10, pady=(0, 0))
         
@@ -46,6 +48,11 @@ class IVariablesTab(tk.Frame):
     def get_vars_num(self): return len(self.vars_table)
     
     def add_variable(self, values_=None, check=True):
+        """
+        values_ (list[4]) : [line number, width, start column, variable label]
+        """
+        if values_ and int(values_[1]) not in [1,2]:
+            raise ValueError("width must be 1 or 2")
         self.vars_table.add_variable(values_, check)
     
     def remove_variable(self):

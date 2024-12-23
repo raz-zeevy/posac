@@ -1,6 +1,8 @@
 {
     "version": "0.2.0",
     "configurations": [
+
+
         {
             "name": "Run Current Test (pytest)",
             "type": "python",
@@ -31,10 +33,16 @@
             "justMyCode": false
         },
         {
-            "name": "Run Scenario Tests",
+            "name": "Run Scenario Test (pytest)",
             "type": "python",
             "request": "launch",
-            "program": "tests/scenarios_test.py",
+            "module": "pytest",
+            "args": [
+                "tests/test_scenarios.py",
+                "-v",
+                "--tb=short",
+                "-s"
+            ],
             "console": "integratedTerminal",
             "justMyCode": false
         },
@@ -68,12 +76,12 @@
             "justMyCode": false
         },
         {
-            "name": "Run Current Test Visual (pytest)",
+            "name": "Run Scenario Test Visual (pytest)",
             "type": "python",
             "request": "launch",
             "module": "pytest",
             "args": [
-                "${file}",
+                "tests/test_scenarios.py",
                 "-v",
                 "--tb=short",
                 "--visual",

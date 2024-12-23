@@ -1,6 +1,30 @@
-jneeds
-   2   0   0   0   1   1   2   0   0   1   0   0   0   0  15   0   0   0
-(T1,I2,T3,I2)
+w250
+   6   0   0   0   1   1   6   2   4   1   0   0   0   0  15   0   1   0
+(T1,I2,T3,I2,T5,I2,T7,I2,T9,I2,T11,I2)
    4   4
-   1      jn1
-   2      jn2
+   1      v1
+   2      v2
+   3      v3
+   4      v4
+   5      xv1
+   6      xv2
+   5   1   1   4
+   6   1   1   4
+trait1 suff-income
+   5   1   1   2
+   6   1   1   4
+trait2 served army
+   5   1   1   4
+   6   1   2   4
+trait3 combat
+   5   1   1   4
+   6   1   4   4
+trait4 suff inc & service
+   5   1   1   2
+   6   1   2   4
+SHEMOR
+RECORD LENGTH  80
+FOR X,Y RECODE 0 THRU  25 = 1,  26 THRU  50 = 2,
+              51 THRU  75 = 3,  76 THRU 100 = 4.
+FOR J,L RECODE 0 THRU  50 = 1,  51 THRU 100 = 2,
+             101 THRU 150 = 3, 151 THRU 200 = 4.

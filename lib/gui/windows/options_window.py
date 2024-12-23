@@ -1,10 +1,10 @@
-from lib.gui.components.form import BoldLabel, SelectionBox
+from lib.gui.components.form import BoldLabel, BrowseButton, SelectionBox, SpinBox
 from lib.gui.components.form import Label, Entry
 from lib.gui.components.help_bar import HelpBar
 from lib.gui.windows.window import Window
 import tkinter as tk
 import ttkbootstrap as ttk
-
+from lib.gui.components.helpables import Helpable
 from lib.utils import real_size, rreal_size
 
 t_POSAC_AXES = 'Do you want to save Posac-Axes scores obtained for subjects?'
@@ -28,18 +28,151 @@ ENTRIES_PAD_RIGHT = 30
 ENTRIES_PAD_Y = 15
 
 
-class OptionsWindow(Window):
-    DEFAULT_VALUES = dict(posac_axes=POSAC_AXES_DEFAULT,
-                          ascii_output=ASCII_OUTPUT_DEFAULT,
-                          special_graphic_char='',
-                          form_feed='',
-                          power_weights_low=POWER_WEIGHTS_LOW,
-                          power_weights_high=POWER_WEIGHTS_HIGH,
-                          max_iterations=MAX_ITERATIONS)
+class PosacAxesFrame(ttk.Frame):
+    SET_A_TEXT = """SET A: For X,Y recode 0 thru 25=1, 26 thru 50=2,51 thru 75=3,76 thru 100=4;For 
+J,L recode 0 thru 50=1, 51 thru 100=2,101 thru 150=3,151 thru 200=4."""
 
-    def __init__(self, **kwargs):
-        width, height = rreal_size(600), rreal_size(450)
+    SET_B_TEXT = """SET B: For X,Y recode 0 thru 10=1, 11 thru 20=2,21 thru 30=3, 31 thru 40=4,41 
+thru 50=5, 51 thru 60=6,61 thru 70=7, 71 thru 80=8,81 thru 90=9, 91 thru 
+100=10, 101 thru 120=12,121 thru 140=7, 141 thru 160=8,161 thru 180=9, 181 
+thru 200=10."""
+
+    def __init__(self, parent, gui=None):
+        super().__init__(parent)
+        self.gui = gui
+        self._create_widgets()
+        self._create_recoding_frame()
+
+    def _create_widgets(self):
+        # Create checkbox frame
+        self.checkbox_frame = ttk.Frame(self)
+        self.checkbox_frame.pack(fill='x', padx=real_size(10), pady=real_size(0))
+        
+        self.save_axes_var = tk.StringVar(value='No')
+        label = BoldLabel(self.checkbox_frame, text=t_POSAC_AXES)
+        label.pack(anchor="w", padx=real_size(10), pady=real_size(5))
+
+        self.save_axes_menu = SelectionBox(self.checkbox_frame,
+                                         values=POSAC_AXES_OPTIONS,
+                                         textvariable=self.save_axes_var)
+        self.save_axes_menu.state(["readonly"])
+        self.save_axes_menu.pack(padx=real_size(10), pady=real_size(0))
+        
+        # Bind the selection change
+        self.save_axes_var.trace('w', self._on_checkbox_change)
+
+    def _create_recoding_frame(self):
+        self.recoding_frame = ttk.Frame(self)
+        
+        # label
+        label = BoldLabel(self.recoding_frame, text="Choose one of the folowing two sets of recoding systems for the oriringal coordinates X Y J L before they are added to the raw",
+                          wraplength=rreal_size(425), anchor="w",
+                          justify="left")
+        label.pack(padx=real_size(0), pady=real_size(0))
+        
+        # Create SET A text display with styling
+        set_a_frame = ttk.LabelFrame(self.recoding_frame, text="SET A")
+        set_a_frame.pack(fill='x', padx=real_size(10), pady=real_size(2))
+        set_a_label = ttk.Label(set_a_frame, 
+                               text="For X,Y recode 0 thru 25=1, 26 thru 50=2,51 thru 75=3,76 thru 100=4;\n"
+                                    "For J,L recode 0 thru 50=1, 51 thru 100=2,101 thru 150=3,151 thru 200=4.",
+                               wraplength=rreal_size(425))
+        set_a_label.pack(padx=real_size(10), pady=real_size(3))
+
+        # Create SET B text display
+        set_b_frame = ttk.LabelFrame(self.recoding_frame, text="SET B")
+        set_b_frame.pack(fill='x', padx=real_size(10), pady=real_size(2))
+        set_b_label = ttk.Label(set_b_frame, 
+                               text="For X,Y recode 0 thru 10=1, 11 thru 20=2,21 thru 30=3, 31 thru 40=4,41 "
+                                    "thru 50=5, 51 thru 60=6,61 thru 70=7, 71 thru 80=8,81 thru 90=9, 91 thru "
+                                    "100=10, 101 thru 120=12,121 thru 140=7, 141 thru 160=8,161 thru 180=9, 181 thru 200=10.",
+                               wraplength=rreal_size(425))
+        set_b_label.pack(padx=real_size(10), pady=real_size(3))
+
+        # Create controls frame
+        controls_frame = ttk.Frame(self.recoding_frame)
+        controls_frame.pack(fill='x', padx=real_size(10), pady=real_size(3))
+
+        # A/B Selection
+        selection_frame = ttk.Frame(controls_frame)
+        selection_frame.pack(fill='x', pady=real_size(3))
+        selection_label = Label(selection_frame, text="Choose (A/B)")
+        selection_label.pack(side='left', padx=(ENTRIES_PAD_LEFT, 0))
+        
+        self.set_selection_var = tk.StringVar(value='A')
+        self.set_selection = SelectionBox(selection_frame,
+                                        values=['A', 'B'],
+                                        textvariable=self.set_selection_var,
+                                        width=rreal_size(5))
+        self.set_selection.state(["readonly"])
+        self.set_selection.pack(side='right', padx=(0, ENTRIES_PAD_RIGHT))
+
+        # Record Length
+        length_frame = ttk.Frame(controls_frame)
+        length_frame.pack(fill='x', pady=real_size(3))
+        length_label = Label(length_frame, text="Datafile record length")
+        length_label.pack(side='left', padx=(ENTRIES_PAD_LEFT, 0))
+        
+        self.record_length = SpinBox(length_frame,
+                                   from_=1,
+                                   to=999,
+                                   width=rreal_size(10))
+        self.record_length.set(80)  # Default value
+        self.record_length.pack(side='right', padx=(0, ENTRIES_PAD_RIGHT))
+
+        # File Selection
+        file_frame = ttk.Frame(controls_frame)
+        file_frame.pack(fill='x', pady=real_size(3))
+        file_label = Label(file_frame, text="New File")
+        file_label.pack(side='left', padx=(ENTRIES_PAD_LEFT, 0))
+        
+        right_frame = ttk.Frame(file_frame)
+        right_frame.pack(side='right', padx=(0, ENTRIES_PAD_RIGHT))
+        
+        self.file_entry = Entry(right_frame, width=rreal_size(40))
+        self.file_entry.pack(side='left', padx=(0, real_size(10)))
+        
+        self.browse_button = BrowseButton(right_frame,
+                                        command=self._browse_file)
+        self.browse_button.pack(side='right')
+
+    def _on_checkbox_change(self, *args):
+        if self.save_axes_var.get() == 'Yes':
+            self.recoding_frame.pack(fill='x', padx=real_size(10), pady=real_size(5))
+        else:
+            self.recoding_frame.pack_forget()
+
+    def _browse_file(self):
+        file_path = self.gui.save_file_diaglogue(
+            title="Save As",
+            file_types=(("PAX files", "*.pax"), ("All files", "*.*"))
+        )
+        if file_path:
+            self.file_entry.delete(0, tk.END)
+            self.file_entry.insert(0, file_path)
+
+
+class OptionsWindow(Window):
+    DEFAULT_VALUES = dict(
+        ascii_output=ASCII_OUTPUT_DEFAULT,
+        special_graphic_char='',
+        form_feed='',
+        power_weights_low=POWER_WEIGHTS_LOW,
+        power_weights_high=POWER_WEIGHTS_HIGH,
+        max_iterations=MAX_ITERATIONS,
+        # Add new posac axes settings
+        posac_axes=POSAC_AXES_DEFAULT,
+        set_selection='A',
+        record_length=80,
+        posac_axes_out=''
+    )
+
+    def __init__(self, gui, **kwargs):
+        width, height = rreal_size(625), rreal_size(475)
+        self.gui = gui
         super().__init__(**kwargs, geometry=f"{width}x{height}")
+
+    def setup_window(self):
         self.title("Options")
         self.resizable(False, False)
         self.create_widgets()
@@ -69,18 +202,8 @@ class OptionsWindow(Window):
         self.create_technical_tab()
 
     def create_posac_axes_tab(self):
-        self.general_tab = ttk.Frame(self.notebook)
-        self.notebook.add(self.general_tab, text="Posac-Axes")
-
-        label = BoldLabel(self.general_tab, text=t_POSAC_AXES)
-        label.pack(anchor="w", padx=10, pady=10)
-
-        self.posac_axes_var = tk.StringVar(value=POSAC_AXES_DEFAULT)
-        posac_axes_menu = SelectionBox(self.general_tab,
-                                       values=POSAC_AXES_OPTIONS,
-                                       textvariable=self.posac_axes_var)
-        posac_axes_menu.state(["readonly"])
-        posac_axes_menu.pack(padx=10, pady=10)
+        self.posac_axes_frame = PosacAxesFrame(self.notebook, gui=self.gui)
+        self.notebook.add(self.posac_axes_frame, text="Posac-Axes")
 
     def create_ascii_output_tab(self):
         self.theme_tab = ttk.Frame(self.notebook)
@@ -142,33 +265,47 @@ class OptionsWindow(Window):
         return entry
 
     def set_defaults(self):
-        self.posac_axes_var.set(self.DEFAULT_VALUES['posac_axes'])
+        # Update PosacAxesFrame settings
+        self.posac_axes_frame.save_axes_var.set(self.DEFAULT_VALUES['posac_axes'])
+        self.posac_axes_frame.set_selection_var.set(self.DEFAULT_VALUES['set_selection'])
+        self.posac_axes_frame.record_length.set(self.DEFAULT_VALUES['record_length'])
+        self.posac_axes_frame.file_entry.delete(0, tk.END)
+        self.posac_axes_frame.file_entry.insert(0, self.DEFAULT_VALUES['posac_axes_out'])
+        
+        # Update ASCII output settings
         self.ascii_output_var.set(self.DEFAULT_VALUES['ascii_output'])
+        
+        # Update technical tab settings
         self.special_graphic_char_entry.delete(0, tk.END)
-        self.special_graphic_char_entry.insert(0, self.DEFAULT_VALUES[
-            'special_graphic_char'])
+        self.special_graphic_char_entry.insert(0, self.DEFAULT_VALUES['special_graphic_char'])
+        
         self.form_feed_entry.delete(0, tk.END)
         self.form_feed_entry.insert(0, self.DEFAULT_VALUES['form_feed'])
+        
         self.power_weights_low_entry.delete(0, tk.END)
-        self.power_weights_low_entry.insert(0, self.DEFAULT_VALUES[
-            'power_weights_low'])
+        self.power_weights_low_entry.insert(0, self.DEFAULT_VALUES['power_weights_low'])
+        
         self.power_weights_high_entry.delete(0, tk.END)
-        self.power_weights_high_entry.insert(0, self.DEFAULT_VALUES[
-            'power_weights_high'])
+        self.power_weights_high_entry.insert(0, self.DEFAULT_VALUES['power_weights_high'])
+        
         self.max_iterations.delete(0, tk.END)
-        self.max_iterations.insert(0, self.DEFAULT_VALUES[
-            'max_iterations'])
+        self.max_iterations.insert(0, self.DEFAULT_VALUES['max_iterations'])
 
     def get_settings(self):
-        return {
-            'posac_axes': self.posac_axes_var.get(),
+        settings = {
+            'posac_axes': self.posac_axes_frame.save_axes_var.get() == 'Yes',
             'ascii_output': self.ascii_output_var.get(),
             'special_graphic_char': self.special_graphic_char_entry.get(),
             'form_feed': self.form_feed_entry.get(),
             'power_weights_low': self.power_weights_low_entry.get(),
             'power_weights_high': self.power_weights_high_entry.get(),
-            'max_iterations': self.max_iterations.get()
+            'max_iterations': self.max_iterations.get(),
+            # Always include posac axes settings regardless of Yes/No selection
+            'set_selection': self.posac_axes_frame.set_selection_var.get(),
+            'record_length': self.posac_axes_frame.record_length.get(),
+            'posac_axes_out': self.posac_axes_frame.file_entry.get()
         }
+        return settings
 
     def set_settings(self, **settings):
         known_settings = set(self.DEFAULT_VALUES.keys())
@@ -178,28 +315,38 @@ class OptionsWindow(Window):
                 raise ValueError(f"Unknown setting: {key}")
 
         if 'posac_axes' in settings:
-            self.posac_axes_var.set(settings['posac_axes'])
+            self.posac_axes_frame.save_axes_var.set(settings['posac_axes'])
+        
+        if 'set_selection' in settings:
+            self.posac_axes_frame.set_selection_var.set(settings['set_selection'])
+        if 'record_length' in settings:
+            self.posac_axes_frame.record_length.set(settings['record_length'])
+        if 'posac_axes_out' in settings:
+            self.posac_axes_frame.file_entry.delete(0, tk.END)
+            self.posac_axes_frame.file_entry.insert(0, settings['posac_axes_out'])
+
+        # Show/hide the recoding frame based on posac_axes setting
+        if 'posac_axes' in settings:
+            self.posac_axes_frame._on_checkbox_change()
+
         if 'ascii_output' in settings:
             self.ascii_output_var.set(settings['ascii_output'])
         if 'special_graphic_char' in settings:
             self.special_graphic_char_entry.delete(0, tk.END)
-            self.special_graphic_char_entry.insert(0, settings[
-                'special_graphic_char'])
+            self.special_graphic_char_entry.insert(0, settings['special_graphic_char'])
         if 'form_feed' in settings:
             self.form_feed_entry.delete(0, tk.END)
             self.form_feed_entry.insert(0, settings['form_feed'])
         if 'power_weights_low' in settings:
             self.power_weights_low_entry.delete(0, tk.END)
-            self.power_weights_low_entry.insert(0,
-                                                settings['power_weights_low'])
+            self.power_weights_low_entry.insert(0, settings['power_weights_low'])
         if 'power_weights_high' in settings:
             self.power_weights_high_entry.delete(0, tk.END)
-            self.power_weights_high_entry.insert(0, settings[
-                'power_weights_high'])
+            self.power_weights_high_entry.insert(0, settings['power_weights_high'])
         if 'max_iterations' in settings:
             self.max_iterations.delete(0, tk.END)
-            self.max_iterations.insert(0,
-                                       settings['max_iterations'])
+            self.max_iterations.insert(0, settings['max_iterations'])
+
     @staticmethod
     def set(**settings):
         known_settings = set(OptionsWindow.DEFAULT_VALUES.keys())
@@ -224,6 +371,32 @@ class OptionsWindow(Window):
 # Example of how to use the window and set default values:
 if __name__ == "__main__":
     root = tk.Tk()
+    Helpable.init(root)
     root.withdraw()  # Hide the root window
-    window = OptionsWindow()
+    window = OptionsWindow(None)
+    window.mainloop()
+
+    # Test settings
+    test_settings = {
+        'posac_axes': 'Yes',
+        'set_selection': 'B',
+        'record_length': 100,
+        'posac_axes_out': 'test.pax',
+        'ascii_output': 'Yes',
+        'special_graphic_char': '*',
+        'form_feed': '#',
+        'power_weights_low': 5,
+        'power_weights_high': 6,
+        'max_iterations': 20
+    }
+
+    # Create window and apply test settings
+    window = OptionsWindow(None)
+    window.set_settings(**test_settings)
+    
+    # Verify settings were applied correctly
+    current_settings = window.get_settings()
+    print("Settings applied correctly:", current_settings == test_settings)
+    print("Current settings:", current_settings)
+    
     window.mainloop()

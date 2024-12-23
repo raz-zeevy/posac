@@ -1,0 +1,1163 @@
+
+
+
+
+
+
+
+                                                    X   P   D   A
+
+
+
+
+
+                                อออออออออออออออออออออออออออออออออออออออออออออออออออออออ
+                                E X P E R T   D a t a   A n a l y s i s   S Y S T E M S
+                                อออออออออออออออออออออออออออออออออออออออออออออออออออออออ
+
+                                               Multiple Scaling/AI R&D Project
+
+
+
+
+
+
+
+
+                                                         S T R U C T U R A L
+
+                                                          P O S A C / L S A
+                                                          -----------------
+                                           Partial Order Scalogram Analysis by Coordinates
+                                                       & Lattice Space Analysis
+
+                                                           Version 2.0 1988
+
+
+
+
+ NAME OF THE JOB .............w250                                             
+ NUMBER OF VARIABLES .........   6
+ INPUT FILE ..................C:\Users\Raz_Z\Projects\Shmuel\posac\lib\./scrip
+ PROCEDURE ...................DISTRIBUTIONAL
+ PRINT ITEM DIAGRAMS .............YES
+ PRINT EXTERNAL TRAIT MAPS .......YES
+ LIMIT NO. OF ITERATIONS ( 0=15 )...15
+ THE INPUT FORMAT IS .........(T1,I2,T3,I2,T5,I2,T7,I2,T9,I2,T11,I2)
+ MISSING VALUE ...............   0
+
+
+INTERNAL POSAC
+   VARIABLE                 VARIABLE LABEL
+--------------       ----------------------------------------
+   ITEM   1:         v1                                      
+   ITEM   2:         v2                                      
+   ITEM   3:         v3                                      
+   ITEM   4:         v4                                      
+
+   EXTERNAL
+   VARIABLE                 VARIABLE LABEL
+--------------       ----------------------------------------
+   ITEM   5:         xv1                                     
+   ITEM   6:         xv2                                     
+
+ EXTERNAL VARIABLE      CATEGORY INTERVALS
+ -----------------      ------------------
+         5              ( 1, 4) 
+         6              ( 1, 4) 
+
+
+ EXTERNAL TRAIT  1  : trait1 suff-income                      
+ EXTERNAL VARIABLE      CATEGORY INTERVALS
+ -----------------      ------------------
+         5              ( 1, 2) 
+         6              ( 1, 4) 
+
+
+ EXTERNAL TRAIT  2  : trait2 served army                      
+ EXTERNAL VARIABLE      CATEGORY INTERVALS
+ -----------------      ------------------
+         5              ( 1, 4) 
+         6              ( 2, 4) 
+
+
+ EXTERNAL TRAIT  3  : trait3 combat                           
+ EXTERNAL VARIABLE      CATEGORY INTERVALS
+ -----------------      ------------------
+         5              ( 1, 4) 
+         6              ( 4, 4) 
+
+
+ EXTERNAL TRAIT  4  : trait4 suff inc & service               
+ EXTERNAL VARIABLE      CATEGORY INTERVALS
+ -----------------      ------------------
+         5              ( 1, 2) 
+         6              ( 2, 4) 
+
+
+ NUMBER OF CASES IN FILE .......................1165
+ NUMBER OF CASES WITH SYSTEM-MISSING VALUES ....   0
+ NUMBER OF READ CASES ..........................1165
+ NUMBER OF CASES WITH USER-MISSING VALUES ...... 108
+ NUMBER OF RETAINED CASES ......................1057
+
+
+ THERE ARE  16 DIFFERENT PROFILES
+
+
+  ID   PROFILE
+  --   -------
+
+   1   2 2 2 2                                   SCO=  8   FREQ= 142   GREATER THAN PROFILES:  2  3  4  5
+                                                                       SMALLER THAN PROFILES:  -
+
+   2   2 1 2 2                                   SCO=  7   FREQ=  45   GREATER THAN PROFILES:  6  7  9
+                                                                       SMALLER THAN PROFILES:  1
+
+   3   1 2 2 2                                   SCO=  7   FREQ=  60   GREATER THAN PROFILES:  7  8 11
+                                                                       SMALLER THAN PROFILES:  1
+
+   4   2 2 2 1                                   SCO=  7   FREQ=  17   GREATER THAN PROFILES:  8  9 10
+                                                                       SMALLER THAN PROFILES:  1
+
+   5   2 2 1 2                                   SCO=  7   FREQ=  19   GREATER THAN PROFILES:  6 10 11
+                                                                       SMALLER THAN PROFILES:  1
+
+   6   2 1 1 2                                   SCO=  6   FREQ=  38   GREATER THAN PROFILES: 12 13
+                                                                       SMALLER THAN PROFILES:  2  5
+
+   7   1 1 2 2                                   SCO=  6   FREQ=  72   GREATER THAN PROFILES: 13 15
+                                                                       SMALLER THAN PROFILES:  2  3
+
+   8   1 2 2 1                                   SCO=  6   FREQ=  14   GREATER THAN PROFILES: 14 15
+                                                                       SMALLER THAN PROFILES:  3  4
+
+   9   2 1 2 1                                   SCO=  6   FREQ=  16   GREATER THAN PROFILES: 12 15
+                                                                       SMALLER THAN PROFILES:  2  4
+
+  10   2 2 1 1                                   SCO=  6   FREQ=  22   GREATER THAN PROFILES: 12 14
+                                                                       SMALLER THAN PROFILES:  4  5
+
+  11   1 2 1 2                                   SCO=  6   FREQ=  22   GREATER THAN PROFILES: 13 14
+                                                                       SMALLER THAN PROFILES:  3  5
+
+  12   2 1 1 1                                   SCO=  5   FREQ=  38   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  6  9 10
+
+  13   1 1 1 2                                   SCO=  5   FREQ= 115   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  6  7 11
+
+  14   1 2 1 1                                   SCO=  5   FREQ=  26   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  8 10 11
+
+  15   1 1 2 1                                   SCO=  5   FREQ=  37   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  7  8  9
+
+  16   1 1 1 1                                   SCO=  4   FREQ= 374   GREATER THAN PROFILES:  -
+                                                                       SMALLER THAN PROFILES: 12 13 14 15  7  8  9
+
+
+ BALANCING WEIGHT POWER ......   4.000  FOR INCOMPARABLES
+                                 4.000  FOR   COMPARABLES
+
+ INITIAL APPROXIMATION ....... COMPUTED BY PROGRAM
+
+
+          COEFFICIENTS OF WEAK MONOTONICITY
+                  BETWEEN THE ITEMS
+
+
+           1    2    3    4
+      ษออออออออออออออออออออ
+      บ
+    1 บ 1.00
+      บ
+    2 บ 0.75 1.00
+      บ
+    3 บ 0.69 0.79 1.00
+      บ
+    4 บ 0.63 0.68 0.80 1.00
+
+   * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
+
+ Using intermediate optimum.
+
+
+
+
+ NUMBER OF ITERATIONS ........  15
+ TIME OF LAST ITERATION ......     0.000  SECONDS
+
+ PROPORTION OF PROFILE-PAIRS CORRECTLY REPRESENTED
+ CORREP COEFFICIENT .......... 0.9603
+
+ SCORE--DISTANCE WEIGHTED COEFFICIENT
+ SCODIS COEFFICIENT .......... 0.9880
+
+
+                                                                   BASE COORDINATES       TRANSFORMED COORDINATES
+
+  ID   PROFILE                                  SCO  FREQ               X         Y               JOINT   LATERAL
+  --   -------                                  ---  ----               -         -               -----   -------
+   1   2 2 2 2                                    8   142          100.00    100.00              200.00    100.00
+   2   2 1 2 2                                    7    45           80.00     66.67              146.67    113.33
+   3   1 2 2 2                                    7    60           93.33     40.00              133.33    153.33
+   4   2 2 2 1                                    7    17           40.00     93.33              133.33     46.67
+   5   2 2 1 2                                    7    19           66.67     73.33              140.00     93.33
+   6   2 1 1 2                                    6    38           60.00     53.33              113.33    106.67
+   7   1 1 2 2                                    6    72           73.33     26.67              100.00    146.67
+   8   1 2 2 1                                    6    14           46.67     60.00              106.67     86.67
+   9   2 1 2 1                                    6    16           13.33     80.00               93.33     33.33
+  10   2 2 1 1                                    6    22           20.00     86.67              106.67     33.33
+  11   1 2 1 2                                    6    22           86.67     13.33              100.00    173.33
+  12   2 1 1 1                                    5    38            6.67     46.67               53.33     60.00
+  13   1 1 1 2                                    5   115           53.33      6.67               60.00    146.67
+  14   1 2 1 1                                    5    26           33.33     33.33               66.67    100.00
+  15   1 1 2 1                                    5    37           26.67     20.00               46.67    106.67
+  16   1 1 1 1                                    4   374            0.00      0.00                0.00    100.00
+
+
+  COEFFICIENT OF WEAK MONOTONICITY BETWEEN EACH OBSERVED ITEM AND THE FACTORS :
+  J (I.E. X+Y) , L (I.E. X-Y) , X , Y , P (I.E. MIN(X,Y)) , Q (I.E. MAX(X,Y))
+
+  ITEM     J     L     X     Y     P     Q
+  ----     -     -     -     -     -     -
+    1   0.96 -0.90  0.73  1.00  0.95  0.93
+    2   0.97 -0.10  0.90  0.94  0.94  0.96
+    3   0.97  0.22  0.93  0.91  0.95  0.95
+    4   0.97  0.98  1.00  0.74  0.94  0.96
+                         TWO-DIMENSIONAL CONFIGURATION OF THE SCALOGRAM (BASE COORDINATES)
+
+                                                  ID FROM   1 TO  16
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                     1บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         4                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    10                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ               9                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                   5                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                 2                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                               8                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             6                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      12                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                               3      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  14                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           7                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          15                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      11              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      13                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ16                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                                             DIAGRAM OF ITEM NUMBER  1
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                     2บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         2                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                     2                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ               2                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                   2                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                 2                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                               1                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             2                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ       2                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                               1      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   1                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           1                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                           1                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                       1              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                       1                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 1                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                                             DIAGRAM OF ITEM NUMBER  2
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                     2บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         2                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                     2                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ               1                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                   2                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                 1                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                               2                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             1                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ       1                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                               2      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   2                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           1                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                           1                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                       2              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                       1                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 1                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                                             DIAGRAM OF ITEM NUMBER  3
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                     2บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         2                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                     1                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ               2                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                   1                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                 2                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                               2                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             1                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ       1                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                               2      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   1                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           2                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                           2                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                       1              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                       1                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 1                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                                             DIAGRAM OF ITEM NUMBER  4
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                     2บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         1                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                     1                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ               1                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                   2                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                 2                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                               1                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             2                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ       1                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                               2      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   1                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           2                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                           1                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                       2              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                       2                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 1                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                    LEGEND ON CODES USED IN TRAIT DIAGRAMS
+
+ IN THE ABSOLUTE TRAIT DIAGRAMS THE FOLLOWING CODES ARE USED FOR THE PROPORTIONS OF SUBJECTS WITH THE SPECIFIED
+ TRAIT (AMONG THOSE WITH IDENTICAL PROFILE) .
+
+                    O      0
+                    A   ( 0 ,1/5]
+                    B   (1/5,2/5]
+                    C   (2/5,3/5)
+                    D   [3/5,4/5)
+                    E   [4/5, 1 )
+                    I      1
+
+
+
+
+ IN THE RELATIVE TRAIT DIAGRAMS ANOTHER CODES ARE USED WITH THE FOLLOWING MEANING :
+
+                    H   PROPORTION OF TRAIT IN PROFILE HIGHER THAN
+                        PROPORTION OF TRAIT IN POPULATION BY MORE THAN 5 PERCENT
+
+                    A   PROPORTION OF TRAIT IN PROFILE EQUALS
+                        PROPORTION OF TRAIT IN POPULATION + OR - 5 PERCENT
+
+                    L   PROPORTION OF TRAIT IN PROFILE LOWER THAN
+                        PROPORTION OF TRAIT IN POPULATION BY MORE THAN 5 PERCENT
+                    FOR EXTERNAL TRAIT NUMBER  1  : trait1 suff-income                      
+
+       INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
+  ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
+  --   ---------   --------   -------   ----------   -------
+   1      142          90        52         63       2 2 2 2
+   2       45          27        18         60       2 1 2 2
+   3       60          31        29         52       1 2 2 2
+   4       17           7        10         41       2 2 2 1
+   5       19          10         9         53       2 2 1 2
+   6       38          15        23         39       2 1 1 2
+   7       72          42        30         58       1 1 2 2
+   8       14          10         4         71       1 2 2 1
+   9       16           6        10         38       2 1 2 1
+  10       22           9        13         41       2 2 1 1
+  11       22          10        12         45       1 2 1 2
+  12       38          17        21         45       2 1 1 1
+  13      115          34        81         30       1 1 1 2
+  14       26          10        16         38       1 2 1 1
+  15       37          20        17         54       1 1 2 1
+  16      374         108       266         29       1 1 1 1
+
+ TOTAL   1057         446       611         42
+
+
+ MU(TRAIT,X)= 0.397                    MU(TRAIT,J)= 0.426
+ MU(TRAIT,Y)= 0.402                    MU(TRAIT,L)= 0.042
+
+  * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
+                        ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  1  : trait1 suff-income                      
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    D*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        C*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    C*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              B*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  C*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                D*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              D*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            B*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      C*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              C*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  B*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          C*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          C*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      C*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      B*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บB*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                        RELATIVE EXTERNAL TRAIT DIAGRAM NUMBER  1  : trait1 suff-income                      
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    H*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        A*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    A*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              A*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  H*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                H*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              H*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            A*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      A*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              H*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  A*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          H*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          H*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      A*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      L*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บL*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                    FOR EXTERNAL TRAIT NUMBER  2  : trait2 served army                      
+
+       INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
+  ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
+  --   ---------   --------   -------   ----------   -------
+   1      142          92        50         65       2 2 2 2
+   2       45          29        16         64       2 1 2 2
+   3       60          35        25         58       1 2 2 2
+   4       17          10         7         59       2 2 2 1
+   5       19          11         8         58       2 2 1 2
+   6       38          20        18         53       2 1 1 2
+   7       72          45        27         63       1 1 2 2
+   8       14           4        10         29       1 2 2 1
+   9       16           7         9         44       2 1 2 1
+  10       22          15         7         68       2 2 1 1
+  11       22          12        10         55       1 2 1 2
+  12       38          25        13         66       2 1 1 1
+  13      115          76        39         66       1 1 1 2
+  14       26          13        13         50       1 2 1 1
+  15       37          15        22         41       1 1 2 1
+  16      374         192       182         51       1 1 1 1
+
+ TOTAL   1057         601       456         57
+
+
+ MU(TRAIT,X)= 0.166                    MU(TRAIT,J)= 0.158
+ MU(TRAIT,Y)= 0.128                    MU(TRAIT,L)= 0.074
+
+  * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
+                        ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  2  : trait2 served army                      
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    D*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        C*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    D*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              C*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  C*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                D*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              B*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            C*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      D*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              C*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  C*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          D*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          C*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      C*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      D*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บC*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                        RELATIVE EXTERNAL TRAIT DIAGRAM NUMBER  2  : trait2 served army                      
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    H*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        A*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    H*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              L*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  A*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                H*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              L*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            A*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      H*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              A*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  L*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          H*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          L*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      A*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      H*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บL*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                    FOR EXTERNAL TRAIT NUMBER  3  : trait3 combat                           
+
+       INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
+  ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
+  --   ---------   --------   -------   ----------   -------
+   1      142          31       111         22       2 2 2 2
+   2       45           9        36         20       2 1 2 2
+   3       60          12        48         20       1 2 2 2
+   4       17           4        13         24       2 2 2 1
+   5       19           6        13         32       2 2 1 2
+   6       38          10        28         26       2 1 1 2
+   7       72          20        52         28       1 1 2 2
+   8       14           2        12         14       1 2 2 1
+   9       16           1        15          6       2 1 2 1
+  10       22           3        19         14       2 2 1 1
+  11       22           3        19         14       1 2 1 2
+  12       38           4        34         11       2 1 1 1
+  13      115          22        93         19       1 1 1 2
+  14       26           5        21         19       1 2 1 1
+  15       37           7        30         19       1 1 2 1
+  16      374          49       325         13       1 1 1 1
+
+ TOTAL   1057         188       869         18
+
+
+ MU(TRAIT,X)= 0.243                    MU(TRAIT,J)= 0.215
+ MU(TRAIT,Y)= 0.156                    MU(TRAIT,L)= 0.149
+
+  * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
+                        ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  3  : trait3 combat                           
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    B*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        B*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    A*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              A*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  B*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                A*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              A*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            B*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      A*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              A*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  A*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          B*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          A*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      A*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      A*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บA*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                        RELATIVE EXTERNAL TRAIT DIAGRAM NUMBER  3  : trait3 combat                           
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    A*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        H*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    A*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              L*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  H*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                A*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              A*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            H*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      L*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              A*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  A*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          H*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          A*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      A*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      A*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บA*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                    FOR EXTERNAL TRAIT NUMBER  4  : trait4 suff inc & service               
+
+       INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
+  ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
+  --   ---------   --------   -------   ----------   -------
+   1      142          54        88         38       2 2 2 2
+   2       45          18        27         40       2 1 2 2
+   3       60          17        43         28       1 2 2 2
+   4       17           4        13         24       2 2 2 1
+   5       19           5        14         26       2 2 1 2
+   6       38           9        29         24       2 1 1 2
+   7       72          25        47         35       1 1 2 2
+   8       14           2        12         14       1 2 2 1
+   9       16           2        14         13       2 1 2 1
+  10       22           8        14         36       2 2 1 1
+  11       22           6        16         27       1 2 1 2
+  12       38          12        26         32       2 1 1 1
+  13      115          24        91         21       1 1 1 2
+  14       26           6        20         23       1 2 1 1
+  15       37           8        29         22       1 1 2 1
+  16      374          60       314         16       1 1 1 1
+
+ TOTAL   1057         260       797         25
+
+
+ MU(TRAIT,X)= 0.333                    MU(TRAIT,J)= 0.352
+ MU(TRAIT,Y)= 0.326                    MU(TRAIT,L)= 0.044
+
+  * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
+                        ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  4  : trait4 suff inc & service               
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    B*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        B*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    B*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              A*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  B*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                B*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              A*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            B*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      B*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              B*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  B*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          B*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          B*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      B*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      B*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บA*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100
+                        RELATIVE EXTERNAL TRAIT DIAGRAM NUMBER  4  : trait4 suff inc & service               
+
+
+
+
+        ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+   100..บ                                                                                                    H*บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        A*                                                            บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                    H*                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ              L*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  A*                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                H*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                              L*                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            A*                                        บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      H*                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              A*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  A*                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          H*                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          A*                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      A*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      A*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บL*                                                                                                    บ
+        ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+          .                                                 .                                                 .
+          .                                                 .                                                 .
+          0                                                50                                                100

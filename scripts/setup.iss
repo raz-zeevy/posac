@@ -13,7 +13,7 @@
 #define SessionIcon "lib\assets\icon.ico"
 
 [Setup]
-AppId={{A5033936-6373-4BCB-AE0E-231D3E51F327}
+AppId={{A5033936-6373-4BCB-AE0E-231D3E51F329}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 VersionInfoVersion={#MyAppVersion}
@@ -47,7 +47,7 @@ Root: HKCU; Subkey: "Software\Classes\{#MyAppAssocKey}"; ValueType: string; Valu
 Root: HKCU; Subkey: "Software\Classes\{#MyAppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
 Root: HKCU; Subkey: "Software\Classes\{#MyAppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
 Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: ".lss"; ValueData: ""
-Root: HKCU; Subkey: ".mpm"; ValueType: string; ValueName: ""; ValueData: "PosacSession"; Flags: uninsdeletevalue
+Root: HKCU; Subkey: ".mmp"; ValueType: string; ValueName: ""; ValueData: "PosacSession"; Flags: uninsdeletevalue
 Root: HKCU; Subkey: "PosacSession"; ValueType: string; ValueName: "";ValueData: "Posac Session"; Flags: uninsdeletekey
 Root: HKCU; Subkey: "PosacSession\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{#SessionIcon}"""
 Root: HKCU; Subkey: "PosacSession\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""

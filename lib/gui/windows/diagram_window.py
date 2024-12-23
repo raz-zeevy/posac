@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import filedialog
 from lib.gui.components.form import NavigationButton
 import matplotlib
+from lib.gui.components.helpables import Helpable
 from lib.gui.windows.window import Window
 from lib.gui.components.shapes import Line, Circle, DivideAxis, Edge
 from lib.utils import get_resource, rreal_size, real_size
@@ -22,14 +23,13 @@ BORDER_WIDTH = 0
 OC = 0.00
 
 class DiagramWindow(Window):
-    def __init__(self, parent, graph_data_lst: list, **kwargs):
+    
+    def setup_window(self, graph_data_lst: list, **kwargs):
         """
         graph_data: list of dictionaries containing the data to be plotted
         should contain "x", "y", "annotations", "title", "legend",
          "captions", "geom" keys
         """
-        super().__init__(**kwargs, geometry=f"{rreal_size(800)}x"
-                                            f"{rreal_size(700)}")
         self.title("Posac Solution")
         # self.iconbitmap(get_resource("icon.ico"))
         # sets the geometry of toplevel
@@ -48,7 +48,7 @@ class DiagramWindow(Window):
         self.bind("<Right>", lambda x: self.next_graph())
         self.bind("<BackSpace>", lambda x: self.previous_graph())
         self.bind("<Left>", lambda x: self.previous_graph())
-        self.bind("<Escape>", lambda x: self.exit())
+        self.bind("<Escape>", lambda x: self.exit())      
 
     def create_menu(self):
         # create a file menu with save figure command to save the current graph
@@ -300,3 +300,11 @@ class DiagramWindow(Window):
                                             bootstyle='secondary',
                                             command=self.exit, )
         self.button_exit.pack(side=ttk.LEFT, padx=20)
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    Helpable.init(root)
+    graph_data_lst = []
+    DiagramWindow(graph_data_lst=graph_data_lst)
+

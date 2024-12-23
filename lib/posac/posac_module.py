@@ -9,6 +9,10 @@ from lib.posac.data_loader import load_other_formats as load_data_manual
 from lib.posac.posac_input_writer import PosacInputWriter
 from lib.utils import *
 from lib.posac.recoding import apply_recoding
+from typing import List
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 NO_POSACSEP = """
 STOP POSAC Completed
@@ -126,7 +130,8 @@ class PosacModule:
                      init_approx: List[List[float]] = None,
                      boxstring: str = None,
                      form_feed: str = None,
-                     shemor_directives: List[str] = None):
+                     shemor_directives_key: str = None,
+                     record_length: int = None):
         input_writer = PosacInputWriter()
         self.prepare_data_file(data_file, lines_per_var, variables_details, recoding_operations)
         input_writer.create_posac_input_file(job_name=job_name,
@@ -159,13 +164,15 @@ class PosacModule:
                                              init_approx=init_approx,
                                              boxstring=boxstring,
                                              form_feed=form_feed,
-                                             shemor_directives=shemor_directives)
+                                             shemor_directives_key=shemor_directives_key,
+                                             record_length=record_length)
 
         
     def run(self, posac_out: str,
-            lsa1_out,
-            lsa2_out,
-            posacsep):
+            lsa1_out : str,
+            lsa2_out : str,
+            posacsep : List[int],
+            posac_axes_out : str = None):
         """
         The way this function works if there is no posacsep the return code
         will still be 0 but NOPSOACSEP will be printed
@@ -196,6 +203,8 @@ class PosacModule:
             lsa1_out,
             lsa2_out
         ]
+        if posac_axes_out:
+            arguments.append(posac_axes_out)
         # command = r"C:\Users\Raz_Z\Desktop\shmuel-project\fssa-21\FASSA.BAT"
         command = "PXPOS.BAT"
 
@@ -204,18 +213,19 @@ class PosacModule:
 
         # Run the command
         posac_dir = get_script_dir_path()
-        posacsep = [2] * 8
         with cwd(posac_dir):
+            print("################")
+            print("Run Command: "+" ".join(full_command))
             process = subprocess.Popen(full_command,
                                     shell=True,
                                      stdin=subprocess.PIPE,
                                     # stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     text=True)
-            input_data = "\n".join(map(str, posacsep)) + "\n"
-            print("Input data:", input_data)
+            posac_sep_input = "\n".join(map(str, posacsep)) + "\n"
+            print("Input data:\n", posac_sep_input)
             try:
-                stdout, stderr = process.communicate(input=input_data, timeout=15)
+                stdout, stderr = process.communicate(input=posac_sep_input, timeout=15)
             except subprocess.TimeoutExpired:
                 process.kill()
                 stdout, stderr = process.communicate()
@@ -279,6 +289,8 @@ class PosacModule:
         # Run the command
         posac_dir = get_script_dir_path()
         with cwd(posac_dir):
+            # print command
+            print("Run Command: "+" ".join(full_command))
             result = subprocess.run(full_command)
             if result.returncode == 0:
                 print("Command succeeded:", result.stdout)

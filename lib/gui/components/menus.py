@@ -1,3 +1,4 @@
+from pathlib import Path
 import tkinter as tk
 import ttkbootstrap as ttk
 from lib.utils import *
@@ -155,6 +156,7 @@ class IconMenu(tk.Frame):
                               bg='white', relief='raised',
                               borderwidth=2, **kwargs)
             button.pack(side=ttk.LEFT)
+            ToolTip(button, msg=tooltip)
             if tooltip:
                 ToolTip(button, msg=tooltip, delay=0.5)
             return button

@@ -1,6 +1,7 @@
 import tkinter as tk
 from lib.gui.components.editable_tree_view import EditableTreeView
 from lib.gui.components.form import BoldLabel, SelectionBox, Label, TableView
+from lib.help.posac_help import Help
 from lib.utils import real_size, rreal_size
 from lib.controller.validator import Validator
 TOP_LABEL = 'POSACSEP-A PROGRAM FOR OPTIMALLY PARTITIONING POSAC SPACE BY ' \
@@ -51,7 +52,8 @@ class PosacsepTab(tk.Frame):
                                            add_check_box=False,
                                            cell_right_padding=0,
                                            validation_callback=Validator.
-                                           validate_integer)
+                                           validate_integer,
+                                           help=Help.POSACSEP_THRESHOLDS)
         self.vars_table.heading(COLS[0], text=COLS[0], anchor="c")
         self.vars_table.column(COLS[0], width=rreal_size(50), anchor='c')
         self.vars_table.heading(COLS[1], text=COLS[1], anchor="w")
@@ -75,7 +77,8 @@ class PosacsepTab(tk.Frame):
         label.pack(side='left', padx=real_size(10))
         self.combo_box = SelectionBox(self.combo_frame,
                                       values=COMBO_VALUES,
-                                      default=COMBO_VALUES[0])
+                                      default=COMBO_VALUES[0],
+                                      help=Help.POSACSEP_OPTION)
         self.combo_box.pack(side='left', padx=real_size((10, 0)))
         self.combo_box.bind('<<ComboboxSelected>>', lambda e:
         self.on_posacsep_change())

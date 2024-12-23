@@ -1,3 +1,5 @@
+import tkinter as tk
+
 class Navigator:
     def __init__(self, gui):
         self.gui = gui
@@ -15,11 +17,23 @@ class Navigator:
         self.navigation.button_next.config(command=self.next_tab_clicked)
         self.navigation.button_previous.config(command=self.prev_tab_clicked)
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_switch)
-        # Add keyboard navigation bindings
-        self.gui.root.bind('<Left>', lambda e: self.prev_tab_clicked())
-        self.gui.root.bind('<Right>', lambda e: self.next_tab_clicked())
-        self.gui.menu.entryconfig("Options",
-                                command=self.gui.show_options_window)
+        
+        # Add keyboard navigation bindings with focus check
+        def handle_left(event):
+            # Skip if focus is in an Entry or Text widget
+            if not isinstance(event.widget, (tk.Entry, tk.Text)):
+                self.prev_tab_clicked()
+                return "break"  # Prevent event propagation
+            
+        def handle_right(event):
+            # Skip if focus is in an Entry or Text widget
+            if not isinstance(event.widget, (tk.Entry, tk.Text)):
+                self.next_tab_clicked()
+                return "break"  # Prevent event propagation
+            
+        self.gui.root.bind('<Left>', handle_left)
+        self.gui.root.bind('<Right>', handle_right)
+        self.gui.menu.entryconfig("Options", command=self.gui.show_options_window)
     def _update_buttons(self):
         if self.cur_page == self.min_page:
             self.navigation.button_previous.config(state="disabled")

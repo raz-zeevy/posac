@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from lib.gui.components.form import Label, BoldLabel, BrowseButton, Entry
+from lib.help.posac_help import Help
 from lib.utils import real_size, rreal_size
 
 py_ENTRIES = 25
@@ -45,7 +46,8 @@ class OFilesTab(tk.Frame):
         entry_frame.pack(pady=real_size(py_ENTRIES))
         label = BoldLabel(entry_frame, text=title, size=9)
         label.pack(side=tk.LEFT)
-        entry = Entry(entry_frame, width=rreal_size(70))
+        entry = Entry(entry_frame, width=rreal_size(70),
+                      help=Help.OUTPUT_FILES)
         xpad = pl_ENTRIES_INNER - (len(title) * 8)
         entry.pack(side=tk.LEFT, padx=real_size((xpad, 0)))
         entry.insert(0, default)

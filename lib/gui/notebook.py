@@ -224,7 +224,10 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.traits_tab.update_traits_num(
             traits_num,
             self.external_variables_tab.get_vars_num())
-
+    
+    def get_external_traits_num(self):
+        return self.traits_tab.get_traits_num()
+        
     def update_posacsep_vars(self):
         """
         Called when selection is changed on internal vars page

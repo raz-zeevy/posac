@@ -36,7 +36,7 @@ class RangesTable(TableView):
         else:
             values = values_.copy()
             if len(values) <= (RangesTable.NUM_RANGES + 1):
-                values += [''] * ((RangesTable.NUM_RANGES + 1) - len(values))
+                values = [len(values)] + values +  [''] * ((RangesTable.NUM_RANGES) - len(values))
             else:
                 raise ValueError(f"Too many ranges for variables")
         return values

@@ -1,8 +1,9 @@
+from tkinter.ttk import Treeview
 import ttkbootstrap as ttk
 import tkinter as tk
 
 from lib.gui.components.editable_tree_view import EditableTreeView
-from lib.gui.components.helpables import Helpable
+from lib.gui.components.helpables import Helpable, HelpableFrame
 from lib.utils import real_size, rreal_size
 
 CALIBRI_FONT = ('Calibri', 10)
@@ -45,15 +46,15 @@ class DataButton(ttk.Button):
                          bootstyle="dark", )
 
 
-class NavigationButton(ttk.Button):
+class NavigationButton(Helpable, ttk.Button):
     """A button that can be used to navigate to a different page."""
 
-    def __init__(self, parent, **kwargs):
+    def __init__(self, master=None, **kwargs):
         if 'width' not in kwargs:
             kwargs['width'] = 15
         if 'bootstyle' not in kwargs:
             kwargs['bootstyle'] = 'primary'
-        super().__init__(parent, **kwargs)
+        super().__init__(master=master, **kwargs)
 
 
 class SelectionBox(Helpable, ttk.Combobox):
@@ -84,15 +85,22 @@ class SpinBox(Helpable, ttk.Spinbox):
                          state="readonly", )
         if default_value is not None:
             self.set(default_value)
+            
 class Entry(Helpable, ttk.Entry):
     def __init__(self, master=None, **kwargs):
         super().__init__(master=master, **kwargs)
 
+class Frame(HelpableFrame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master=master, **kwargs)
 
 class TableView(Helpable, EditableTreeView):
     def __init__(self, master=None, root=None, **kwargs):
         super().__init__(master=master, root=root, **kwargs)
 
+class TreeView(Helpable, Treeview):
+    def __init__(self, master=None, root=None, **kwargs):
+        super().__init__(master=master, root=root, **kwargs)
 
 def create_labeled_selection_box(master, label_text, values, default,
                                  width=10, label_padx=10, box_pad_x=0, pady=10,

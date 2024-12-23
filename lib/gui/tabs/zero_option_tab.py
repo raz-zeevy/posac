@@ -1,6 +1,7 @@
 import tkinter as tk
 
 from lib.gui.components.form import SelectionBox
+from lib.help.posac_help import Help
 
 class ZeroOptionTab(tk.Frame):
     DEFAULT_VALUES = dict(zero_option=True)
@@ -24,7 +25,8 @@ class ZeroOptionTab(tk.Frame):
                             justify='left')
         label.pack(fill='x', padx=(0,0), pady=(25,0))
         self._zero_option_combo = SelectionBox(self, values=["Yes", "No"],
-                                               font=("Segoe UI", 11))
+                                               font=("Segoe UI", 11),
+                                               help=Help.MISSING_VALUE)
         self._zero_option_combo.bind("<<ComboboxSelected>>",
                                      lambda e: self._on_change())
         self._zero_option_combo.pack(padx=10, pady=(25,0))

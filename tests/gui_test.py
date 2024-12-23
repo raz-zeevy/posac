@@ -58,7 +58,7 @@ class GuiTest(Controller):
         
         # Test adding/removing variables
         iv.remove_variable()
-        first_var = ['10', '5', '3', '8']
+        first_var = ['10', '1', '1', '8']
         iv.add_variable(first_var, check=False)
         
         # Add multiple variables
@@ -349,7 +349,7 @@ class GuiTest(Controller):
         rt.select_operation(1)
         assert rt.var_index_entry.get() == '1', "Variable selection should be preserved"
         assert len(rt.pair_tree.get_children()) == 2, "Should have 2 pairs"
-        assert rt.invert_var.get(), "Invert state should be preserved"
+        assert not rt.invert_var.get(), "Invert state should be false"
         rt.reset_default()
         assert not rt._recoding_operations
 
@@ -376,24 +376,28 @@ class GuiTest(Controller):
         rt.select_operation(1)
         assert rt.var_index_entry.get() == '1', "Variable selection should be preserved"
         assert len(rt.pair_tree.get_children()) == 2, "Should have 2 pairs"
-        assert rt.invert_var.get(), "Invert state should be preserved"
+        assert not rt.invert_var.get(), "Invert state should be False"
         rt.reset_default()
         assert not rt._recoding_operations
 
 if __name__ == '__main__':
     a = GuiTest()
-    # Run all test methods in order
-    # a.test_general_tab()
-    # a.test_zero_option()
-    # a.test_internal_variables_tab()
-    # a.test_external_variables_tab()
-    # a.test_external_variables_ranges_tab()
-    # a.test_traits_tab()
-    # a.test_posacsep_tab()
-    # a.test_output_tab()
-    # a.test_navigation()
-    a.test_internal_recoding_tab()
-    a.test_internal_recoding_tab_switching()
-    a.test_internal_recoding_tab_remove_operation()
-    a.run_process()
+    try:
+        # Run all test methods in order
+        a.test_general_tab()
+        a.test_zero_option()
+        a.test_internal_variables_tab()
+        a.test_external_variables_tab()
+        a.test_external_variables_ranges_tab()
+        a.test_traits_tab()
+        a.test_posacsep_tab()
+        a.test_output_tab()
+        a.test_navigation()
+        a.test_internal_recoding_tab()
+        a.test_internal_recoding_tab_switching()
+        a.test_internal_recoding_tab_remove_operation()
+        exit(0)
+    except Exception as e:
+        a.run_process()
+        raise e
 

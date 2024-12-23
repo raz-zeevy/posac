@@ -120,7 +120,7 @@ class EditableTreeView(ttk.Treeview):
                         # background="white",
                         # foreground="white",
                         bordercolor="black",
-                        borderwidth=1,
+                        borderwidth=rreal_size(1),
                         padding=(rreal_size(cell_right_padding), rreal_size(3), 0, rreal_size(3)),
                         # Padding: (left, top, right, bottom)
                         )
@@ -141,7 +141,7 @@ class EditableTreeView(ttk.Treeview):
         self.column("#0", width=rreal_size(70), anchor='w', stretch=False)
         for col in cols:
             self.heading(col, text=col, anchor="w")
-            self.column(col, width=60, anchor='w')
+            self.column(col, width=rreal_size(60), anchor='w')
             self.column(col, stretch=False)
         self._display_columns = cols.copy()
         self._col_names = cols.copy()
@@ -335,7 +335,7 @@ class EditableTreeView(ttk.Treeview):
         
         # Position the entry widget over the cell
         x, y, width, height = self.bbox(item_id, column_id)
-        self._entry_popup.place(x=x, y=y, anchor="nw", width=rreal_size(width), height=rreal_size(height))
+        self._entry_popup.place(x=x, y=y, anchor="nw", width=width, height=height)
         
     def _on_return(self, item_id,
                    column_id,

@@ -17,6 +17,7 @@ from lib.gui.components.menus import Menu, IconMenu
 from lib.gui.components.help_bar import HelpBar
 from lib.gui.components.navigation import Navigation
 from lib.gui.navigator import Navigator
+from lib.help.posac_help import PosacHelp, Help
 
 ROOT_TITLE = f"Posac Program-v{os.environ.get('VERSION')}"
 THEME_NAME = 'sandstone'
@@ -46,7 +47,7 @@ class GUI():
         # Set the window to be square
         self.root.geometry(f'{real_size(WINDOW_WIDTH,_round=True)}x'
                            f'{real_size(WINDOW_HEIGHT, _round=True)}')
-        self.root.resizable(False, False)
+        self.root.resizable(True, True)
         EditableTreeView.configure_style(
             row_height=real_size(30))
 
@@ -118,18 +119,18 @@ class GUI():
     #########################
 
     def show_diagram_window(self, graph_data_lst):
-        self.diagram_window = DiagramWindow(self, graph_data_lst)
-        # self.diagram_window.bind("<F1>", lambda x: self.show_help_windw())
+        self.diagram_window = DiagramWindow(self.root, graph_data_lst=graph_data_lst)
         pass
 
     def show_about_window(self, section=None):
         self.help_window = AboutWindow()
 
     def show_options_window(self):
-        self.technical_options = OptionsWindow()
+        self.technical_options = OptionsWindow(self)
 
     def set_options(self, **options):
         OptionsWindow.set(**options)
+        
     def get_technical_option(self, *args):
         if not args:
             return OptionsWindow.DEFAULT_VALUES
@@ -192,14 +193,15 @@ class GUI():
 
     def save_session_dialogue(self):
         file_name = filedialog.asksaveasfilename(filetypes=[('Memory files',
-                                                             '*.mpm')],
-                                                 defaultextension='.mpm',
+                                                             f'*.{SESSION_FILE_EXTENSION}')],
+                                                 defaultextension=f'.{SESSION_FILE_EXTENSION}',
                                                  title="Save Posac Session",
                                                  confirmoverwrite=True)
         return file_name
 
     def open_session_dialogue(self):
-        file_name = filedialog.askopenfilename(filetypes=[('mpm', '*.mpm')],
+        file_name = filedialog.askopenfilename(filetypes=[f'{SESSION_FILE_EXTENSION}',
+                                                          f'*.{SESSION_FILE_EXTENSION}'],
                                                title="Open Posac Session")
         return file_name
 

@@ -6,7 +6,8 @@ from lib.controller.graph_generator import generate_graphs, \
 from lib.controller.session import Session
 from lib.gui.gui import GUI
 from lib.posac.posac_module import PosacModule
-from lib.utils import IS_PRODUCTION, SET_MODE_TEST
+from lib.utils import IS_PRODUCTION, POSAC_SEP_PATH, SET_MODE_TEST
+from lib.controller.validator import Validator
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +65,8 @@ class Controller:
         self.gui.icon_menu.m_button_undo.configure(command=self.gui.notebook.undo)
         # Redo
         self.gui.icon_menu.m_button_redo.configure(command=self.gui.notebook.redo)
+        # Help (work that on click it sends the key F1 event as if the user pressed F1)
+        self.gui.icon_menu.m_button_help.configure(command=lambda: self.gui.root.event_generate('<KeyPress-F1>'))
         # Exit
         self.gui.root.protocol("WM_DELETE_WINDOW", self.on_close)
         self.gui.notebook.output_files_tab.exit_button.config(
@@ -246,7 +249,8 @@ class Controller:
         self.bind_submenu(self.gui.menu.lsa1_output_menu, file=self.ls1_out)
         self.bind_submenu(self.gui.menu.lsa2_output_menu, file=self.ls2_out)
         self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=None)
-        self.bind_submenu(self.gui.menu.posac_axes_menu, file=None)
+        self.bind_submenu(self.gui.menu.posac_axes_menu, file=self.posac_axes_out)
+        self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=POSAC_SEP_PATH)
         self.gui.menu.add_posacsep_items(self.int_vars_num)
         for i in range(1, self.int_vars_num + 1):
             self.gui.menu.posacsep.entryconfig(f"Item {i}",
@@ -283,7 +287,7 @@ C                          SPECIFIED (SEE LINE E. BELOW)
         self.itemdplt = int(self.notebook.general_tab.get_plot_item_diagram())
         self.nlab = self.num_variables
         self.nxt = ext_vars_num
-        self.map_ = self.notebook.external_variables_ranges_tab.get_external_traits_num()
+        self.map_ = self.notebook.get_external_traits_num()
         self.iextdiag = int(
             self.notebook.general_tab.get_plot_external_diagram())
         # 11
@@ -302,15 +306,17 @@ C                IF INITX.NE.0  FIRST APPROXIMATION GIVEN
 C                         BY THE USER  (SEE LINE I. BELOW)
 
         """
-        # those ara the technical options
+        # technical options and posac-axes
         self.iboxstrng = 0;
         self.iff = 0;
         self.form_feed = None;
         self.itrm = self.gui.get_technical_option('max_iterations')
         self.iwrtfls = 0;
-        self.ifshmr = 0;
-        self.shemor_directives = None;
+        self.ifshmr = self.gui.get_technical_option('posac_axes') == 'Yes'
+        self.shemor_directives_key = self.gui.get_technical_option('set_selection')
+        self.record_length = self.gui.get_technical_option('record_length')
         self.ifrqone = 0
+        self.posac_axes_out = self.gui.get_technical_option('posac_axes_out')
         # C
         vars = self.notebook.internal_variables_tab.get_all_variables_values()
         vars.extend([int(var[0]) + self.int_vars_num] + list(var[1:]) for
@@ -328,17 +334,29 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         self.max_category = 0
         self.nd1 = self.gui.get_technical_option('power_weights_low')
         self.nd2 = self.gui.get_technical_option('power_weights_high')
+        # External Variables Ranges
         self.ext_var_ranges = self.notebook.external_variables_ranges_tab. \
-            get_all_ranges()
+            get_all_ranges_values()
+        # Traits
         self.traits = self.notebook.traits_tab.get_traits_values()
         # output
         self.pos_out = self.notebook.output_files_tab.get_posac_out()
         self.ls1_out = self.notebook.output_files_tab.get_lsa1_out()
         self.ls2_out = self.notebook.output_files_tab.get_lsa2_out()
         # posacsep
-        self.posacsep = [2] * 8
+        self.posacsep = self.notebook.posacsep_tab.get_values()
 
     def run_posac(self):
+        # Validate before running
+        validation_errors = Validator.validate_for_run(self)
+        
+        if validation_errors:
+            error_message = "Please fix the following errors:\n\n"
+            error_message += "\n".join(f"• {error}" for error in validation_errors)
+            self.gui.show_warning("Validation Error", error_message)
+            return
+
+        # Continue with existing run code
         self._update_properties_from_gui()
         posac = PosacModule()
         posac.create_files(data_file=self.data_file,
@@ -366,10 +384,15 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                            init_approx=self.init_approx,
                            boxstring=self.boxstring,
                            form_feed=self.form_feed,
-                           shemor_directives=self.shemor_directives)
+                           shemor_directives_key=self.shemor_directives_key,
+                           record_length=self.record_length)
         try:
+            if self.gui.technical_options.get_settings()['posac_axes'] == 'Yes':
+                # The .pax file path is passed as the last parameter
+                posac_axes_out = self.gui.technical_options.get_settings()['posac_axes_out']
+                # ... run SSHEMOR with posac_axes_out as %6
             posac.run(self.pos_out, self.ls1_out, self.ls2_out,
-                      self.posacsep)
+                      self.posacsep, posac_axes_out=self.posac_axes_out)
             self.gui.show_msg("POSAC analysis completed successfully!",
                               title="POSAC")
         except Exception as e:

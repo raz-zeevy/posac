@@ -5,6 +5,17 @@ from lib.common import parse_range_string
 from lib.utils import *
 
 
+SHEMOR_DIRECTIVES = {
+    'A': """FOR X,Y RECODE 0 THRU  25 = 1,  26 THRU  50 = 2,
+              51 THRU  75 = 3,  76 THRU 100 = 4.
+FOR J,L RECODE 0 THRU  50 = 1,  51 THRU 100 = 2,
+             101 THRU 150 = 3, 151 THRU 200 = 4.""",
+    'B': """FOR X,Y RECODE  0 THRU 45 = 1, 46 THRU 75 = 2, 76 THRU 100 = 3.
+            FOR J RECODE 0 THRU 60 = 1, 61 THRU 110 = 2, 111 THRU 150 = 3,
+            151 THRU 200 = 4.
+            FOR L  RECODE 0 THRU 100 =1 , 101 THRU 200 = 2.""",
+}
+
 class PosacInputWriter:
     def __init__(self):
         pass
@@ -42,7 +53,8 @@ class PosacInputWriter:
                                 init_approx: List[List[float]] = None,
                                 boxstring: str = None,
                                 form_feed: str = None,
-                                shemor_directives: List[str] = None):
+                                shemor_directives_key: str = None,
+                                record_length: int = None):
 
         if not os.path.exists(RUN_FILES_DIR):
             os.makedirs(RUN_FILES_DIR)
@@ -76,7 +88,7 @@ class PosacInputWriter:
             if iff != 0:
                 self.write_form_feed(f, form_feed)
             if ifshmr != 0:
-                self.write_shemor_directives(f, shemor_directives)
+                self.write_shemor_directives(f, record_length, shemor_directives_key)
 
     def write_title_card(self, f, job_name: str):
         f.write(f"{job_name}\n")
@@ -130,13 +142,13 @@ class PosacInputWriter:
         for var in var_details:
             var_label_str += f"{int(var['index']):4}      {var['label']}\n"
         f.write(var_label_str)
+        
     def write_ext_var_ranges(self, f, ext_var_ranges: List[List[str]]):
         for i, var_ranges in enumerate(ext_var_ranges):
             f.write(f"{i+self.ex_var_first_i:4}{len(var_ranges):4}")
             for v_range in var_ranges:
                 l, h = parse_range_string(v_range)
-                f.write(f"{l:4}{h:4}")
-        f.write("\n")
+                f.write(f"{l:4}{h:4}\n")
 
     def write_traits(self, f, traits: List[Dict]):
         traits_str = ""
@@ -163,10 +175,10 @@ class PosacInputWriter:
     def write_form_feed(self, f, form_feed: str):
         f.write(f"{form_feed}\n")
 
-    def write_shemor_directives(self, f, shemor_directives: List[str]):
+    def write_shemor_directives(self, f, record_length : int, shemor_directives_key: List[str]):
         f.write("SHEMOR\n")
-        for directive in shemor_directives:
-            f.write(f"{directive}\n")
+        f.write(f"RECORD LENGTH  {record_length}\n")
+        f.write(f"{SHEMOR_DIRECTIVES[shemor_directives_key]}\n")
 
 
 # Example usage
@@ -223,5 +235,5 @@ if __name__ == "__main__":
         init_approx=None,
         boxstring=None,
         form_feed=None,
-        shemor_directives=None
+        shemor_directives_key=None
     )

@@ -1,8 +1,8 @@
 import tkinter as tk
 from lib.gui.components.form import BoldLabel, SpinBox
 from lib.gui.components.ranges_table import RangesTable
+from lib.help.posac_help import Help
 from lib.utils import rreal_size, real_size
-
 
 class EVRangesTab(tk.Frame):
     DEFAULT_VALUE = ['1', '1-9']
@@ -23,6 +23,7 @@ class EVRangesTab(tk.Frame):
         elif context == 'ranges':
             self.not_ranges_frame.pack_forget()
             self.main_frame.pack(fill='both', expand=True, padx=0, pady=0)
+            
     def _create_no_ranges_label(self):
         self.not_ranges_frame = tk.Frame(self)
         label = BoldLabel(self.not_ranges_frame,
@@ -39,7 +40,8 @@ class EVRangesTab(tk.Frame):
         label.pack(side='top', fill='both', padx=0, pady=(2, 0))
         # Ranges Table
         self.ranges_table_frame = tk.Frame(self.main_frame)
-        self.ranges_table = RangesTable(self.ranges_table_frame)
+        self.ranges_table = RangesTable(self.ranges_table_frame,
+                                        help=Help.EXTERNAL_VARS_RANGES)
         self.ranges_table_frame.pack(fill='both', expand=True, padx=10,
                                      pady=(0, 0))
         # Traits number
@@ -73,6 +75,9 @@ class EVRangesTab(tk.Frame):
         for row in self.ranges_table.get_all_values():
             res.append([item for item in row if item])
         return res
+
+    def get_all_ranges_values(self):
+        return [i[1:] for i in self.get_all_ranges()]
 
     def add_range(self, values_: list = [], check=True):
         """

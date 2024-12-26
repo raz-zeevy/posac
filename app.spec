@@ -9,6 +9,8 @@ a = Analysis(['app.py'],
              ('lib/assets/navigation', 'lib/assets/navigation'),
 			 ('lib/scripts/IdoPosac/*','lib/scripts/IdoPosac/'),
 			 ('README.md', '.'),
+              ('lib/help/*',
+              'lib/help/'),
 			 ('lib/gui/components/editable_tree_view/assets/*',
 			 'lib/gui/components/editable_tree_view/assets'),
              ('.env', '.')  # Include .env file in the root of the bundle

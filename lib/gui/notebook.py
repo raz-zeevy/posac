@@ -276,9 +276,9 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.general_tab.set(**state['general'])
         self.zero_option_tab.set(**state['zero_option'])
         for var in state['internal_variables']:
-            self.add_internal_variable(var, True)
+            self._add_internal_variable(var, True)
         for var in state['external_variables']:
-            self.add_external_variable(var, True)
+            self._add_external_variable(var, True)
         self.external_variables_ranges_tab.set_all(**state['external_variables_ranges'])
         self.traits_tab.set_traits(state['traits'])
         self.internal_recoding_tab.set_operations(state['internal_recoding'])

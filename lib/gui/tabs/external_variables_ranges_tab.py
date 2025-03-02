@@ -115,7 +115,7 @@ class EVRangesTab(tk.Frame):
 
     def get_all(self):
         return {
-            'ranges': self.get_all_ranges(),
+            'ranges': self.get_all_ranges_values(),
             'traits_num': self.get_external_traits_num()
         }
 

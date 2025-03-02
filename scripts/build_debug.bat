@@ -1,12 +1,9 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-:: Get version from .env file
-for /f "tokens=2 delims==" %%a in ('type ..\.env ^| findstr "VERSION"') do set VERSION=%%a
-set VERSION=%VERSION: =%
-
-:: Change to root directory
-cd ..
+:: Get version from __version__.py file
+for /f "tokens=2 delims='='" %%a in ('type lib\__version__.py') do set VERSION=%%a
+set VERSION=%VERSION:"=%
 
 :: Activate virtual environment
 if exist venv\Scripts\activate (

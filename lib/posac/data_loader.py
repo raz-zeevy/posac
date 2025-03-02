@@ -157,7 +157,8 @@ def load_other_formats(
         raise DataLoadingException("Failed to load any rows from the file.")
 
     if failed_rows:
-        print(f"Warning: Failed to load rows at indices: {failed_rows}")
+        
+        (f"Warning: Failed to load rows at indices: {failed_rows}")
 
     return np.array(data, dtype=int)
 

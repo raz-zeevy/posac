@@ -60,26 +60,10 @@ class InternalRecodingTab(tk.Frame):
         
         # Recoding Content Frame - Hidden when no operations
         self.recoding_content = tk.Frame(self.main_frame)
-        self.intro_frame = tk.Frame(self.recoding_content)
-        self.intro_frame.pack(fill='x', padx=10, pady=real_size(5))
-        # Instruction Label
-        instruction_label = Label(
-            self.intro_frame,
-            text=(
-                "To recode variables, enter the indices of selected variables "
-                "(e.g., 1, 5, 8-13) in the 'Variable Indices' box."
-                "Select one of the following options: "
-                "Free Recoding: Assign new values to existing (old) values. "
-                "Value Reversal: Reverse the order of existing valid values of the variable/s."
-            ),
-            wraplength=rreal_size(WINDOW_WIDTH)-real_size(100),
-            justify="left"
-        )
-        instruction_label.pack(side="left", pady=(10, 5), padx=10)
-        
+
         # Operation Selection and Variable Selection in same frame
         selection_frame = tk.Frame(self.recoding_content)
-        selection_frame.pack(fill='x', padx=10, pady=real_size(5))
+        selection_frame.pack(fill='x', padx=10, pady=real_size(2))
         
         # Operation Number (Left side)
         operation_label = Label(selection_frame, text='Subset of variables to recode')
@@ -88,26 +72,53 @@ class InternalRecodingTab(tk.Frame):
         self.operation_box = SelectionBox(selection_frame, values=['1'])
         self.operation_box.bind('<<ComboboxSelected>>', self._on_operation_change)
         self.operation_box.pack(side='left', padx=(0, 20))
-        
-        # Variable Selection (Right side)
-        Label(selection_frame, text="Variable Indices:").pack(side='left', padx=(0, 5))
-        self.var_index_entry = Entry(selection_frame, width=20,
-                                     help = Help.RECODE_FUNCTION)
-        self.var_index_entry.pack(side='left')
+
+        # Instruction Label
+        self.intro_frame = tk.Frame(self.recoding_content)
+        self.intro_frame.pack(fill='x', padx=10, pady=real_size(2))
+        instruction_label = Label(
+            self.intro_frame,
+            text=(
+                "To recode variables, enter the indices of selected variables "
+                "(e.g., 1, 5, 8-13) in the 'Variable Indices' box."
+                " Select one of the following options:\n"
+                "- Manual Recoding: Assign new values to existing (old) values.\n"
+                "- Inversion: Reverse the order of existing valid values of the variable/s."
+            ),
+            wraplength=rreal_size(WINDOW_WIDTH)-real_size(100),
+            justify="left"
+        )
+        instruction_label.pack(side="left", pady=(0, 2), padx=10)
 
         # Operation Type Selection
-        self.operation_type_frame = tk.Frame(self.recoding_content)
-        self.operation_type_frame.pack(fill='x', padx=10, pady=(5,0))
+        operation_type_frame = tk.Frame(self.recoding_content)
+        operation_type_frame.pack(fill='x', padx=10, pady=(2,0))
         
-        Label(self.operation_type_frame, text="Recoding Type:").pack(side='left', padx=(0, 5))
-        self.operation_type = ttk.Combobox(
-            self.operation_type_frame, 
-            values=["Free Recoding", "Value Reversal"],
-            state="readonly"
-        )
-        self.operation_type.set("Free Recoding")  # default value
-        self.operation_type.pack(side='left')
-        self.operation_type.bind('<<ComboboxSelected>>', self._on_type_change)
+        Label(operation_type_frame, text="Recoding Type:").pack(side='left', padx=(0, 5))
+        
+        # Radio button variable
+        self.operation_type = tk.StringVar(value="Manual Recoding")
+        
+        # Create radio buttons
+        ttk.Radiobutton(operation_type_frame, 
+                       text="Manual Recoding",
+                       variable=self.operation_type,
+                       value="Manual Recoding",
+                       command=self._on_type_change).pack(side='left', padx=5)
+                       
+        ttk.Radiobutton(operation_type_frame,
+                       text="Inversion",
+                       variable=self.operation_type,
+                       value="Inversion",
+                       command=self._on_type_change).pack(side='left', padx=5)
+
+        # Variable Selection Frame (moved below operation type)
+        var_selection_frame = tk.Frame(self.recoding_content)
+        var_selection_frame.pack(fill='x', padx=10, pady=(5,0))
+        Label(var_selection_frame, text="Variable Indices:").pack(side='left', padx=(0, 5))
+        self.var_index_entry = Entry(var_selection_frame, width=20,
+                                   help=Help.RECODE_FUNCTION)
+        self.var_index_entry.pack(side='left')
 
         # Manual Recoding Frame
         self.manual_recoding_frame = ttk.LabelFrame(self.recoding_content, text="Free Recoding")
@@ -146,7 +157,6 @@ class InternalRecodingTab(tk.Frame):
         self.invert_var = tk.BooleanVar()
         self.invert_var.trace_add('write', lambda *args: self._update_current_operation())
         self.invert_check = ttk.Checkbutton(self.inversion_frame, variable=self.invert_var, bootstyle="round-toggle")
-        self.invert_check.pack(side='right', padx=real_size((0, 40)))
 
     def _create_treeview(self, parent_frame):
         tree_frame = ttk.Frame(parent_frame)
@@ -266,17 +276,20 @@ class InternalRecodingTab(tk.Frame):
         # Load new operation state
         self.var_index_entry.insert(0, ','.join(map(str, operation.selected_variables)))
         
-        # Set operation type and load pairs
+        # Set operation type based on operation data
         if operation.recoding_pairs:
-            self.operation_type.set("Free Recoding")
-            for old_val, new_val in operation.recoding_pairs:
-                self.pair_tree.insert('', 'end', values=(old_val, new_val))
+            self.operation_type.set("Manual Recoding")
         elif operation.invert:
-            self.operation_type.set("Value Reversal")
+            self.operation_type.set("Inversion")
         else:
-            self.operation_type.set("Free Recoding")
+            self.operation_type.set("Manual Recoding")  # default
             
-        self._on_type_change()
+        self._on_type_change()  # Update frame visibility
+        
+        # Load pairs if any
+        for old_val, new_val in operation.recoding_pairs:
+            self.pair_tree.insert('', 'end', values=(old_val, new_val))
+        
         self.invert_var.set(operation.invert)
         self.operation_box.set(str(operation_num))
     
@@ -449,7 +462,7 @@ class InternalRecodingTab(tk.Frame):
 
     def _on_type_change(self, event=None):
         selected_type = self.operation_type.get()
-        if selected_type == "Free Recoding":
+        if selected_type == "Manual Recoding":
             self.manual_recoding_frame.pack(fill='both', expand=True, padx=10, pady=(10, 10))
             self.inversion_frame.pack_forget()
             self.invert_var.set(False)  # Turn off inversion

@@ -152,5 +152,5 @@ class ScenTest(Controller):
 if __name__ == '__main__':
     a = ScenTest()
     a.simple_test()
-    # a.jneeds()
+    a.jneeds()
     a.run_process()

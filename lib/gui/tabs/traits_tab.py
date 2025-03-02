@@ -180,6 +180,8 @@ class TraitsTab(tk.Frame):
         self._current_trait = i
 
     def set_trait(self, i, label=None, data: List[List] = None):
+        if i > len(self._traits):
+            raise ValueError(f'Trait index {i} is out of bounds for the number of traits {len(self._traits)}')
         if label is not None:
             self._traits[i - 1].label = label
         if data is not None:
@@ -188,9 +190,12 @@ class TraitsTab(tk.Frame):
             self.select_trait(i)
 
     def set_traits(self, traits):
+        self._traits = [self.TraitData(None, None) for _ in traits]
         for i, trait in enumerate(traits):
             self.set_trait(i+1, label=trait.label,
                            data=trait.data)
+            self.select_trait(i+1)
+            
 
     #######
     # API #

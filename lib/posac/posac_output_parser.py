@@ -62,7 +62,7 @@ class OutputParser:
         )
         while not self.current_row == "\n":
             row = self.current_row.replace("*"," ")
-            row_data = [i for i in row.split("   ") if i]
+            row_data = [i for i in row.split("  ") if i]
             graph_coords['index'].append(int(row_data[0]))
             graph_coords['profiles'].append(row_data[1])
             graph_coords['x'].append(float(row_data[4]))

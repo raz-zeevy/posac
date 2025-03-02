@@ -50,7 +50,6 @@ class GUI():
         self.root.resizable(True, True)
         EditableTreeView.configure_style(
             row_height=real_size(30))
-
         # init common gui
         self.center_window()
         #
@@ -58,6 +57,7 @@ class GUI():
         self.init_window()
         self.navigator = Navigator(self)
         self.view_results = None
+        
 
     def run_process(self):
         self.root.mainloop()
@@ -131,7 +131,7 @@ class GUI():
     def set_options(self, **options):
         OptionsWindow.set(**options)
         
-    def get_technical_option(self, *args):
+    def get_technical_options(self, *args):
         if not args:
             return OptionsWindow.DEFAULT_VALUES
         else:
@@ -181,27 +181,18 @@ class GUI():
         """
         pass
 
-    def run_button_dialogue(self):
-        default_output_file_name = self.get_input_file_name().split(".")[
-                                       0] + ".fss"
-        output_file_path = self.save_file_diaglogue(
-            file_types=[('fss', '*.fss')],
-            default_extension='.fss',
-            initial_file_name=default_output_file_name,
-            title="Save Output File To...")
-        return output_file_path
-
-    def save_session_dialogue(self):
+    def save_session_dialogue(self, data_file_name=""):
         file_name = filedialog.asksaveasfilename(filetypes=[('Memory files',
                                                              f'*.{SESSION_FILE_EXTENSION}')],
                                                  defaultextension=f'.{SESSION_FILE_EXTENSION}',
                                                  title="Save Posac Session",
-                                                 confirmoverwrite=True)
+                                                 confirmoverwrite=True,
+                                                 initialfile=data_file_name)
         return file_name
 
     def open_session_dialogue(self):
-        file_name = filedialog.askopenfilename(filetypes=[f'{SESSION_FILE_EXTENSION}',
-                                                          f'*.{SESSION_FILE_EXTENSION}'],
+        file_name = filedialog.askopenfilename(filetypes=[(f'{SESSION_FILE_EXTENSION}',
+                                                          f'*.{SESSION_FILE_EXTENSION}')],
                                                title="Open Posac Session")
         return file_name
 
@@ -216,8 +207,8 @@ class GUI():
     # Menus #
     #########
 
-    def enable_view_results(self):
-        self.menu.enable_view_results()
+    def enable_view_results(self, posac_axes=False):
+        self.menu.enable_view_results(posac_axes)
         self.view_results = True
 
     def disable_view_results(self):

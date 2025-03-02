@@ -1,3 +1,4 @@
+from pathlib import Path
 import pytest
 import os
 from lib.utils import SET_MODE_TEST
@@ -33,15 +34,28 @@ class TestScenarios:
     def _setup_visual_test(self):
         """Setup visual testing environment with Done button and instructions"""
         def on_done():
+            buttons_frame.destroy()
             self.controller.gui.root.quit()
         
+        def on_open_run_dir():
+            from lib.posac.posac_module import PosacModule
+            PosacModule.open_running_files_dir()
+            
+        buttons_frame = ttk.Frame(self.controller.gui.root)
+        buttons_frame.pack(side='bottom', pady=10)
         done_button = ttk.Button(
-            self.controller.gui.root,
+            buttons_frame,
             text="Done Testing",
             command=on_done
         )
-        done_button.pack(side='bottom', pady=10)
-                
+        done_button.pack(side='left',padx=3)
+        
+        open_run_dir_button = ttk.Button(
+            buttons_frame,
+            text="Open Run Directory",
+            command=on_open_run_dir
+        )
+        open_run_dir_button.pack(side='left',padx=3)
         self.controller.gui.root.mainloop()
 
     def _setup_base_scenario(self, job_name: str, data_file: str):
@@ -132,7 +146,8 @@ class TestScenarios:
         self.controller.gui.navigator.next_page()
         output_dir = self._setup_output_files("simple_test")
         self.controller.run_posac()
-        self.controller.gui.enable_view_results()
+        self.controller.enable_view_output()
+        self.controller.save_session(Path(output_dir).parent /  "simple_test.session")
         
         return {
             'posac_drv': os.path.abspath('tests/simple_test/posainp.DRV'),
@@ -158,8 +173,8 @@ class TestScenarios:
         
         output_dir = self._setup_output_files("jneeds")
         self.controller.run_posac()
-        self.controller.gui.enable_view_results()
-        
+        self.controller.enable_view_output()
+        self.controller.save_session(Path(output_dir).parent /  "jneeds.session")
         return {
             'posac_drv': os.path.abspath('tests/jneeds/posainp.DRV'),
             'job_pos': os.path.join(output_dir, "job1.pos"),
@@ -224,6 +239,7 @@ class TestScenarios:
         self.notebook.traits_tab.add_trait('trait2 served army', [['5', '1', '1-4'], ['6', '1', '2-4']])
         self.notebook.traits_tab.add_trait('trait3 combat', [['5', '1', '1-4'], ['6', '1', '4-4']])
         self.notebook.traits_tab.add_trait('trait4 suff inc & service', [['5', '1', '1-2'], ['6', '1', '2-4']])
+        self.notebook.external_variables_ranges_tab.set_traits_num(4)
         # Technical options RECORD LENGTH
         self.controller.gui.set_options(record_length=80)
         self.controller.gui.set_options(set_selection='A')
@@ -233,8 +249,8 @@ class TestScenarios:
         posac_axes_out = os.path.abspath(os.path.join(output_dir, "test.pax"))
         self.controller.gui.set_options(posac_axes_out=posac_axes_out)
         self.controller.run_posac()
-        self.controller.gui.enable_view_results()
-        
+        self.controller.enable_view_output()
+        self.controller.save_session(Path(output_dir).parent /  "w250.session")
         
         return {
             'posac_drv': os.path.abspath(os.path.join(test_dir, 'posainp.DRV')),
@@ -242,21 +258,25 @@ class TestScenarios:
             'expected_pos': os.path.abspath(os.path.join(test_dir, 'results', 'job1.pos')),
             'posac_axes_out': posac_axes_out
         }
-
-    # def test_simple_scenario(self, visual_mode):
-    #     """Test the simple scenario with optional visual validation"""
-    #     results = self.run_simple_scenario()
-    #     if visual_mode:
-    #         self._setup_visual_test()
-
-    # def test_jneeds_scenario(self, visual_mode):
-    #     """Test the JNEEDS scenario with optional visual validation"""
-    #     results = self.run_jneeds_scenario()
-    #     if visual_mode:
-    #         self._setup_visual_test()
             
     def test_w250_scenario(self, visual_mode):
         """Test the W250 scenario with optional visual validation"""
         results = self.run_w250_scenario()
         if visual_mode:
             self._setup_visual_test()
+            
+    def test_jneeds_scenario(self, visual_mode):
+        """Test the JNEEDS scenario with optional visual validation"""
+        results = self.run_jneeds_scenario()
+        if visual_mode:
+            self._setup_visual_test()
+            
+    def test_simple_scenario(self, visual_mode):
+        """Test the simple scenario with optional visual validation"""
+        results = self.run_simple_scenario()
+        if visual_mode:
+            self._setup_visual_test()
+            
+            
+            
+    

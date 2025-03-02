@@ -1,14 +1,13 @@
 @echo off
 cd ../
 
-:: Load the version from the .env file
-for /f "tokens=2 delims==" %%A in ('findstr APP_VERSION .env') do (
-    set "APP_VERSION=%%A"
-)
+:: Load the version from __version__.py
+for /f "tokens=2 delims='='" %%a in ('type lib\__version__.py') do set APP_VERSION=%%a
+set APP_VERSION=%APP_VERSION:"=%
 
 :: Check if APP_VERSION is set
 if "%APP_VERSION%"=="" (
-    echo Error: APP_VERSION is not set in the .env file.
+    echo Error: APP_VERSION could not be read from lib/__version__.py
     exit /b 1
 )
 

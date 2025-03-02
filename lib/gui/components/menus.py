@@ -49,11 +49,13 @@ class Menu(tk.Menu):
         self.add_command(label="Options")
         # Help Menu
         self.help_menu = tk.Menu(self)
-        self.help_menu.add_command(label="Contents")
         self.help_menu.add_command(label="About Posac")
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def add_posacsep_items(self, items_num):
+        # remove current items
+        self.posacsep.delete(0, "end")
+        # add new items
         for i in range(1, items_num+1):
             self.posacsep.add_command(label=f"Item {i}",
                                       command=None)
@@ -68,7 +70,7 @@ class Menu(tk.Menu):
         parent_menu.add_cascade(label=label, menu=submenu)
         return submenu
 
-    def enable_view_results(self):
+    def enable_view_results(self, posac_axes=False):
         self.view_menu.entryconfig(m_POSAC_OUTPUT,
                                         state="normal")
         self.view_menu.entryconfig("LSA1 Output",
@@ -81,7 +83,8 @@ class Menu(tk.Menu):
                                         state='normal')
         self.view_menu.entryconfig(m_POSACSEP_DIAG,
                                         state='normal')
-        self.view_menu.entryconfig(m_POSAC_AXES_FILE,
+        if posac_axes:
+            self.view_menu.entryconfig(m_POSAC_AXES_FILE,
                                         state='normal')
 
     def disable_view_results(self):
@@ -99,6 +102,40 @@ class Menu(tk.Menu):
                                         state='disable')
         self.view_menu.entryconfig(m_POSAC_AXES_FILE,
                                         state='disable')
+        
+    def update_history_menu(self, paths, max_length=30):
+        """
+        In the file menu, remove all existing path items after the "Exit" item,
+        add a separating line below the "Exit" item, and then add each path item from the list.
+        :param paths: A list of file paths to add to the menu.
+        :return: None
+        """
+
+        def truncate_path(path, max_length):
+            if len(path) > max_length:
+                return "..." + path[-(max_length - 3):]
+            return path
+
+        # Find the index of the "Exit" item
+        exit_index = None
+        for index in range(self.file_menu.index('end') + 1):
+            if self.file_menu.type(
+                    index) == 'command' and self.file_menu.entrycget(index,
+                                                                     'label') == 'Exit':
+                exit_index = index
+                break
+
+        if exit_index is not None:
+            # Remove all items after the "Exit" item
+            self.file_menu.delete(exit_index + 1, 'end')
+
+            if paths:
+                # Add a separator before the new paths
+                self.file_menu.add_separator()
+                for path in paths:
+                    truncated_path = truncate_path(path, max_length)
+                    self.file_menu.add_command(label=truncated_path)
+                    
 class IconMenu(tk.Frame):
     def __init__(self, root):
         super().__init__(root, autostyle=False, pady=3, padx=5)

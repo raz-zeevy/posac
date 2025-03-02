@@ -1,3 +1,4 @@
+import copy
 from lib.gui.components.form import BoldLabel, BrowseButton, SelectionBox, SpinBox
 from lib.gui.components.form import Label, Entry
 from lib.gui.components.help_bar import HelpBar
@@ -166,6 +167,7 @@ class OptionsWindow(Window):
         record_length=80,
         posac_axes_out=''
     )
+    RESET_VALUES = copy.deepcopy(DEFAULT_VALUES)
 
     def __init__(self, gui, **kwargs):
         width, height = rreal_size(625), rreal_size(475)
@@ -356,6 +358,7 @@ class OptionsWindow(Window):
                 raise ValueError(f"Unknown setting: {key}")
 
         OptionsWindow.DEFAULT_VALUES.update(settings)
+        
     def apply_settings(self):
         settings = self.get_settings()
         self.__class__.DEFAULT_VALUES.update(settings)
@@ -366,7 +369,7 @@ class OptionsWindow(Window):
 
     @staticmethod
     def reset_default():
-        OptionsWindow.set(**OptionsWindow.DEFAULT_VALUES)
+        OptionsWindow.set(**OptionsWindow.RESET_VALUES)
 
 # Example of how to use the window and set default values:
 if __name__ == "__main__":

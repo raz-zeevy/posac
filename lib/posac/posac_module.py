@@ -132,6 +132,8 @@ class PosacModule:
                      form_feed: str = None,
                      shemor_directives_key: str = None,
                      record_length: int = None):
+        if not os.path.exists(RUN_FILES_DIR):
+            os.makedirs(RUN_FILES_DIR)
         input_writer = PosacInputWriter()
         self.prepare_data_file(data_file, lines_per_var, variables_details, recoding_operations)
         input_writer.create_posac_input_file(job_name=job_name,
@@ -296,6 +298,14 @@ class PosacModule:
                 print("Command succeeded:", result.stdout)
             else:
                 print("Command failed with error:", result.stderr)
+
+    @staticmethod
+    def open_running_files_dir():
+        run_dir = RUN_FILES_DIR
+        if os.path.exists(run_dir):
+            os.startfile(run_dir)
+        else:
+            print(f"Run directory {run_dir} does not exist")
 
 if __name__ == '__main__':
     """

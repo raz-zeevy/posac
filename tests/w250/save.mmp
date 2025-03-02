@@ -1,0 +1,198 @@
+{
+  "notebook": {
+    "general": {
+      "job_name": "w250",
+      "data_file": "tests\\w250\\w250recd.dat",
+      "lines_per_case": 1,
+      "plot_item_diagram": true,
+      "plot_external_diagram": true,
+      "only_freq": 0,
+      "posac_type": "D",
+      "subject_type": "S",
+      "id_location": {
+        "py/tuple": [
+          0,
+          0
+        ]
+      }
+    },
+    "zero_option": {
+      "zero_option": true
+    },
+    "internal_variables": [
+      [
+        "1",
+        "1",
+        "64",
+        "v1",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "65",
+        "v2",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "66",
+        "v3",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "67",
+        "v4",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables": [
+      [
+        "1",
+        "1",
+        "128",
+        "xv1",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "129",
+        "xv2",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables_ranges": {
+      "ranges": [
+        [
+          "1",
+          "1-4"
+        ],
+        [
+          "1",
+          "1-4"
+        ]
+      ],
+      "traits_num": 0
+    },
+    "traits": [
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait1 suff-income",
+        "data": [
+          [
+            "5",
+            "1",
+            "1-2"
+          ],
+          [
+            "6",
+            "1",
+            "1-4"
+          ]
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait2 served army",
+        "data": [
+          {
+            "py/tuple": [
+              "5",
+              "1",
+              "1-4"
+            ]
+          },
+          {
+            "py/tuple": [
+              "6",
+              "1",
+              "2-4"
+            ]
+          }
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait3 combat",
+        "data": [
+          {
+            "py/tuple": [
+              "5",
+              "1",
+              "1-4"
+            ]
+          },
+          {
+            "py/tuple": [
+              "6",
+              "1",
+              "4-4"
+            ]
+          }
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait4 suff inc & service",
+        "data": [
+          {
+            "py/tuple": [
+              "5",
+              "1",
+              "1-2"
+            ]
+          },
+          {
+            "py/tuple": [
+              "6",
+              "1",
+              "2-4"
+            ]
+          }
+        ]
+      }
+    ],
+    "internal_recoding": [],
+    "posacsep": {
+      "posacsep": true,
+      "values": [
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    "output_files": {
+      "posac": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.pos",
+      "lsa1": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.ls1",
+      "lsa2": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.ls2"
+    }
+  },
+  "navigator": 2,
+  "view_results": true,
+  "options": {
+    "ascii_output": "No",
+    "special_graphic_char": "",
+    "form_feed": "",
+    "power_weights_low": 4,
+    "power_weights_high": 4,
+    "max_iterations": 15,
+    "posac_axes": "Yes",
+    "set_selection": "A",
+    "record_length": 80,
+    "posac_axes_out": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\test.pax"
+  },
+  "controller": {
+    "save_path": "C:/Users/Raz_Z/Projects/Shmuel/posac/tests/w250/save.mmp"
+  }
+}

@@ -31,12 +31,22 @@ class DiagramWindow(Window):
          "captions", "geom" keys
         """
         self.title("Posac Solution")
+        # make the dpi not adjust to the system only for this window
+        # Set fixed window size instead of DPI scaling
+        window_width = rreal_size(800)  # or whatever size you prefer
+        window_height = rreal_size(600)
+        self.master.tk.call('tk', 'scaling', 1.2)
+        # Process DPI Unaware
+        # from ctypes import windll
+        # windll.shcore.SetProcessDpiAwareness(0)  # 0 = Process DPI Unaware
+        self.geometry(f"{window_width}x{window_height}")
+        self.resizable(True, True)
         # self.iconbitmap(get_resource("icon.ico"))
         # sets the geometry of toplevel
         self.graph_data_lst = graph_data_lst
         self.index = 0
         # init
-        self.create_navigation()
+        self.create_bottom_panel()
         self.create_menu()
         self.main_frame = ttk.Frame(self)
         self.main_frame.pack(side=tk.TOP,
@@ -280,26 +290,37 @@ class DiagramWindow(Window):
         axes.set_ylim([start_y - y_offset, end_y + y_offset])
         figure_canvas.get_tk_widget().pack(side=tk.TOP)
 
-    def create_navigation(self):
-        # Navigation Buttons Frame
+    def create_bottom_panel(self):
+        # Bottom Buttons Frame
         frame_navigation = ttk.Frame(self)
         # pack the navigation at the bottom of the screen but above the help
         # bar
-        frame_navigation.pack(side=ttk.BOTTOM, fill='x', padx=10,
-                              pady=(0, 40))
+        frame_navigation.pack(side=ttk.BOTTOM, fill='x', padx=real_size(10),
+                              pady=real_size((0, 40)))
         center_frame = ttk.Frame(frame_navigation)
-        center_frame.pack(pady=5, expand=False)
+        center_frame.pack(pady=real_size(5), expand=False)
         self.button_previous = NavigationButton(center_frame,
                                                 text="Previous",
                                                 command=self.previous_graph, )
-        self.button_previous.pack(side=ttk.LEFT, padx=20)
+        self.button_previous.pack(side=ttk.LEFT, padx=real_size(20))
         self.button_next = NavigationButton(center_frame, text="Next",
                                             command=self.next_graph, )
-        self.button_next.pack(side=ttk.LEFT, padx=20, )
+        self.button_next.pack(side=ttk.LEFT, padx=real_size(20))
+        self.button_save_figure = NavigationButton(center_frame,
+                                                    text="Save Figure",
+                                                    command=self.save_figure, )
+        self.button_save_figure.pack(side=ttk.LEFT, padx=real_size(20))
         self.button_exit = NavigationButton(center_frame, text="Exit",
                                             bootstyle='secondary',
                                             command=self.exit, )
-        self.button_exit.pack(side=ttk.LEFT, padx=20)
+        self.button_exit.pack(side=ttk.LEFT, padx=real_size(20))
+        # modify permanent state of the buttons
+        if len(self.graph_data_lst) == 1:
+            self.button_previous.state(["disabled"])
+            self.button_next.state(["disabled"])
+        else:
+            self.button_previous.state(["!disabled"])
+            self.button_next.state(["!disabled"])
 
 
 if __name__ == "__main__":

@@ -13,7 +13,6 @@ a = Analysis(['app.py'],
               'lib/help/'),
 			 ('lib/gui/components/editable_tree_view/assets/*',
 			 'lib/gui/components/editable_tree_view/assets'),
-             ('.env', '.')  # Include .env file in the root of the bundle
 			 ],
              hiddenimports=[],
              hookspath=[],

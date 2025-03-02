@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 import subprocess
 import warnings
 import logging
@@ -8,6 +10,7 @@ from lib.gui.gui import GUI
 from lib.posac.posac_module import PosacModule
 from lib.utils import IS_PRODUCTION, POSAC_SEP_PATH, SET_MODE_TEST
 from lib.controller.validator import Validator
+from lib.controller.sessions_history import SessionsHistory
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +26,7 @@ class Controller:
         
         self.gui = GUI()
         self.notebook = self.gui.notebook
+        self.history = SessionsHistory(callback=self.update_history)
         self.bind()
         self.restart_session()
         self.gui.navigator.prev_page()
@@ -67,6 +71,8 @@ class Controller:
         self.gui.icon_menu.m_button_redo.configure(command=self.gui.notebook.redo)
         # Help (work that on click it sends the key F1 event as if the user pressed F1)
         self.gui.icon_menu.m_button_help.configure(command=lambda: self.gui.root.event_generate('<KeyPress-F1>'))
+        self.gui.menu.help_menu.entryconfig("About Posac",
+                                            command=self.gui.show_about_window)
         # Exit
         self.gui.root.protocol("WM_DELETE_WINDOW", self.on_close)
         self.gui.notebook.output_files_tab.exit_button.config(
@@ -108,18 +114,40 @@ class Controller:
         self.save_path = path
         self.gui.set_save_title(self.save_path)
 
+
     ##############
     # Save Load  #
     # & New      #
     ##############
+
+
+    def update_history(self):
+        """
+        this function gets at most 4 last sessions path's and updates
+        the menu under file section with the paths and bind them with load_path
+        :return:
+        """
+        paths = self.history.get_n(4)
+        self.gui.menu.update_history_menu(paths)
+        # Bind each path to the corresponding menu item using its index
+        menu_start_index = self.gui.menu.file_menu.index('end') - len(
+            paths) + 1  # Start index of the new paths
+        for i, path in enumerate(paths):
+            self.gui.menu.file_menu.entryconfig(menu_start_index + i,
+                                           command=lambda
+                                               p=path: self.load_session(p))
+
     def restart_session(self):
         Session.reset(self)
+        self.update_history()
 
     def save_session(self, path):
         session = Session(self)
+        self.history.add(str(path))
         session.save(path)
 
     def load_session(self, path):
+        self.history.add(path)
         session = Session(path=path)
         session.load(self)
 
@@ -172,7 +200,8 @@ class Controller:
             self.save_session(self.save_path)
 
     def show_save_as_session(self):
-        save_file = self.gui.save_session_dialogue()
+        default_file_name = Path(self.gui.notebook.general_tab.get_data_file()).stem
+        save_file = self.gui.save_session_dialogue(default_file_name)
         if save_file:
             self.update_save_path(save_file)
             self.save_session(save_file)
@@ -250,14 +279,16 @@ class Controller:
         self.bind_submenu(self.gui.menu.lsa2_output_menu, file=self.ls2_out)
         self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=None)
         self.bind_submenu(self.gui.menu.posac_axes_menu, file=self.posac_axes_out)
-        self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=POSAC_SEP_PATH)
+        posac_axes = self.gui.get_technical_options('posac_axes') == "Yes"
+        if posac_axes:
+            self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=POSAC_SEP_PATH)
         self.gui.menu.add_posacsep_items(self.int_vars_num)
         for i in range(1, self.int_vars_num + 1):
             self.gui.menu.posacsep.entryconfig(f"Item {i}",
                                                command=lambda:
                                                self.show_posacsep_diagram_window(
                                                    i))
-        self.gui.enable_view_results()
+        self.gui.enable_view_results(posac_axes)
 
     ###################
     # POSAC execution #
@@ -310,13 +341,13 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         self.iboxstrng = 0;
         self.iff = 0;
         self.form_feed = None;
-        self.itrm = self.gui.get_technical_option('max_iterations')
+        self.itrm = self.gui.get_technical_options('max_iterations')
         self.iwrtfls = 0;
-        self.ifshmr = self.gui.get_technical_option('posac_axes') == 'Yes'
-        self.shemor_directives_key = self.gui.get_technical_option('set_selection')
-        self.record_length = self.gui.get_technical_option('record_length')
+        self.ifshmr = self.gui.get_technical_options('posac_axes') == 'Yes'
+        self.shemor_directives_key = self.gui.get_technical_options('set_selection')
+        self.record_length = self.gui.get_technical_options('record_length')
         self.ifrqone = 0
-        self.posac_axes_out = self.gui.get_technical_option('posac_axes_out')
+        self.posac_axes_out = self.gui.get_technical_options('posac_axes_out')
         # C
         vars = self.notebook.internal_variables_tab.get_all_variables_values()
         vars.extend([int(var[0]) + self.int_vars_num] + list(var[1:]) for
@@ -332,8 +363,8 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         # todo: fix
         self.min_category = 0
         self.max_category = 0
-        self.nd1 = self.gui.get_technical_option('power_weights_low')
-        self.nd2 = self.gui.get_technical_option('power_weights_high')
+        self.nd1 = self.gui.get_technical_options('power_weights_low')
+        self.nd2 = self.gui.get_technical_options('power_weights_high')
         # External Variables Ranges
         self.ext_var_ranges = self.notebook.external_variables_ranges_tab. \
             get_all_ranges_values()
@@ -387,12 +418,13 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                            shemor_directives_key=self.shemor_directives_key,
                            record_length=self.record_length)
         try:
-            if self.gui.technical_options.get_settings()['posac_axes'] == 'Yes':
+            technical_options = self.gui.get_technical_options()
+            if technical_options['posac_axes'] == 'Yes':
                 # The .pax file path is passed as the last parameter
-                posac_axes_out = self.gui.technical_options.get_settings()['posac_axes_out']
+                posac_axes_out = technical_options['posac_axes_out']
                 # ... run SSHEMOR with posac_axes_out as %6
             posac.run(self.pos_out, self.ls1_out, self.ls2_out,
-                      self.posacsep, posac_axes_out=self.posac_axes_out)
+                      self.posacsep, posac_axes_out=posac_axes_out)
             self.gui.show_msg("POSAC analysis completed successfully!",
                               title="POSAC")
         except Exception as e:

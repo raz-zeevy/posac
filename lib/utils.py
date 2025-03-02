@@ -90,7 +90,8 @@ p_OUTPUT_FILE = os.path.join(p_OUTPUT_DIR, OUTPUT_FILE_NAME)
 P_POSACSEP_DIR = os.path.join(get_script_dir_path(), "POSACSEP.OUT")
 
 # Input paths
-RUN_FILES_DIR = "..\\run_files"
+RUN_FILES_DIR = os.getenv('APPDATA') + "\\Posac\\run_files"
+SESSIONS_HISTORY = os.getenv('APPDATA') + "\\Posac\\sessions_history.txt"
 RUN_FILES_DIR = os.path.join(get_script_dir_path(), RUN_FILES_DIR)
 DRV_IN_NAME = "POSACINP.DRV"
 DATA_FILE_NAME = "POSACDATA.DAT"
@@ -101,39 +102,10 @@ p_DATA_FILE_ORG = os.path.join(RUN_FILES_DIR, DATA_FILE_NAME_ORG)
 INPUT_MATRIX_FORMAT = "(8F10.7)"
 POSAC_SEP_OUT = "POSACSEP.TAB"
 POSAC_SEP_PATH = os.path.join(get_script_dir_path(), POSAC_SEP_OUT)
-# Results
-
-RESULTS_SUCCESS_STDERR = "STOP SSA terminated successfully."
-
-### Gui
-
-START_PAGE_NAME = "StartPage"
-INPUT_PAGE_NAME = "InputPage"
-MATRIX_INPUT_PAGE_NAME = "MatrixInputPage"
-DATA_PAGE_NAME = "DataPage"
-DIMENSIONS_PAGE_NAME = "DimensionsPage"
-FACET_PAGE_NAME = "FacetPage"
-FACET_VAR_PAGE_NAME = "FacetVarPage"
-MANUAL_FORMAT_PAGE_NAME = "ManualFormatPage"
-HYPOTHESIS_PAGE_NAME = "HypothesisPage"
-FACET_DIM_PAGE_NAME = "FacetDimPage"
 
 ########
 # Help #
 ########
-
-help_pages_dict = {
-    START_PAGE_NAME: "start_screen",
-    INPUT_PAGE_NAME: "recorded_data_screen",
-    DATA_PAGE_NAME: "data_screen",
-    DIMENSIONS_PAGE_NAME: "dimensions_and_coefficients_screen",
-    FACET_PAGE_NAME: "facets_definition_screen",
-    FACET_VAR_PAGE_NAME: "variable_elements_in_facets_screen",
-    MANUAL_FORMAT_PAGE_NAME: "variable_definition_screen",
-    HYPOTHESIS_PAGE_NAME: "hypotheses_screen",
-    FACET_DIM_PAGE_NAME: "contents"
-}
-
 
 ##################
 #   Resources    #

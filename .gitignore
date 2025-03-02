@@ -15,3 +15,5 @@ scripts/email/config/
 *.ls1
 *.ls2
 *.pax
+*.OUT
+*.TAB

@@ -6,3 +6,12 @@ tests/output
 /build
 /dist
 .env
+.vscode/
+.pytest_cache/
+.idea/
+scripts/email/config/
+*.SCR
+*.pos
+*.ls1
+*.ls2
+*.pax

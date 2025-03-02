@@ -423,6 +423,8 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                 # The .pax file path is passed as the last parameter
                 posac_axes_out = technical_options['posac_axes_out']
                 # ... run SSHEMOR with posac_axes_out as %6
+            else:
+                posac_axes_out = ''
             posac.run(self.pos_out, self.ls1_out, self.ls2_out,
                       self.posacsep, posac_axes_out=posac_axes_out)
             self.gui.show_msg("POSAC analysis completed successfully!",

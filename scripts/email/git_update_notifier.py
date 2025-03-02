@@ -2,6 +2,7 @@ import subprocess
 from typing import List, Tuple
 from email_sender import EmailSender
 import re
+from datetime import datetime
 
 class GitUpdateNotifier:
     def __init__(self, email_sender: EmailSender):
@@ -20,6 +21,7 @@ class GitUpdateNotifier:
         Returns:
             Tuple of (full_message, version, commit_hash)
         """
+        date_string = datetime.now().strftime("%d/%m/%Y")
         try:
             commit_msg = subprocess.check_output(
                 ['git', 'log', '-1', '--pretty=%B'], 
@@ -34,11 +36,14 @@ class GitUpdateNotifier:
             # Extract version from first line of commit message
             # Expecting format: "Version X.X.X.X: ..."
             version_match = re.match(r"Version (\d+\.\d+\.\d+\.\d+)", commit_msg)
-            version = version_match.group(1) if version_match else "Unknown Version"
+            if version_match:
+                version = version_match.group(1)
+            else:
+                version = f"{date_string}"
             
             return commit_msg, version, commit_hash
         except subprocess.CalledProcessError:
-            return "No commit information available", "Unknown Version", ""
+            return "No commit information available", date_string, ""
 
     def create_update_email_content(self) -> Tuple[str, str]:
         """

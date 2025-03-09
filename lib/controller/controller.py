@@ -8,9 +8,10 @@ from lib.controller.graph_generator import generate_graphs, \
 from lib.controller.session import Session
 from lib.gui.gui import GUI
 from lib.posac.posac_module import PosacModule
-from lib.utils import IS_PRODUCTION, POSAC_SEP_PATH, SET_MODE_TEST
+from lib.utils import IS_PRODUCTION, POSAC_SEP_PATH, SET_MODE_TEST, DataLoadingException
 from lib.controller.validator import Validator
 from lib.controller.sessions_history import SessionsHistory
+from lib.error_handler import ErrorReporter, install_tk_exception_handler
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,11 @@ class Controller:
         self.gui = GUI()
         self.notebook = self.gui.notebook
         self.history = SessionsHistory(callback=self.update_history)
+        
+        # Initialize error reporter
+        self.error_reporter = ErrorReporter.get_instance(self.gui, self)
+        # Install Tkinter exception handler
+        install_tk_exception_handler(self.gui.root)
         self.bind()
         self.restart_session()
         self.gui.navigator.prev_page()
@@ -73,6 +79,8 @@ class Controller:
         self.gui.icon_menu.m_button_help.configure(command=lambda: self.gui.root.event_generate('<KeyPress-F1>'))
         self.gui.menu.help_menu.entryconfig("About Posac",
                                             command=self.gui.show_about_window)
+        self.gui.menu.help_menu.entryconfig("Report Error",
+                                            command=self.report_manual_error)
         # Exit
         self.gui.root.protocol("WM_DELETE_WINDOW", self.on_close)
         self.gui.notebook.output_files_tab.exit_button.config(
@@ -390,7 +398,8 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         # Continue with existing run code
         self._update_properties_from_gui()
         posac = PosacModule()
-        posac.create_files(data_file=self.data_file,
+        try:
+            posac.create_files(data_file=self.data_file,
                            lines_per_var=self.lines_per_case,
                            recoding_operations=self.recoding_operations,
                            job_name=self.job_name,
@@ -417,6 +426,12 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                            form_feed=self.form_feed,
                            shemor_directives_key=self.shemor_directives_key,
                            record_length=self.record_length)
+        except DataLoadingException as e:
+            self.gui.show_warning("Data Loading Error", e)
+            return
+        except Exception as e:
+            self.gui.show_warning("Posac Error", e)
+            return
         try:
             technical_options = self.gui.get_technical_options()
             if technical_options['posac_axes'] == 'Yes':
@@ -432,8 +447,39 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         except Exception as e:
             self.gui.show_msg(f"An error occurred during POSAC analysis: {e}",
                               title="Error")
+            return
         self.enable_view_output()
 
+    def report_manual_error(self):
+        """Allow users to manually report an issue"""
+        from tkinter import messagebox
+        
+        # Ask for confirmation
+        confirm = messagebox.askquestion(
+            "Report Issue", 
+            "This will create an error report with the current application state.\n\n"
+            "Use this to report issues that don't cause the application to crash.\n\n"
+            "Would you like to continue?",
+            icon='warning'
+        )
+        
+        if confirm == 'yes':
+            # Create a manual error report
+            exception_info = {
+                'type': 'ManualReport',
+                'message': 'User-initiated error report',
+                'traceback': 'No traceback available - this is a manual report.'
+            }
+            
+            # Use the error reporter to generate the report
+            self.error_reporter.report_error(exception_info)
+            
+            # Show confirmation
+            messagebox.showinfo(
+                "Report Submitted", 
+                "Thank you for your report. You can continue using the application.",
+                icon='info'
+            )
 
 if __name__ == '__main__':
     a = Controller()

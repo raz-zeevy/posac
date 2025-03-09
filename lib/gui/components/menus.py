@@ -49,6 +49,7 @@ class Menu(tk.Menu):
         self.add_command(label="Options")
         # Help Menu
         self.help_menu = tk.Menu(self)
+        self.help_menu.add_command(label="Report Error")
         self.help_menu.add_command(label="About Posac")
         self.add_cascade(label="Help", menu=self.help_menu)
 

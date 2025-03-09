@@ -89,6 +89,27 @@
             ],
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "Run Error Handler Tests",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "tests/error_handler_test.py",
+                "-v",
+                "--tb=short"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Run Error Demo",
+            "type": "python",
+            "request": "launch",
+            "program": "tests/error_demo.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 }

@@ -93,6 +93,10 @@ class GUI():
         #
         self.create_main_frame()
 
+        # Add binding for Report Error menu item
+        self.menu.help_menu.entryconfig("Report Error", 
+                                       command=self.report_error)
+
     def create_main_frame(self):
         # Create the Notebook widget
         main_frame = ttk.Frame(self.root)
@@ -242,6 +246,10 @@ class GUI():
         else:
             self.disable_view_results()
         OptionsWindow.set(**state['options'])
+
+    def report_error(self):
+        """Placeholder for the controller-planted method"""
+        pass
 
 if __name__ == '__main__':
     gui = GUI()

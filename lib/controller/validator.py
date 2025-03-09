@@ -1,6 +1,8 @@
+from fnmatch import fnmatch
+from pathlib import Path
 from lib.utils import *
 import os
-
+from lib.controller.controller_const import SUPPORTED_DATA_FILE_TYPES
 class Validator():
     def __init__(self, gui):
         self.gui = gui
@@ -111,7 +113,10 @@ class Validator():
             errors.append("Data file is required")
         elif not os.path.exists(data_file):
             errors.append(f"Data file not found: {data_file}")
-            
+        
+        # Check if the data file is a out of the supported data file types
+        if Path(data_file).suffix.lower() not in SUPPORTED_DATA_FILE_TYPES:
+            errors.append(f"Unsupported data file type: {data_file}\n please use one of the following types: {', '.join(SUPPORTED_DATA_FILE_TYPES)}")
         # Job name validation
         job_name = controller.notebook.general_tab.get_job_name()
         if not job_name or job_name.isspace():

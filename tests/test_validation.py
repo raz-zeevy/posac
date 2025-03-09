@@ -91,7 +91,7 @@ class TestRunValidation:
 
     def test_valid_configuration(self):
         """Test validation with valid configuration"""
-        self.general_tab.get_data_file.return_value = "tests/data_files/data.csv"
+        self.general_tab.get_data_file.return_value = "tests/data_files/data.txt"
         self.general_tab.get_job_name.return_value = "test"
         self.general_tab.get_lines_per_case.return_value = 1
         self.internal_variables_tab.get_vars_num.return_value = 1

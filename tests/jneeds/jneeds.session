@@ -52,9 +52,9 @@
       ]
     },
     "output_files": {
-      "posac": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\jneeds\\output\\job1.pos",
-      "lsa1": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\jneeds\\output\\job1.ls1",
-      "lsa2": "C:\\Users\\Raz_Z\\Projects\\Shmuel\\posac\\tests\\jneeds\\output\\job1.ls2"
+      "posac": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\jneeds\\output\\job1.pos",
+      "lsa1": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\jneeds\\output\\job1.ls1",
+      "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\jneeds\\output\\job1.ls2"
     }
   },
   "navigator": 4,

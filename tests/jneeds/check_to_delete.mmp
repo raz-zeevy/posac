@@ -1,0 +1,57 @@
+{
+  "notebook": {
+    "general": {
+      "job_name": "",
+      "data_file": "",
+      "lines_per_case": 1,
+      "plot_item_diagram": true,
+      "plot_external_diagram": true,
+      "only_freq": 0,
+      "posac_type": "D",
+      "subject_type": "S",
+      "id_location": {
+        "py/tuple": [
+          0,
+          0
+        ]
+      }
+    },
+    "zero_option": {
+      "zero_option": true
+    },
+    "internal_variables": [],
+    "external_variables": [],
+    "external_variables_ranges": {
+      "ranges": [],
+      "traits_num": 0
+    },
+    "traits": [],
+    "internal_recoding": [],
+    "posacsep": {
+      "posacsep": true,
+      "values": []
+    },
+    "output_files": {
+      "posac": "C:/Program Files/POSAC/job.pos",
+      "lsa1": "C:/Program Files/POSAC/job.ls1",
+      "lsa2": "C:/Program Files/POSAC/job.ls2"
+    }
+  },
+  "navigator": -1,
+  "view_results": false,
+  "options": {
+    "ascii_output": "No",
+    "special_graphic_char": "",
+    "form_feed": "",
+    "power_weights_low": 4,
+    "power_weights_high": 4,
+    "max_iterations": 15,
+    "posac_axes": "No",
+    "set_selection": "A",
+    "record_length": 80,
+    "posac_axes_out": ""
+  },
+  "controller": {
+    "save_path": "C:/Users/raz3z/Projects/Shmuel/posac/tests/jneeds/check_to_delete.mmp"
+  }
+}

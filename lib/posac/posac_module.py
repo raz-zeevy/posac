@@ -234,17 +234,6 @@ class PosacModule:
             # Print the output and error, if any
             if process.returncode != 0:
                 raise Exception(f"POSAC script failed : {process.stderr}")
-            # if RESULTS_SUCCESS_STDERR in stderr:
-            #     if len(process.stderr.split("\n")) >= 3:
-            #         if process.stderr.split("\n")[
-            #             2] == 'Fortran runtime error: ' \
-            #                   'Cannot write to file opened for READ':
-            #             exception = stderr.split('\n')[2]
-            #             raise Exception(exception)
-            #     else:
-            #         raise Exception(f"POSAC script failed : {stderr}")
-            # else:
-            #     raise Exception(f"POSAC script failed : {stderr}")
             print("Output:", stdout)
             print("Error:", stderr)
 

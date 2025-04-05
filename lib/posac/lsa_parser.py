@@ -1,7 +1,5 @@
 import inspect
 import json
-import re
-import pprint
 import warnings
 
 from lib.utils import *
@@ -32,7 +30,7 @@ class Lsa1Parser:
             self.index += 1
             self.current_row = self.rows[self.index]
         except IndexError as e:
-            if IS_PRODUCTION():
+            if IS_PROD():
                 pass
             else:
                 warnings.warn(f"OUTPUT PARSER ERORR: {e} \non {called_function}")
@@ -57,7 +55,7 @@ class Lsa1Parser:
             y = [],
             labels = [],
         )
-        while not END_BLOCK in self.current_row:
+        while END_BLOCK not in self.current_row:
             if self.current_row == "\n":
                 self.next_row()
                 continue

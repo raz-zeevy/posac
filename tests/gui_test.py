@@ -1,5 +1,9 @@
+import os
+import sys
+
+# Add the parent directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from lib.controller.controller import Controller
-import unittest
 
 DATA_PATH = "data/first_test_data.csv"
 
@@ -30,7 +34,7 @@ class GuiTest(Controller):
             plot_external_diagram=False,
             posac_type="D",
             subject_type="S",
-            id_location=(1, 2)
+            id_location=(1, 2),
         )
         test_values = gt.get_all()
         gt.set_default()
@@ -42,8 +46,7 @@ class GuiTest(Controller):
     def test_zero_option(self):
         self.notebook.select(1)
         zo = self.notebook.zero_option_tab
-        zo.set(
-            zero_option=False)
+        zo.set(zero_option=False)
         test_values = zo.get_all()
         zo.reset_default()
         assert zo.get_all() == zo.DEFAULT_VALUES
@@ -55,22 +58,22 @@ class GuiTest(Controller):
         """Test internal variables tab functionality"""
         self.notebook.select(2)  # Select internal variables tab
         iv = self.notebook.internal_variables_tab
-        
+
         # Test adding/removing variables
         iv.remove_variable()
-        first_var = ['10', '1', '1', '8']
+        first_var = ["10", "1", "1", "8"]
         iv.add_variable(first_var, check=False)
-        
+
         # Add multiple variables
         dummy_vars = [
-            ['1', '2', '3', '4'],
-            ['1', '2', '3', '4'],
-            ['1', '2', '3', '4'],
-            ['1', '2', '3', '4'],
+            ["1", "2", "3", "4"],
+            ["1", "2", "3", "4"],
+            ["1", "2", "3", "4"],
+            ["1", "2", "3", "4"],
         ]
         for var in dummy_vars:
             iv.add_variable(var, check=True)
-        
+
         # Verify selected variables
         test_values = iv.get_selected_variables()
         for i, row in enumerate(dummy_vars):
@@ -89,7 +92,7 @@ class GuiTest(Controller):
         for i in range(len(dummy_vars)):
             for j in range(len(dummy_vars[i])):
                 dummy_vars[i][j] = str(dummy_vars[i][j])
-        first_var = ['10', '5', '3', '8']
+        first_var = ["10", "5", "3", "8"]
         ev.add_variable(first_var, check=False)
         assert len(ev.get_all_variables()) == 1
         for i in range(len(dummy_vars)):
@@ -111,14 +114,14 @@ class GuiTest(Controller):
         self.add_external_variables(3)
         assert evr.num_external_ranges == 3
         test_values = [
-            ['1', '1-9', '1-9', '1-3'],
-            ['2', '1-3', '1-2', '1-5'],
-            ['3', '1-9', '1-9', '1-3']
+            ["1", "1-9", "1-9", "1-3"],
+            ["2", "1-3", "1-2", "1-5"],
+            ["3", "1-9", "1-9", "1-3"],
         ]
         evr.set_range(0, test_values[0])
         evr.set_range(1, test_values[1])
         evr.set_range(2, test_values[2])
-        assert evr.get_all_ranges() == test_values
+        assert evr.get_all_ranges_values() == test_values
         # Set the number of external traits
         traits_num = 12
         evr.set_traits_num(traits_num)
@@ -126,12 +129,9 @@ class GuiTest(Controller):
         #
         all_data = evr.get_all()
         evr.set_default()
-        assert evr.get_all_ranges() == [evr.DEFAULT_VALUE] * 3
-        evr.set_all(all_data['ranges'], all_data['traits_num'])
-        assert evr.get_all() == {
-            'ranges': test_values,
-            'traits_num': traits_num
-        }
+        assert evr.get_all_ranges_values() == [evr.DEFAULT_VALUE] * 3
+        evr.set_all(all_data["ranges"], all_data["traits_num"])
+        assert evr.get_all() == {"ranges": test_values, "traits_num": traits_num}
         evr.set_default()
         self.notebook.clear_external_variables()
 
@@ -150,27 +150,28 @@ class GuiTest(Controller):
         num_traits_1 = 12
         num_ex_var_1 = 30
         self.add_external_variables(num_ex_var_1)
-        self.notebook.external_variables_ranges_tab.set_traits_num(
-            num_traits_1)
+        self.notebook.external_variables_ranges_tab.set_traits_num(num_traits_1)
         assert tt._context == tt.TabContext.TRAITS
         cur_traits = tt.get_traits()
-        def_test_traits = [tt.TraitData(f'trait{i + 1}', [
-            ['1', '1-9'] for _ in range(num_ex_var_1)])
-                           for i in range(num_traits_1)]
+        def_test_traits = [
+            tt.TraitData(f"trait{i + 1}", [["1", "1-9"] for _ in range(num_ex_var_1)])
+            for i in range(num_traits_1)
+        ]
         assert cur_traits == def_test_traits
         # reset traits test
         self.notebook.external_variables_ranges_tab.set_traits_num(0)
-        self.notebook.external_variables_ranges_tab.set_traits_num(
-            num_traits_1)
+        self.notebook.external_variables_ranges_tab.set_traits_num(num_traits_1)
         assert cur_traits == def_test_traits
         # simple set test
-        tt.set_trait(1,
-                     label='test_trait',
-                     data=[['2', '1-9', '1-3'] if i > 10 else ['1', '1-2']
-                           for i in range(num_ex_var_1)
-                           ]
-                     )
-        assert tt.get_traits()[0].label == 'test_trait'
+        tt.set_trait(
+            1,
+            label="test_trait",
+            data=[
+                ["2", "1-9", "1-3"] if i > 10 else ["1", "1-2"]
+                for i in range(num_ex_var_1)
+            ],
+        )
+        assert tt.get_traits()[0].label == "test_trait"
         # clear external variables test
         self.notebook.clear_external_variables()
         self.assert_no_traits()
@@ -178,8 +179,9 @@ class GuiTest(Controller):
         num_traits_2 = 12
         num_ex_var_2 = 20
         test_traits_1 = [
-            tt.TraitData(f'test_trait{i * 5 + 1}', [
-                ['1', '1-9'] for _ in range(num_ex_var_2)])
+            tt.TraitData(
+                f"test_trait{i * 5 + 1}", [["1", "1-9"] for _ in range(num_ex_var_2)]
+            )
             for i in range(num_traits_2)
         ]
 
@@ -188,12 +190,13 @@ class GuiTest(Controller):
             for j in range(num_ex_var_2):
                 test_traits_1[i].data[j][0] = str(i + 1)
         self.add_external_variables(num_ex_var_2)
-        self.notebook.external_variables_ranges_tab.set_traits_num(
-            num_traits_2)
+        self.notebook.external_variables_ranges_tab.set_traits_num(num_traits_2)
         for i in range(num_traits_2):
-            tt.set_trait(i + 1, label=f'test_trait{i * 5 + 1}',
-                         data=[test_traits_1[i].data[j] for j in
-                               range(num_ex_var_2)])
+            tt.set_trait(
+                i + 1,
+                label=f"test_trait{i * 5 + 1}",
+                data=[test_traits_1[i].data[j] for j in range(num_ex_var_2)],
+            )
         assert tt.get_traits() == test_traits_1
         tt.reset_default()
 
@@ -211,7 +214,9 @@ class GuiTest(Controller):
         pt.set_combo(True)
         # Test 2: Check set_values with different values
         pt.set_values(var_num * [5])
-        assert pt.get_values() == var_num * [5]
+        assert pt.get_values() == var_num * [5], (
+            f"Expected {var_num * [5]}, got {pt.get_values()}"
+        )
 
         # Test 3: Check get_values after set_values
         pt.set_values(var_num * [2])
@@ -224,20 +229,51 @@ class GuiTest(Controller):
         assert not pt.get_values()
 
     def test_output_tab(self):
-        self.notebook.select(7)
+        self.notebook.select(7)  # Select Output Files tab
         oft = self.notebook.output_files_tab
-        # ot.set(
-        #     output_file="test_output_file",
-        #     output_format="csv",
-        #     output_type="all",
-        #     output_options="all"
-        # )
-        # test_values = ot.get_all()
-        # ot.set_default()
-        # assert ot.get_all() == ot.DEFAULT_VALUES
-        # ot.set(**test_values)
-        # cur_values = ot.get_all()
-        # assert test_values == cur_values
+
+        # Save original values to restore later
+        original_values = oft.get_all()
+
+        # Test default values
+        oft.reset_default()
+        default_values = oft.get_all()
+        assert default_values == {
+            "posac": oft.DEFAULT_OUT_POS,
+            "lsa1": oft.DEFAULT_OUT_LS1,
+            "lsa2": oft.DEFAULT_OUT_LS2,
+        }
+
+        # Test set_all method
+        test_paths = {
+            "posac": "C:/test/path/test.pos",
+            "lsa1": "C:/test/path/test.ls1",
+            "lsa2": "C:/test/path/test.ls2",
+        }
+        oft.set_all(test_paths["posac"], test_paths["lsa1"], test_paths["lsa2"])
+        assert oft.get_all() == test_paths
+
+        # Test get_default_base_name with job name
+        # First, set a job name
+        self.notebook.general_tab.set_job_name("test_job")
+        assert oft.get_default_base_name() == "test_job"
+
+        # Test get_default_base_name with data file name (when job name is empty)
+        self.notebook.general_tab.set_job_name("")
+        self.notebook.general_tab.set_data_file("C:/data/test_data.dat")
+        assert oft.get_default_base_name() == "test_data"
+
+        # Test get_default_base_name with fallback to "job" when both are empty
+        self.notebook.general_tab.set_job_name("")
+        self.notebook.general_tab.set_data_file("")
+        assert oft.get_default_base_name() == "job"
+
+        # Restore original values
+        oft.set_all(
+            original_values["posac"], original_values["lsa1"], original_values["lsa2"]
+        )
+        self.notebook.general_tab.set_job_name("")
+        self.notebook.general_tab.set_data_file("")
 
     def test_navigation(self):
         # Test: Check initial page
@@ -263,13 +299,12 @@ class GuiTest(Controller):
         self.gui.navigator.next_page()
         self.notebook.external_variables_ranges_tab.set_traits_num(traits_num)
         self.gui.navigator.next_page()
-        for _ in range(traits_num-1):
+        for _ in range(traits_num - 1):
             self.gui.navigator.next_tab_clicked()
             assert self.gui.navigator.cur_page == self.gui.navigator.traits_tab_num
         self.gui.navigator.next_page()
-        assert self.gui.navigator.cur_page == \
-               self.gui.navigator.traits_tab_num + 1
-        for _ in range(traits_num-1):
+        assert self.gui.navigator.cur_page == self.gui.navigator.traits_tab_num + 1
+        for _ in range(traits_num - 1):
             self.gui.navigator.prev_tab_clicked()
             assert self.gui.navigator.cur_page == self.gui.navigator.traits_tab_num
 
@@ -279,7 +314,7 @@ class GuiTest(Controller):
             self.gui.navigator.next_page()
         assert self.gui.navigator.cur_page == self.gui.navigator.max_page
         # Test: Navigate before the first page
-        for _ in range(10+traits_num):
+        for _ in range(10 + traits_num):
             self.gui.navigator.prev_page()
         assert self.gui.navigator.cur_page == -1
         # Test 7: Navigate between the external var tabs
@@ -304,22 +339,24 @@ class GuiTest(Controller):
         """Test internal recoding tab basic functionality"""
         self.notebook.select(3)  # Select internal recoding tab
         rt = self.notebook.internal_recoding_tab
-        
+
         # Test adding operations
         rt.set_recoding_num(2)
         assert len(rt._recoding_operations) == 2, "Should have 2 recoding operations"
-        
+
         # Set up first operation
         rt.set_variables(1)
-        rt.add_pair('1', '2')
-        rt.add_pair('3', '4')
+        rt.add_pair("1", "2")
+        rt.add_pair("3", "4")
         rt.invert_var.set(True)
-        
+
         # Verify first operation state
         op1 = rt._recoding_operations[0]
-        assert op1.selected_variables == ['1'], "First operation should target variable 1"
-        assert ('1', '2') in op1.recoding_pairs, "Should contain 1->2 recoding pair"
-        assert ('3', '4') in op1.recoding_pairs, "Should contain 3->4 recoding pair"
+        assert op1.selected_variables == ["1"], (
+            "First operation should target variable 1"
+        )
+        assert ("1", "2") in op1.recoding_pairs, "Should contain 1->2 recoding pair"
+        assert ("3", "4") in op1.recoding_pairs, "Should contain 3->4 recoding pair"
         assert op1.invert, "Should be inverted"
         rt.reset_default()
         assert not rt._recoding_operations
@@ -328,26 +365,26 @@ class GuiTest(Controller):
         """Test that operation data persists when switching between operations"""
         self.notebook.select(3)  # Select internal recoding tab
         rt = self.notebook.internal_recoding_tab
-        
+
         # Setup: Create 2 operations
         rt.set_recoding_num(2)
         assert len(rt._recoding_operations) == 2, "Should have 2 recoding operations"
-        
+
         # Set up first operation
         rt.set_variables(1)
-        rt.add_pair('1', '2')
-        rt.add_pair('3', '4')
+        rt.add_pair("1", "2")
+        rt.add_pair("3", "4")
         rt.invert_var.set(True)
-        
+
         # Switch to second operation and set it up
         rt.select_operation(2)
-        rt.set_variables('2,3')
-        rt.add_pair('5', '6')
+        rt.set_variables("2,3")
+        rt.add_pair("5", "6")
         rt.invert_var.set(False)
-        
+
         # Switch back to first operation and verify state persisted
         rt.select_operation(1)
-        assert rt.var_index_entry.get() == '1', "Variable selection should be preserved"
+        assert rt.var_index_entry.get() == "1", "Variable selection should be preserved"
         assert len(rt.pair_tree.get_children()) == 2, "Should have 2 pairs"
         assert not rt.invert_var.get(), "Invert state should be false"
         rt.reset_default()
@@ -357,21 +394,21 @@ class GuiTest(Controller):
         """Test that operation data persists when removing operations"""
         self.notebook.select(3)  # Select internal recoding tab
         rt = self.notebook.internal_recoding_tab
-        
+
         # Setup: Create 3 operations
         rt.set_recoding_num(3)
         assert len(rt._recoding_operations) == 3, "Should have 3 recoding operations"
-        
+
         # Set up operation 1
         rt.set_variables(1)
-        rt.add_pair('1', '2')
-        rt.add_pair('3', '4')
+        rt.add_pair("1", "2")
+        rt.add_pair("3", "4")
         rt.invert_var.set(True)
-        
+
         # Switch to operation 3 and remove it
         rt.select_operation(3)
         rt._remove_current_operation()
-        
+
         # Verify operation 1 state is preserved
         rt.select_operation(1)
         assert rt.var_index_entry.get() == '1', "Variable selection should be preserved"
@@ -398,6 +435,6 @@ if __name__ == '__main__':
         a.test_internal_recoding_tab_remove_operation()
         exit(0)
     except Exception as e:
-        a.run_process()
+        # a.run_process()
         raise e
 

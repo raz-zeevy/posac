@@ -25,6 +25,17 @@
             "justMyCode": false
         },
         {
+            "name": "POSAC App (debug)",
+            "type": "python",
+            "request": "launch",
+            "program": "app.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--debug"
+            ]
+        },
+        {
             "name": "Run GUI Tests",
             "type": "python",
             "request": "launch",

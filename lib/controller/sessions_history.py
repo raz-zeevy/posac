@@ -17,6 +17,8 @@ class SessionsHistory:
 
     # Read and Write
     def write_to_file(self):
+        if not os.path.exists(os.path.dirname(SESSIONS_HISTORY)):
+            os.makedirs(os.path.dirname(SESSIONS_HISTORY))
         with open(SESSIONS_HISTORY, 'w', encoding='utf-8') as file:
             file.write("\n".join(self.history[-1*MAX_LENGTH:]))
 

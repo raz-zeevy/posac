@@ -1,4 +1,4 @@
-from lib.gui.components.shapes import ShapeFactory, Edge
+from lib.gui.components.shapes import Edge
 from lib.utils import P_POSACSEP_DIR
 
 
@@ -54,8 +54,8 @@ def generate_graphs(controller):
                 legend: list of legends
                 geoms: list of shapes
     """
-    from lib.posac.posac_output_parser import parse_output
     from lib.posac.lsa_parser import parse_output as parse_lsa
+    from lib.posac.posac_output_parser import parse_output
     graph_data_list = []
     output = parse_output(controller.pos_out)
     out_coords = output["out_coords"]
@@ -68,16 +68,22 @@ def generate_graphs(controller):
         legend=[dict(index=out_coords['index'][i],
                      value=out_coords['profiles'][i]) for i in range(n)],
     ))
-    for output in [parse_lsa(controller.ls1_out),
-                   parse_lsa(controller.ls2_out)]:
+    for title, output in [
+        ("LSA1 Solution", parse_lsa(controller.ls1_out)),
+        ("LSA2 Solution", parse_lsa(controller.ls2_out)),
+    ]:
         out_coords = output["out_coords"]
         n = len(out_coords['x'])
-        graph_data_list.append(dict(
-            x=out_coords['x'],
-            y=out_coords['y'],
-            annotations=out_coords['index'],
-            title="Posac Solution",
-            legend=[dict(index=out_coords['index'][i],
-                         value=out_coords['labels'][i]) for i in range(n)],
-        ))
+        graph_data_list.append(
+            dict(
+                x=out_coords["x"],
+                y=out_coords["y"],
+                annotations=out_coords["index"],
+                title=title,
+                legend=[
+                    dict(index=out_coords["index"][i], value=out_coords["labels"][i])
+                    for i in range(n)
+                ],
+            )
+        )
     return graph_data_list

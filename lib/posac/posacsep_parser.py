@@ -1,7 +1,5 @@
 import inspect
 import json
-import re
-import pprint
 import warnings
 
 from lib.utils import *
@@ -32,7 +30,7 @@ class PosacsepParser:
             self.index += 1
             self.current_row = self.rows[self.index]
         except IndexError as e:
-            if IS_PRODUCTION():
+            if IS_PROD():
                 pass
             else:
                 warnings.warn(

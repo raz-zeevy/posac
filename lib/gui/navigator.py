@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 class Navigator:
     def __init__(self, gui):
         self.gui = gui
@@ -17,20 +18,20 @@ class Navigator:
         self.navigation.button_next.config(command=self.next_tab_clicked)
         self.navigation.button_previous.config(command=self.prev_tab_clicked)
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_switch)
-        
+
         # Add keyboard navigation bindings with focus check
         def handle_left(event):
             # Skip if focus is in an Entry or Text widget
             if not isinstance(event.widget, (tk.Entry, tk.Text)):
                 self.prev_tab_clicked()
                 return "break"  # Prevent event propagation
-            
+
         def handle_right(event):
             # Skip if focus is in an Entry or Text widget
             if not isinstance(event.widget, (tk.Entry, tk.Text)):
                 self.next_tab_clicked()
                 return "break"  # Prevent event propagation
-            
+
         self.gui.root.bind('<Left>', handle_left)
         self.gui.root.bind('<Right>', handle_right)
         self.gui.menu.entryconfig("Options", command=self.gui.show_options_window)
@@ -50,7 +51,7 @@ class Navigator:
         self.cur_page = self.notebook.index(self.notebook.select())
         self._update_buttons()
 
-    def set_page(self, page):
+    def set_page(self, page: int):
         if page < self.min_page or page > self.max_page:
             return
         while self.cur_page != page:
@@ -92,10 +93,12 @@ class Navigator:
             return
         if self.cur_page == -1:
             self.show_notebook()
-            
+
         # Skip external variables tabs if no external variables
-        if self.cur_page == self.ex_vrs_tbs[0] - 1 and \
-                not self.notebook.exist_external_variables():
+        if (
+            self.cur_page == self.ex_vrs_tbs[0] - 1
+            and not self.notebook.exist_external_variables()
+        ):
             self.cur_page += len(self.ex_vrs_tbs) + 1
         else:
             self.cur_page += 1
@@ -105,14 +108,14 @@ class Navigator:
     def prev_page(self):
         if self.cur_page == self.min_page:
             return
-            
+
         # Skip external variables tabs if no external variables
         if self.cur_page == self.ex_vrs_tbs[-1] + 1 and \
                 not self.notebook.exist_external_variables():
             self.cur_page -= len(self.ex_vrs_tbs) + 1
         else:
             self.cur_page -= 1
-            
+
         self._update_buttons()
         if self.cur_page > self.min_page:
             self.notebook.select(self.cur_page)

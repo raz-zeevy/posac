@@ -1,4 +1,5 @@
 import os
+
 from lib import config
 
 WINDOW_HEIGHT = 635
@@ -55,11 +56,11 @@ SCRIPT_MONO = "MONO"
 def GET_MODE():
     return os.environ.get('MODE')
 
-def SET_MODE_TEST():
+def SET_MODE_DEV():
     import os
     os.environ['MODE'] = config.MODE_DEBUG
 
-def SET_MODE_PRODUCTION():
+def SET_MODE_PROD():
     import os
     os.environ['MODE'] = config.MODE_PRODUCTION
 
@@ -67,8 +68,12 @@ def SET_MODE_NO_VALIDATION():
     import os
     os.environ['MODE'] = config.MODE_NO_VALIDATION
 
-def IS_PRODUCTION():
+def IS_PROD():
     return GET_MODE() == config.MODE_PRODUCTION
+
+def IS_DEV():
+    return GET_MODE() == config.MODE_DEBUG
+
 
 def IS_NO_VALIDATE():
     return GET_MODE() == config.MODE_NO_VALIDATION

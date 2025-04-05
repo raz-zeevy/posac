@@ -1,29 +1,28 @@
 import os
-import ttkbootstrap as ttk
 import tkinter as tk
 from tkinter import filedialog
-from lib.gui.components.form import NavigationButton
+
 import matplotlib
+import ttkbootstrap as ttk
+
+from lib.gui.components.form import NavigationButton
 from lib.gui.components.helpables import Helpable
+from lib.gui.components.shapes import Circle, DivideAxis, Edge, Line
 from lib.gui.windows.window import Window
-from lib.gui.components.shapes import Line, Circle, DivideAxis, Edge
-from lib.utils import get_resource, rreal_size, real_size
+from lib.utils import real_size, rreal_size
 
-G_COLOR = '#a4aab3'
+G_COLOR = "#a4aab3"
 DPI_SAVE = 300
-matplotlib.use('TkAgg')
+matplotlib.use("TkAgg")
 
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg,
-    NavigationToolbar2Tk
-)
 
 BORDER_WIDTH = 0
 OC = 0.00
 
+
 class DiagramWindow(Window):
-    
     def setup_window(self, graph_data_lst: list, **kwargs):
         """
         graph_data: list of dictionaries containing the data to be plotted
@@ -58,7 +57,11 @@ class DiagramWindow(Window):
         self.bind("<Right>", lambda x: self.next_graph())
         self.bind("<BackSpace>", lambda x: self.previous_graph())
         self.bind("<Left>", lambda x: self.previous_graph())
-        self.bind("<Escape>", lambda x: self.exit())      
+        self.bind("<Escape>", lambda x: self.exit())
+
+        # Make sure to center the window after all elements are in place
+        self.update_idletasks()  # Ensure all elements are rendered before centering
+        self.center_window()
 
     def create_menu(self):
         # create a file menu with save figure command to save the current graph
@@ -76,7 +79,7 @@ class DiagramWindow(Window):
 
     def get_default_fig_file_name(self):
         label = self.graph_data_lst[self.index]["title"]
-        clean_label = label.replace(" ", "_")
+        clean_label = label.replace(" ", "_").replace("\n", "")
         default_name = f"{clean_label}.png"
         return default_name
 

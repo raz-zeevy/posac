@@ -5,26 +5,26 @@ import ttkbootstrap as ttk
 from ttkbootstrap.dialogs import Messagebox
 
 from lib.gui.components.editable_tree_view import EditableTreeView
+from lib.gui.components.help_bar import HelpBar
 from lib.gui.components.helpables import Helpable
-from lib.gui.notebook import PosacNotebook
+from lib.gui.components.menus import IconMenu, Menu
+from lib.gui.components.navigation import Navigation
 from lib.gui.const import p_ICON
+from lib.gui.navigator import Navigator
+from lib.gui.notebook import PosacNotebook
 from lib.gui.pages.start_page import StartPage
 from lib.gui.windows.about_window import AboutWindow
 from lib.gui.windows.diagram_window import DiagramWindow
+from lib.gui.windows.message_window import MessageWindow
 from lib.gui.windows.options_window import OptionsWindow
 from lib.utils import *
-from lib.gui.components.menus import Menu, IconMenu
-from lib.gui.components.help_bar import HelpBar
-from lib.gui.components.navigation import Navigation
-from lib.gui.navigator import Navigator
-from lib.help.posac_help import PosacHelp, Help
 
 ROOT_TITLE = f"Posac Program-v{os.environ.get('VERSION')}"
 THEME_NAME = 'sandstone'
 
 def gui_only(func, *args, **kwargs):
     def wrapper(self, *args, **kwargs):
-        if IS_PRODUCTION():
+        if IS_PROD():
             return func(self, *args, **kwargs)
 
     return wrapper
@@ -35,7 +35,8 @@ class GUI():
         self.root = ttk.Window(
             themename=THEME_NAME,
         )
-        self.root.title(ROOT_TITLE)
+        self.root_title = ROOT_TITLE + ("-dev" if IS_DEV() else "")
+        self.root.title(self.root_title)
         # set the icon
         self.root.iconbitmap(get_resource(p_ICON))
         # self.root.config(cursor="question_arrow")
@@ -57,7 +58,6 @@ class GUI():
         self.init_window()
         self.navigator = Navigator(self)
         self.view_results = None
-        
 
     def run_process(self):
         self.root.mainloop()
@@ -72,8 +72,7 @@ class GUI():
         # Calculate x and y coordinates for the Tk root window
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
-        size = tuple(int(_) for _ in self.root.geometry().split('+')[0].split(
-            'x'))
+        size = tuple(int(_) for _ in self.root.geometry().split("+")[0].split("x"))
         x = (screen_width / 2) - (size[0] / 2)
         y = (screen_height / 2) - (size[1] / 2) - (screen_height / 10)
         self.root.geometry("+%d+%d" % (x, y))
@@ -94,29 +93,32 @@ class GUI():
         self.create_main_frame()
 
         # Add binding for Report Error menu item
-        self.menu.help_menu.entryconfig("Report Error", 
-                                       command=self.report_error)
+        self.menu.help_menu.entryconfig("Report Error", command=self.report_error)
 
     def create_main_frame(self):
         # Create the Notebook widget
         main_frame = ttk.Frame(self.root)
-        main_frame.pack(expand=True, fill='both', padx=0, pady=0,)
+        main_frame.pack(
+            expand=True,
+            fill="both",
+            padx=0,
+            pady=0,
+        )
         self.notebook_frame = ttk.Frame(main_frame)
         # self.notebook_frame.pack(expand=True, fill='both', padx=30, pady=0,)
         self.notebook = PosacNotebook(self.notebook_frame, self)
-        self.notebook.pack(expand=True,
-                      fill='both')
+        self.notebook.pack(expand=True, fill="both")
         self.start_page = StartPage(main_frame)
-        self.start_page.pack(expand=True, fill='both')
+        self.start_page.pack(expand=True, fill="both")
 
     def create_start_frame(self):
         pass
 
     def set_save_title(self, save_path):
         if save_path:
-            self.root.title(f"{ROOT_TITLE} - {save_path}")
+            self.root.title(f"{self.root_title} - {save_path}")
         else:
-            self.root.title(ROOT_TITLE)
+            self.root.title(self.root_title)
 
     #########################
     # Dialogues and Windows #
@@ -134,7 +136,7 @@ class GUI():
 
     def set_options(self, **options):
         OptionsWindow.set(**options)
-        
+
     def get_technical_options(self, *args):
         if not args:
             return OptionsWindow.DEFAULT_VALUES
@@ -158,15 +160,17 @@ class GUI():
                  no_command=None,
                  buttons=['Yes:primary', 'No:secondary']):
         if yes_command:
-            clicked_yes = Messagebox.show_question(msg, title, buttons=[
-                buttons[0], buttons[1]])
-            if clicked_yes == buttons[0].split(":")[0]:
-                yes_command()
-            elif no_command:
-                no_command()
-            return clicked_yes
+            result = MessageWindow.show_question(
+                self.root,
+                msg,
+                title,
+                yes_command=yes_command,
+                no_command=no_command,
+                buttons=buttons,
+            )
+            return result
         else:
-            Messagebox.show_info(msg, title)
+            return MessageWindow.show_message(self.root, msg, title)
 
     def save_file_diaglogue(self, file_types=None, default_extension=None,
                             initial_file_name=None, title=None):

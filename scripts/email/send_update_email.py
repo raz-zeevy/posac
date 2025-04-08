@@ -1,16 +1,23 @@
 import argparse
+import os
+import sys
+from typing import List
+
 from dotenv import load_dotenv
 from email_sender import EmailSender
 from git_update_notifier import GitUpdateNotifier
-import os
-from typing import List
-from scripts.email.config.email_recipients import RECIPIENTS, DEBUG_RECIPIENTS
+
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
+from scripts.email.config.email_recipients import DEBUG_RECIPIENTS, RECIPIENTS
+
 
 def send_mail(recipients: List[str]):
     # Load environment variables
     gmail_user = os.environ.get('GMAIL_USER')
     gmail_password = os.environ.get('GMAIL_APP_PASSWORD')
-    
+
     if not gmail_user or not gmail_password:
         print("Error: Gmail credentials not found in environment variables")
         print("Please set GMAIL_USER and GMAIL_APP_PASSWORD environment variables")
@@ -19,7 +26,7 @@ def send_mail(recipients: List[str]):
     # Initialize services
     email_sender = EmailSender(gmail_user, gmail_password)
     notifier = GitUpdateNotifier(email_sender)
-    
+
     # Send the notification
     notifier.send_update_notification(recipients)
 

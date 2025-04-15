@@ -33,13 +33,16 @@ def validate_recoding_operation(data: np.ndarray, operation: RecodingOperation) 
                 raise RecodingError(f"Invalid variable index: {idx}")
 
         # Validate recoding pairs
-        for old, new in operation.recoding_pairs:
-            try:
-                int(old), int(new)
-            except ValueError:
-                raise RecodingError(
-                    f"Invalid recoding pair: {old}->{new}. Values must be integers."
-                )
+        try:
+            for old, new in operation.recoding_pairs_parsed:
+                if new > 99 or new < 0:
+                    raise RecodingError(
+                        f"Invalid recoding pair: {old}->{new}. New value must be between 0 and 99."
+                    )
+        except ValueError:
+            raise RecodingError(
+                f"Invalid recoding pair: {old}->{new}. Values must be integers."
+            )
 
     except ValueError as e:
         raise RecodingError(f"Invalid recoding specification: {str(e)}")
@@ -69,7 +72,10 @@ def apply_recoding_operation(
         var_indices = [int(idx) - 1 for idx in operation.selected_variables_parsed]
 
         # Create mapping dictionary from recoding pairs
-        value_map = {int(old): int(new) for old, new in operation.recoding_pairs}
+        value_map = {}
+        for old_value_set, new_val in operation.recoding_pairs_parsed:
+            for old_val in old_value_set:
+                value_map[old_val] = new_val
 
         # Apply recoding to selected variables
         for var_idx in var_indices:

@@ -1,5 +1,5 @@
 import tkinter as tk
-from typing import List, Tuple
+from typing import List, Set, Tuple
 
 import ttkbootstrap as ttk
 
@@ -12,7 +12,7 @@ from lib.utils import WINDOW_WIDTH, real_size, rreal_size
 class RecodingOperation:
     def __init__(self):
         self.selected_variables: str = ""
-        self.recoding_pairs: List[Tuple[int, int]] = []
+        self.recoding_pairs: List[Tuple[str, str]] = []
         self.invert: bool = False
 
     def __repr__(self):
@@ -21,6 +21,12 @@ class RecodingOperation:
     @property
     def selected_variables_parsed(self):
         return parse_indices_string(self.selected_variables)
+
+    @property
+    def recoding_pairs_parsed(self) -> List[Tuple[Set[int], int]]:
+        return [
+            (parse_indices_string(old), int(new)) for old, new in self.recoding_pairs
+        ]
 
 
 class InternalRecodingTab(tk.Frame):

@@ -322,6 +322,80 @@ class TestScenarios:
             "posac_axes_out": posac_axes_out,
         }
 
+    def run_dj_test_recoding(self, visual_mode):
+        self.controller.load_session(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\dj\dj_all-testpos.mmp"
+        )
+        # set tab to general
+        self.controller.gui.navigator.set_page(0)
+        # set data file to C:\Users\raz3z\Projects\Shmuel\posac\tests\dj\dj_all-testpos.prn
+        self.notebook.general_tab.set_data_file(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\dj\dj_all-testpos.prn"
+        )
+        # set job name to dj_all-testpos
+        self.notebook.general_tab.set_job_name("dj_all-testpos")
+        # run posac
+        # self.controller.run_posac()
+        # set tab to internal recoding
+        self.controller.gui.navigator.set_page(3)
+        # add recoding operation
+        self.notebook.internal_recoding_tab.add_operation()
+        # set variables to 1-2,3
+        self.notebook.internal_recoding_tab.set_variables("1-2,3-4 , 5")
+        # set recoding pairs to 1-2, 3-4
+        self.notebook.internal_recoding_tab.add_pair("2-3 ,4, 5-9 ", "2")
+        self.notebook.internal_recoding_tab.add_pair("10-13", "0")
+        # add recoding operation
+        self.notebook.internal_recoding_tab.add_operation()
+        # assert empty recoding pairs
+        assert self.notebook.internal_recoding_tab.get_recoding_pairs() == []
+        assert self.notebook.internal_recoding_tab.get_selected_variables() == ""
+        # select former operation
+        self.notebook.internal_recoding_tab.select_operation(1)
+        # assert recoding pairs
+        assert self.notebook.internal_recoding_tab.get_recoding_pairs() == [
+            ("2-3 ,4, 5-9 ", "2"),
+            ("10-13", "0"),
+        ]
+        assert (
+            self.notebook.internal_recoding_tab.get_selected_variables()
+            == "1-2,3-4 , 5"
+        )
+        # select former operation
+        self.notebook.internal_recoding_tab.select_operation(2)
+        # remove last operation
+        self.notebook.internal_recoding_tab._remove_current_operation()
+        # assert empty recoding pairs
+        assert self.notebook.internal_recoding_tab.get_recoding_pairs() == [
+            ("2-3 ,4, 5-9 ", "2"),
+            ("10-13", "0"),
+        ]
+        assert (
+            self.notebook.internal_recoding_tab.get_selected_variables()
+            == "1-2,3-4 , 5"
+        )
+        # switch to output tab
+        self.controller.gui.navigator.set_page(8)
+        output_dir = os.path.abspath(r"tests\dj\output")
+        out_tab = self.controller.gui.notebook.output_files_tab
+        out_tab.set_all_from_dir(output_dir, "dj_all-testpos")
+        # run posac
+        self.controller.run_posac()
+        # assert that the output files are created
+        assert os.path.exists(os.path.join(output_dir, "dj_all-testpos.pos"))
+        assert os.path.exists(os.path.join(output_dir, "dj_all-testpos.ls1"))
+        assert os.path.exists(os.path.join(output_dir, "dj_all-testpos.ls2"))
+        # enable view output
+        self.controller.enable_view_output()
+        test_dir = Path(output_dir).parent
+        self.controller.save_session(test_dir / "saved_sessions" / "dj_all-testpos.mmp")
+        return {
+            "posac_drv": None,
+            "job_pos": os.path.join(output_dir, "dj_all-testpos.pos"),
+            "expected_pos": None,
+            "posac_axes_out": None,
+        }
+
     def test_w250_recoding_scenario(self, visual_mode):
         """Test the W250 recoding scenario with optional visual validation"""
         results = self.run_w250_recoding_scenrio()
@@ -343,5 +417,11 @@ class TestScenarios:
     def test_simple_scenario(self, visual_mode):
         """Test the simple scenario with optional visual validation"""
         results = self.run_simple_scenario()
+        if visual_mode:
+            self._setup_visual_test()
+
+    def test_dj_test_recoding(self, visual_mode):
+        """Test the DJ test recoding scenario with optional visual validation"""
+        results = self.run_dj_test_recoding(visual_mode)
         if visual_mode:
             self._setup_visual_test()

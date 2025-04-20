@@ -40,9 +40,12 @@ def validate_recoding_operation(data: np.ndarray, operation: RecodingOperation) 
                         f"Invalid recoding pair: {old}->{new}. New value must be between 0 and 99."
                     )
         except ValueError:
-            raise RecodingError(
-                f"Invalid recoding pair: {old}->{new}. Values must be integers."
-            )
+            try:
+                raise RecodingError(
+                    f"Invalid recoding pair: {old}->{new}. Values must be integers."
+                )
+            except UnboundLocalError:
+                raise RecodingError("Invalid recoding pair: Values must be integers.")
 
     except ValueError as e:
         raise RecodingError(f"Invalid recoding specification: {str(e)}")

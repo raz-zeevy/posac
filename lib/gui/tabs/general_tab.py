@@ -1,8 +1,9 @@
 import tkinter as tk
-import ttkbootstrap as ttk
-from lib.gui.components.form import Label, BrowseButton, Entry, SelectionBox, SpinBox
-from lib.utils import real_size
+from pathlib import Path
+
+from lib.gui.components.form import BrowseButton, Entry, Label, SelectionBox, SpinBox
 from lib.help.posac_help import Help
+from lib.utils import real_size
 
 ENTRIES_PAD_Y = 7
 ENTRIES_PAD_RIGHT = 100
@@ -22,9 +23,9 @@ class GeneralTab(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-        self._parent = parent
+        self._notebook = parent
         self._create_widgets()
-        self.gui = self._parent.parent
+        self.gui = self._notebook.parent
 
     ###########
     #   GUI   #
@@ -96,39 +97,34 @@ class GeneralTab(tk.Frame):
         "located? (columns from-to)",
                                wraplength=400)
         self.id_location.pack(side=tk.LEFT, padx=(0, 30))
-        
+
         id_location_right = tk.Frame(id_location_frame)
         id_location_right.pack(side=tk.RIGHT, padx=(0, 30))
-        
+
         from_label = Label(id_location_right, text="From")
         from_label.pack(side=tk.LEFT, padx=(0, 5))
-        
+
         self.id_location_from_entry = SpinBox(
-            id_location_right,
-            width=5,
-            from_=0,
-            to=999,
-            default=0
+            id_location_right, width=5, from_=0, to=999, default=0
         )
         self.id_location_from_entry.pack(side=tk.LEFT, padx=(0, 5))
-        
+
         to_label = Label(id_location_right, text="To")
         to_label.pack(side=tk.LEFT, padx=(0, 5))
-        
+
         self.id_location_to_entry = SpinBox(
-            id_location_right,
-            width=5,
-            from_=0,
-            to=999,
-            default=0
+            id_location_right, width=5, from_=0, to=999, default=0
         )
         self.id_location_to_entry.pack(side=tk.LEFT)
 
     def _create_label_entry(self, text, **kwargs):
         frame = tk.Frame(self)
-        default = kwargs.pop('default', "")
-        frame.pack(fill='x', padx=(ENTRIES_PAD_LEFT, ENTRIES_PAD_RIGHT),
-                   pady=real_size(ENTRIES_PAD_Y))
+        default = kwargs.pop("default", "")
+        frame.pack(
+            fill="x",
+            padx=(ENTRIES_PAD_LEFT, ENTRIES_PAD_RIGHT),
+            pady=real_size(ENTRIES_PAD_Y),
+        )
         label = Label(frame, text=text)
         label.pack(side=tk.LEFT)
         entry = Entry(frame, **kwargs)
@@ -136,11 +132,13 @@ class GeneralTab(tk.Frame):
         entry.insert(0, default)
         return entry
 
-    def _create_label_combo(self, text, values, default,
-                            **kwargs):
+    def _create_label_combo(self, text, values, default, **kwargs):
         frame = tk.Frame(self)
-        frame.pack(fill='x', padx=(ENTRIES_PAD_LEFT, ENTRIES_PAD_RIGHT),
-                   pady=real_size(ENTRIES_PAD_Y))
+        frame.pack(
+            fill="x",
+            padx=(ENTRIES_PAD_LEFT, ENTRIES_PAD_RIGHT),
+            pady=real_size(ENTRIES_PAD_Y),
+        )
         label = Label(frame, text=text)
         label.pack(side=tk.LEFT)
         combo = SelectionBox(frame, values=values, **kwargs)
@@ -150,14 +148,17 @@ class GeneralTab(tk.Frame):
 
     def _create_label_spinbox(self, text, **kwargs):
         frame = tk.Frame(self)
-        frame.pack(fill='x', padx=(ENTRIES_PAD_LEFT, ENTRIES_PAD_RIGHT),
-                   pady=real_size(ENTRIES_PAD_Y))
+        frame.pack(
+            fill="x",
+            padx=(ENTRIES_PAD_LEFT, ENTRIES_PAD_RIGHT),
+            pady=real_size(ENTRIES_PAD_Y),
+        )
         label = Label(frame, text=text)
         label.pack(side=tk.LEFT)
         spinbox = SpinBox(frame, **kwargs)
         spinbox.pack(side=tk.RIGHT)
         return spinbox
-    
+
     ##########
     # Browse #
     ##########
@@ -171,6 +172,10 @@ class GeneralTab(tk.Frame):
         if data_file:
             self.data_input_entry.delete(0, tk.END)
             self.data_input_entry.insert(0, data_file)
+        data_file_path = Path(data_file)
+        self._notebook.output_files_tab.set_all_from_dir(
+            data_file_path.parent, data_file_path.stem
+        )
 
     #############
     #  Getters  #

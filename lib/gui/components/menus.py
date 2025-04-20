@@ -1,10 +1,11 @@
-from pathlib import Path
+import logging
 import tkinter as tk
+
 import ttkbootstrap as ttk
-from lib.utils import *
 from PIL import Image, ImageTk
 from tktooltip import ToolTip
-import logging
+
+from lib.utils import *
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +14,7 @@ m_POSAC_AXES_FILE = "Posac-axes File"
 m_POSAC_OUTPUT = "Posac Output"
 m_POSAC_LSA_DIAG = "POSAC/LSA Diagrams"
 m_POSACSEP_DIAG = "Posacsep Diagrams"
+
 
 class Menu(tk.Menu):
     def __init__(self, root):
@@ -29,21 +31,21 @@ class Menu(tk.Menu):
         self.add_cascade(label="File", menu=self.file_menu)
         # View Menu
         self.view_menu = tk.Menu(self)
-        self.data_file_menu = self.add_submenus(self.view_menu, label="Input Data "
-                                                                   "File",
-                                  excel=True)
-        self.posac_output_menu = self.add_submenus(self.view_menu,
-                                                   label=m_POSAC_OUTPUT)
+        self.data_file_menu = self.add_submenus(
+            self.view_menu, label="Input Data File", excel=True
+        )
+        self.posac_output_menu = self.add_submenus(self.view_menu, label=m_POSAC_OUTPUT)
         self.lsa1_output_menu = self.add_submenus(self.view_menu, label="LSA1 Output")
         self.lsa2_output_menu = self.add_submenus(self.view_menu, label="LSA2 Output")
         self.view_menu.add_cascade(label=m_POSAC_LSA_DIAG)
-        self.posacsep_tabe_menu = self.add_submenus(self.view_menu,
-                                                    label=m_POSACSEP_TABLE)
+        self.posacsep_table_menu = self.add_submenus(
+            self.view_menu, label=m_POSACSEP_TABLE
+        )
         self.posacsep = tk.Menu(self.view_menu, tearoff=0)
-        self.view_menu.add_cascade(label=m_POSACSEP_DIAG,
-                                   menu=self.posacsep)
-        self.posac_axes_menu = self.add_submenus(self.view_menu,
-                                                 label=m_POSAC_AXES_FILE)
+        self.view_menu.add_cascade(label=m_POSACSEP_DIAG, menu=self.posacsep)
+        self.posac_axes_menu = self.add_submenus(
+            self.view_menu, label=m_POSAC_AXES_FILE
+        )
         self.add_cascade(label="View", menu=self.view_menu)
         # Options Menu
         self.add_command(label="Options")
@@ -57,9 +59,8 @@ class Menu(tk.Menu):
         # remove current items
         self.posacsep.delete(0, "end")
         # add new items
-        for i in range(1, items_num+1):
-            self.posacsep.add_command(label=f"Item {i}",
-                                      command=None)
+        for i in range(1, items_num + 1):
+            self.posacsep.add_command(label=f"Item {i}", command=None)
         # self.view_menu.add_cascade(label=m_POSACSEP_DIAG, menu=self.posacsep)
 
     def add_submenus(self, parent_menu, label, excel=False):
@@ -72,38 +73,24 @@ class Menu(tk.Menu):
         return submenu
 
     def enable_view_results(self, posac_axes=False):
-        self.view_menu.entryconfig(m_POSAC_OUTPUT,
-                                        state="normal")
-        self.view_menu.entryconfig("LSA1 Output",
-                                        state="normal")
-        self.view_menu.entryconfig("LSA2 Output",
-                                        state="normal")
-        self.view_menu.entryconfig(m_POSAC_LSA_DIAG,
-                                        state='normal')
-        self.view_menu.entryconfig(m_POSACSEP_TABLE,
-                                        state='normal')
-        self.view_menu.entryconfig(m_POSACSEP_DIAG,
-                                        state='normal')
+        self.view_menu.entryconfig(m_POSAC_OUTPUT, state="normal")
+        self.view_menu.entryconfig("LSA1 Output", state="normal")
+        self.view_menu.entryconfig("LSA2 Output", state="normal")
+        self.view_menu.entryconfig(m_POSAC_LSA_DIAG, state="normal")
+        self.view_menu.entryconfig(m_POSACSEP_TABLE, state="normal")
+        self.view_menu.entryconfig(m_POSACSEP_DIAG, state="normal")
         if posac_axes:
-            self.view_menu.entryconfig(m_POSAC_AXES_FILE,
-                                        state='normal')
+            self.view_menu.entryconfig(m_POSAC_AXES_FILE, state="normal")
 
     def disable_view_results(self):
-        self.view_menu.entryconfig(m_POSAC_OUTPUT,
-                                        state="disable")
-        self.view_menu.entryconfig("LSA1 Output",
-                                        state="disable")
-        self.view_menu.entryconfig("LSA2 Output",
-                                        state="disable")
-        self.view_menu.entryconfig(m_POSAC_LSA_DIAG,
-                                        state='disable')
-        self.view_menu.entryconfig(m_POSACSEP_TABLE,
-                                        state='disable')
-        self.view_menu.entryconfig(m_POSACSEP_DIAG,
-                                        state='disable')
-        self.view_menu.entryconfig(m_POSAC_AXES_FILE,
-                                        state='disable')
-        
+        self.view_menu.entryconfig(m_POSAC_OUTPUT, state="disable")
+        self.view_menu.entryconfig("LSA1 Output", state="disable")
+        self.view_menu.entryconfig("LSA2 Output", state="disable")
+        self.view_menu.entryconfig(m_POSAC_LSA_DIAG, state="disable")
+        self.view_menu.entryconfig(m_POSACSEP_TABLE, state="disable")
+        self.view_menu.entryconfig(m_POSACSEP_DIAG, state="disable")
+        self.view_menu.entryconfig(m_POSAC_AXES_FILE, state="disable")
+
     def update_history_menu(self, paths, max_length=30):
         """
         In the file menu, remove all existing path items after the "Exit" item,
@@ -114,21 +101,22 @@ class Menu(tk.Menu):
 
         def truncate_path(path, max_length):
             if len(path) > max_length:
-                return "..." + path[-(max_length - 3):]
+                return "..." + path[-(max_length - 3) :]
             return path
 
         # Find the index of the "Exit" item
         exit_index = None
-        for index in range(self.file_menu.index('end') + 1):
-            if self.file_menu.type(
-                    index) == 'command' and self.file_menu.entrycget(index,
-                                                                     'label') == 'Exit':
+        for index in range(self.file_menu.index("end") + 1):
+            if (
+                self.file_menu.type(index) == "command"
+                and self.file_menu.entrycget(index, "label") == "Exit"
+            ):
                 exit_index = index
                 break
 
         if exit_index is not None:
             # Remove all items after the "Exit" item
-            self.file_menu.delete(exit_index + 1, 'end')
+            self.file_menu.delete(exit_index + 1, "end")
 
             if paths:
                 # Add a separator before the new paths
@@ -136,13 +124,13 @@ class Menu(tk.Menu):
                 for path in paths:
                     truncated_path = truncate_path(path, max_length)
                     self.file_menu.add_command(label=truncated_path)
-                    
+
+
 class IconMenu(tk.Frame):
     def __init__(self, root):
         super().__init__(root, autostyle=False, pady=3, padx=5)
         # Icon Menu
         self.image_references = {}
-        from PIL import Image, ImageTk
         self.load_icon_images()
         self.m_button_new = self.add_button("new.png", tooltip="New")
         self.m_button_open = self.add_button("open.png", tooltip="Open")
@@ -150,17 +138,23 @@ class IconMenu(tk.Frame):
         ###
         self.m_button_run = self.add_button("go.png", tooltip="Run Posac")
         #
-        self.m_button_undo = self.add_button("undo.png", tooltip="Undo",
-                                             state='disable')
-        self.m_button_redo = self.add_button("redo.png", tooltip="Redo",
-                                             state='disable')
+        self.m_button_undo = self.add_button(
+            "undo.png", tooltip="Undo", state="disable"
+        )
+        self.m_button_redo = self.add_button(
+            "redo.png", tooltip="Redo", state="disable"
+        )
         ###
         self.m_button_help = self.add_button("help.png", tooltip="Help")
-        icon_menu_border = tk.Frame(root,
-                                    autostyle=False,
-                                    borderwidth=1, relief='flat',
-                                    background='grey', pady=0)
-        icon_menu_border.pack(side=ttk.TOP, fill='x')
+        icon_menu_border = tk.Frame(
+            root,
+            autostyle=False,
+            borderwidth=1,
+            relief="flat",
+            background="grey",
+            pady=0,
+        )
+        icon_menu_border.pack(side=ttk.TOP, fill="x")
 
     def load_icon_images(self):
         """Load toolbar icons"""
@@ -171,7 +165,9 @@ class IconMenu(tk.Frame):
                 if file.endswith(".png") or file.endswith(".ico"):
                     image_path = os.path.join(icons_dir, file)
                     try:
-                        image = Image.open(image_path, "r").resize(real_size((19, 19), _round=True))
+                        image = Image.open(image_path, "r").resize(
+                            real_size((19, 19), _round=True)
+                        )
                         self.image_references[file] = ImageTk.PhotoImage(image)
                     except Exception as e:
                         logger.warning(f"Failed to load icon {file}: {e}")
@@ -181,11 +177,11 @@ class IconMenu(tk.Frame):
             self.image_references = {}
 
     def add_button(self, image: str, command=None, tooltip=None, **kwargs):
-        if not "width" in kwargs:
+        if "width" not in kwargs:
             kwargs["width"] = real_size(25, _round=True)
-        if not "height" in kwargs:
+        if "height" not in kwargs:
             kwargs["height"] = real_size(25, _round=True)
-        
+
         try:
             img = self.image_references.get(image)
             button = tk.Button(self,

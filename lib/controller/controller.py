@@ -10,7 +10,12 @@ from lib.controller.validator import Validator
 from lib.error_handler import ErrorReporter, install_tk_exception_handler
 from lib.gui.gui import GUI
 from lib.posac.posac_module import PosacModule
-from lib.utils import IS_PROD, POSAC_SEP_PATH, DataLoadingException
+from lib.utils import (
+    IS_PROD,
+    P_POSACSEP_TABLE_PATH,
+    POSAC_SEP_PATH,
+    DataLoadingException,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -290,11 +295,13 @@ class Controller:
         self.bind_submenu(self.gui.menu.posac_output_menu, file=self.pos_out)
         self.bind_submenu(self.gui.menu.lsa1_output_menu, file=self.ls1_out)
         self.bind_submenu(self.gui.menu.lsa2_output_menu, file=self.ls2_out)
-        self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=None)
+        self.bind_submenu(
+            self.gui.menu.posacsep_table_menu, file=self.posacsep_table_path
+        )
         self.bind_submenu(self.gui.menu.posac_axes_menu, file=self.posac_axes_out)
         posac_axes = self.gui.get_technical_options("posac_axes") == "Yes"
         if posac_axes:
-            self.bind_submenu(self.gui.menu.posacsep_tabe_menu, file=POSAC_SEP_PATH)
+            self.bind_submenu(self.gui.menu.posacsep_table_menu, file=POSAC_SEP_PATH)
         self.gui.menu.add_posacsep_items(self.int_vars_num)
         for i in range(1, self.int_vars_num + 1):
             self.gui.menu.posacsep.entryconfig(
@@ -385,6 +392,7 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         self.pos_out = self.notebook.output_files_tab.get_posac_out()
         self.ls1_out = self.notebook.output_files_tab.get_lsa1_out()
         self.ls2_out = self.notebook.output_files_tab.get_lsa2_out()
+        self.posacsep_table_path = P_POSACSEP_TABLE_PATH
         # posacsep
         self.posacsep = self.notebook.posacsep_tab.get_values()
 

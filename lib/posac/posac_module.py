@@ -1,16 +1,15 @@
 import os
 import subprocess
 from contextlib import contextmanager
-from typing import List, Dict
-import numpy as np
+from logging import getLogger
+from typing import Dict, List
+
 from lib.gui.tabs.internal_recoding_tab import RecodingOperation
 from lib.posac.data_loader import create_posac_data_file
 from lib.posac.data_loader import load_other_formats as load_data_manual
 from lib.posac.posac_input_writer import PosacInputWriter
-from lib.utils import *
 from lib.posac.recoding import apply_recoding
-from typing import List
-from logging import getLogger
+from lib.utils import *
 
 logger = getLogger(__name__)
 
@@ -62,22 +61,24 @@ class PosacModule:
                           manual_format,
                           recoding_operations: List[RecodingOperation]):
         """Prepare data files for POSAC analysis.
-        
+
         Creates two files if recoding is applied:
         - POSACDATA_ORG.DAT: Original data without recoding
         - POSACDATA.DAT: Data after applying recoding operations
-        
+
         Raises:
             PosacDataError: If there are issues with data loading or file creation
             ValueError: If input parameters are invalid
         """
         try:
             # First load the data
-            data_matrix = load_data_manual(data_file, 
-                                         lines_per_var=lines_per_var,
-                                         manual_format=manual_format, 
-                                         safe_mode=False)
-            
+            data_matrix = load_data_manual(
+                data_file,
+                lines_per_var=lines_per_var,
+                manual_format=manual_format,
+                safe_mode=False,
+            )
+
             # If we have recoding operations, save both original and recoded data
             if recoding_operations:
                 try:
@@ -85,91 +86,98 @@ class PosacModule:
                     recoded_matrix = apply_recoding(data_matrix, recoding_operations)
                     create_posac_data_file(recoded_matrix, p_DATA_FILE)
                 except (ValueError, IOError) as e:
-                    raise PosacDataError(f"Failed to apply recoding or save files: {str(e)}")
+                    raise PosacDataError(
+                        f"Failed to apply recoding or save files: {str(e)}"
+                    )
             else:
                 try:
                     # Just save the original data
                     create_posac_data_file(data_matrix, p_DATA_FILE)
                 except IOError as e:
                     raise PosacDataError(f"Failed to save data file: {str(e)}")
-                    
+
         except Exception as e:
             raise PosacDataError(f"Error preparing data files: {str(e)}")
-    
-    def create_files(self,
-                     data_file: str,
-                     lines_per_var: int,
-                     recoding_operations: List[str],
-                     job_name: str,
-                     num_variables: int,
-                     idata: int,
-                     lowfreq: int,
-                     missing: int,
-                     ipower: int,
-                     itemdplt: int,
-                     nlab: int,
-                     nxt: int,
-                     map_: int,
-                     iextdiag: int,
-                     itable: int,
-                     initx: int,
-                     iboxstrng: int,
-                     iff: int,
-                     itrm: int,
-                     iwrtfls: int,
-                     ifshmr: int,
-                     ifrqone: int,
-                     variables_details: list,
-                     min_category: int = None,
-                     max_category: int = None,
-                     nd1: int = None,
-                     nd2: int = None,
-                     ext_var_ranges: List[List[int]] = None,
-                     traits: List[Dict[str, List[List[int]]]] = None,
-                     init_approx_format: str = None,
-                     init_approx: List[List[float]] = None,
-                     boxstring: str = None,
-                     form_feed: str = None,
-                     shemor_directives_key: str = None,
-                     record_length: int = None):
+
+    def create_files(
+        self,
+        data_file: str,
+        lines_per_var: int,
+        recoding_operations: List[str],
+        job_name: str,
+        num_variables: int,
+        idata: int,
+        lowfreq: int,
+        missing: int,
+        ipower: int,
+        itemdplt: int,
+        nlab: int,
+        nxt: int,
+        map_: int,
+        iextdiag: int,
+        itable: int,
+        initx: int,
+        iboxstrng: int,
+        iff: int,
+        itrm: int,
+        iwrtfls: int,
+        ifshmr: int,
+        ifrqone: int,
+        variables_details: list,
+        min_category: int = None,
+        max_category: int = None,
+        nd1: int = None,
+        nd2: int = None,
+        ext_var_ranges: List[List[int]] = None,
+        traits: List[Dict[str, List[List[int]]]] = None,
+        init_approx_format: str = None,
+        init_approx: List[List[float]] = None,
+        boxstring: str = None,
+        form_feed: str = None,
+        shemor_directives_key: str = None,
+        record_length: int = None,
+    ):
         if not os.path.exists(RUN_FILES_DIR):
             os.makedirs(RUN_FILES_DIR)
         input_writer = PosacInputWriter()
-        self.prepare_data_file(data_file, lines_per_var, variables_details, recoding_operations)
-        input_writer.create_posac_input_file(job_name=job_name,
-                                             num_variables=num_variables,
-                                             idata=idata,
-                                             lowfreq=lowfreq,
-                                             missing=missing,
-                                             ipower=ipower,
-                                             itemdplt=itemdplt,
-                                             nlab=nlab,
-                                             nxt=nxt,
-                                             map_=map_,
-                                             iextdiag=iextdiag,
-                                             itable=itable,
-                                             initx=initx,
-                                             iboxstrng=iboxstrng,
-                                             iff=iff,
-                                             itrm=itrm,
-                                             iwrtfls=iwrtfls,
-                                             ifshmr=ifshmr,
-                                             ifrqone=ifrqone,
-                                             variables_details=variables_details,
-                                             min_category=min_category,
-                                             max_category=max_category,
-                                             nd1=nd1,
-                                             nd2=nd2,
-                                             ext_var_ranges=ext_var_ranges,
-                                             traits=traits,
-                                             init_approx_format=init_approx_format,
-                                             init_approx=init_approx,
-                                             boxstring=boxstring,
-                                             form_feed=form_feed,
-                                             shemor_directives_key=shemor_directives_key,
-                                             record_length=record_length)
+        self.prepare_data_file(
+            data_file, lines_per_var, variables_details, recoding_operations
+        )
+        input_writer.create_posac_input_file(
+            job_name=job_name,
+            num_variables=num_variables,
+            idata=idata,
+            lowfreq=lowfreq,
+            missing=missing,
+            ipower=ipower,
+            itemdplt=itemdplt,
+            nlab=nlab,
+            nxt=nxt,
+            map_=map_,
+            iextdiag=iextdiag,
+            itable=itable,
+            initx=initx,
+            iboxstrng=iboxstrng,
+            iff=iff,
+            itrm=itrm,
+            iwrtfls=iwrtfls,
+            ifshmr=ifshmr,
+            ifrqone=ifrqone,
+            variables_details=variables_details,
+            min_category=min_category,
+            max_category=max_category,
+            nd1=nd1,
+            nd2=nd2,
+            ext_var_ranges=ext_var_ranges,
+            traits=traits,
+            init_approx_format=init_approx_format,
+            init_approx=init_approx,
+            boxstring=boxstring,
+            form_feed=form_feed,
+            shemor_directives_key=shemor_directives_key,
+            record_length=record_length,
+        )
 
-        
     def run(self, posac_out: str,
             lsa1_out : str,
             lsa2_out : str,
@@ -185,7 +193,7 @@ class PosacModule:
                 return os.path.abspath(path)
             else:
                 return SCRIPT_NESTING_PREFIX + path
-            
+
         posac_input_drv_file = p_POSAC_DRV
         data_file = p_DATA_FILE
         # Define the command and arguments
@@ -203,7 +211,7 @@ class PosacModule:
             # data file. You can change it to your own directory, and simplify
             # filename. For example  c:\tstfssa\tstdata.fss
             lsa1_out,
-            lsa2_out
+            lsa2_out,
         ]
         if posac_axes_out:
             arguments.append(posac_axes_out)
@@ -217,13 +225,15 @@ class PosacModule:
         posac_dir = get_script_dir_path()
         with cwd(posac_dir):
             print("################")
-            print("Run Command: "+" ".join(full_command))
-            process = subprocess.Popen(full_command,
-                                    shell=True,
-                                     stdin=subprocess.PIPE,
-                                    # stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    text=True)
+            print("Run Command: " + " ".join(full_command))
+            process = subprocess.Popen(
+                full_command,
+                shell=True,
+                stdin=subprocess.PIPE,
+                # stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
             posac_sep_input = "\n".join(map(str, posacsep)) + "\n"
             print("Input data:\n", posac_sep_input)
             try:
@@ -234,59 +244,12 @@ class PosacModule:
             # Print the output and error, if any
             if process.returncode != 0:
                 raise Exception(f"POSAC script failed : {process.stderr}")
+            # if not stdout:
+            #     raise Exception(
+            #         "Something went wrong with the POSAC script, make sure the output paths are vaid paths"
+            #     )
             print("Output:", stdout)
             print("Error:", stderr)
-
-    def run_2(self, data_file : str,
-            posac_out: str,
-            lsa1_out,
-            lsa2_out,
-            posacsep):
-        """
-        The way this function works if there is no posacsep the return code
-        will still be 0 but NOPSOACSEP will be printed
-        :return:
-        """
-        def get_path(path: str):
-            if os.path.exists(path):
-                return os.path.abspath(path)
-            else:
-                return SCRIPT_NESTING_PREFIX + path
-
-        posac_input_drv_file = p_POSAC_DRV
-        # Define the command and arguments
-        arguments = [
-            get_path(posac_input_drv_file),  # A file in a specific format (see
-            # fssainp.drv
-            # instructions file) that tells the program how to read data file and
-            # what you want done.
-            data_file,
-            # Path and filename of the input data file in ASCII (simple txt
-            # file). You can change it to fit with your own directory, and you
-            # can simplify
-            # filename. For example, c:\tstfssa\tstdata.dat
-            posac_out,  # Path and filename of the output
-            # data file. You can change it to your own directory, and simplify
-            # filename. For example  c:\tstfssa\tstdata.fss
-            lsa1_out,
-            lsa2_out
-        ]
-        # command = r"C:\Users\Raz_Z\Desktop\shmuel-project\fssa-21\FASSA.BAT"
-        command = "PXPOS.BAT"
-
-        # Combine the command and arguments into a single list
-        full_command = [command] + arguments
-
-        # Run the command
-        posac_dir = get_script_dir_path()
-        with cwd(posac_dir):
-            # print command
-            print("Run Command: "+" ".join(full_command))
-            result = subprocess.run(full_command)
-            if result.returncode == 0:
-                print("Command succeeded:", result.stdout)
-            else:
-                print("Command failed with error:", result.stderr)
 
     @staticmethod
     def open_running_files_dir():

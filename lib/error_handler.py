@@ -270,7 +270,7 @@ def global_exception_handler(exctype, value, tb):
             )
 
         # Exit the application
-        sys.exit(1)
+        exit()
     else:
         # In development mode, use the default exception handler
         sys.__excepthook__(exctype, value, tb)

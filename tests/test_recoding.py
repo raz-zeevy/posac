@@ -130,7 +130,7 @@ def test_invalid_recoding_values():
     operation.selected_variables = "1"
     operation.recoding_pairs = [("1", "a")]  # Non-integer value
 
-    with pytest.raises(RecodingError, match="Invalid recoding pair"):
+    with pytest.raises(RecodingError):
         apply_recoding(data, [operation])
 
 

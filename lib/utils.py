@@ -50,8 +50,7 @@ GROUPING_TYPES = ["Percentile", "Equal Intervals", "By Rank"]
 ######################
 # Script paths
 p_FSS_DIR = './scripts/IdoPosac'
-SCRIPT_PEARSON = "PEARSON"
-SCRIPT_MONO = "MONO"
+
 
 def GET_MODE():
     return os.environ.get('MODE')
@@ -93,6 +92,7 @@ p_OUTPUT_DIR = "output"
 OUTPUT_FILE_NAME = "DJK21.FSS"
 p_OUTPUT_FILE = os.path.join(p_OUTPUT_DIR, OUTPUT_FILE_NAME)
 P_POSACSEP_DIR = os.path.join(get_script_dir_path(), "POSACSEP.OUT")
+P_POSACSEP_TABLE_PATH = os.path.join(get_script_dir_path(), "POSACSEP.TAB")
 
 # Input paths
 RUN_FILES_DIR = os.getenv('APPDATA') + "\\Posac\\run_files"

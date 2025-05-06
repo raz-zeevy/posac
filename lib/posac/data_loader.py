@@ -1,32 +1,40 @@
+import logging
+import re
+from typing import List, Optional
+
 import numpy as np
-from typing import List, Optional, Dict
+
+from lib.utils import IS_PROD
+
+logger = logging.getLogger(__name__)
 
 
 class DataLoadingException(Exception):
     """Custom exception for data loading errors."""
+
     pass
 
 
 class VariableFormat:
     """Represents the format specification for a variable in the data file.
-    
+
     Attributes:
         line (int): Line number where the variable is located (1-based)
         col (int): Column position where the variable starts (1-based)
         width (int): Width of the variable field
         label (str, optional): Label/name for the variable
     """
-    
+
     def __init__(self, index: int, line: int, col: int, width: int, label: str = ""):
         self.index = int(index)
         self.line = int(line)
         self.col = int(col)
         self.width = int(width)
         self.label = str(label)
-    
+
     def __repr__(self):
         return f"VariableFormat(index={self.index}, line={self.line}, col={self.col}, width={self.width}, label='{self.label}')"
-    
+
     def to_dict(self) -> dict:
         """Convert to dictionary format for backward compatibility"""
         return {
@@ -34,7 +42,7 @@ class VariableFormat:
             "line": self.line,
             "col": self.col,
             "width": self.width,
-            "label": self.label
+            "label": self.label,
         }
 
 
@@ -50,11 +58,15 @@ def validate_input(line_index: int, var: VariableFormat, lines: List[str]) -> No
         ValueError: If the input validation fails
     """
     if line_index + var.line - 1 >= len(lines):
-        raise ValueError(f"Invalid line number {var.line + 1}. Exceeds the file's line count.")
+        raise ValueError(
+            f"Invalid line number {var.line + 1}. Exceeds the file's line count."
+        )
 
     line_content = lines[line_index + var.line - 1]
     if var.col - 1 >= len(line_content):
-        raise ValueError(f"Invalid column number {var.col} in line {line_index + var.line}.")
+        raise ValueError(
+            f"Invalid column number {var.col} in line {line_index + var.line}."
+        )
 
     if var.col - 1 + var.width > len(line_content):
         raise ValueError(
@@ -65,10 +77,10 @@ def validate_input(line_index: int, var: VariableFormat, lines: List[str]) -> No
 
 def validate_format_spec(var_format: VariableFormat) -> None:
     """Validate a variable format specification before loading data.
-    
+
     Args:
         var_format: The format specification to validate
-        
+
     Raises:
         ValueError: If any format values are invalid
     """
@@ -80,7 +92,25 @@ def validate_format_spec(var_format: VariableFormat) -> None:
         raise ValueError(f"Width must be positive, got {var_format.width}")
 
 
-def load_supported_formats(path: str, extension: str, has_header: bool = False) -> np.ndarray:
+def filter_non_ascii(text):
+    """
+    Filter out non-ASCII characters from text, keeping only ASCII and spaces.
+    And filters /t as well
+
+    Args:
+        text: The input text to filter
+
+    Returns:
+        A string containing only ASCII characters and spaces
+    """
+    text = text.replace("\t", "")
+    # Keep only ASCII characters (codes 0-127) and spaces
+    return re.sub(r"[^\x00-\x7F]", "", text)
+
+
+def load_supported_formats(
+    path: str, extension: str, has_header: bool = False
+) -> np.ndarray:
     """
     Load supported formats like CSV, TSV, or Excel using NumPy.
 
@@ -89,7 +119,7 @@ def load_supported_formats(path: str, extension: str, has_header: bool = False) 
     :param has_header: Whether the file has a header
     :return: NumPy array with data
     """
-    delimiter = ',' if extension == ".csv" else '\t'
+    delimiter = "," if extension == ".csv" else "\t"
     data = []
 
     with open(path, "r", encoding="utf-8") as file:
@@ -114,10 +144,11 @@ def load_other_formats(
     """Load custom-formatted files with fixed-width fields or custom delimiters."""
     data = []
     failed_rows = []
-
+    errors = set()
+    warnings = set()
     with open(path, "r", encoding="utf-8") as file:
         lines = file.readlines()
-
+        lines = [filter_non_ascii(line) for line in lines]
         if len(lines) % lines_per_var != 0:
             raise DataLoadingException(
                 "Number of lines in the file is not a multiple of lines_per_var."
@@ -141,36 +172,48 @@ def load_other_formats(
                         # Get the line for this variable
                         line = lines[i + var.line - 1]
                         # Extract value and strip any whitespace
-                        value = line[var.col - 1:var.col - 1 + var.width].strip()
+                        value = line[var.col - 1 : var.col - 1 + var.width].strip()
                         row.append(int(value))
                 else:
-                    combined_row = "".join(lines[i:i + lines_per_var]).strip().replace("\n", "")
-                    row = [int(val) for val in combined_row.split(delimiter)] if delimiter else [int(val) for val in combined_row]
+                    combined_row = (
+                        "".join(lines[i : i + lines_per_var]).strip().replace("\n", "")
+                    )
+                    row = (
+                        [int(val) for val in combined_row.split(delimiter)]
+                        if delimiter
+                        else [int(val) for val in combined_row]
+                    )
             except ValueError as e:
                 failed_rows.append(i + 1)
+                warnings.add(e)
             except Exception as e:
                 failed_rows.append(i + 1)
+                errors.add(e)
             else:
                 data.append(row)
 
     if not any(data):
-        raise DataLoadingException("Failed to load any rows from the file.")
+        if IS_PROD():
+            raise DataLoadingException("Failed to load any rows from the file.")
+        else:
+            raise DataLoadingException(
+                f"Failed to load any rows from the file. Errors: {errors}"
+            )
 
     if failed_rows:
-        
-        (f"Warning: Failed to load rows at indices: {failed_rows}")
+        logger.warning(f"Warning: Failed to load rows at indices: {failed_rows}")
 
     return np.array(data, dtype=int)
 
 
 def create_posac_data_file(data_matrix: np.ndarray, output_path: str) -> None:
     """Create the POSAC data file (POSACDATA.DAT) for the POSAC program.
-    
+
     Args:
         data_matrix: 2D numpy array containing the data to write. Each element should be
             an integer that will be formatted as a 2-character wide field.
         output_path: Path where the output file will be written.
-    
+
     Raises:
         ValueError: If data_matrix contains values that cannot be formatted properly
         IOError: If there are issues writing to the output file

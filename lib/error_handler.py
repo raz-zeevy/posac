@@ -72,7 +72,7 @@ class ErrorReporter:
         try:
             screenshot = pyautogui.screenshot()
             screenshot.save(filename)
-            logger.info(f"Screenshot saved to {filename}")
+            logger.info(f"Screen)shot saved to {filename}")
             return True
         except Exception as e:
             logger.error(f"Failed to capture screenshot: {e}")

@@ -30,7 +30,7 @@ class Controller:
             handler.setFormatter(formatter)
             logger.addHandler(handler)
 
-        self.gui = GUI()
+        self.gui = GUI(self)
         self.notebook = self.gui.notebook
         self.history = SessionsHistory(callback=self.update_history)
 
@@ -448,11 +448,17 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                 record_length=self.record_length,
             )
         except DataLoadingException as e:
-            self.gui.show_warning("Data Loading Error", str(e))
-            return
+            if IS_PROD():
+                self.gui.show_warning("Data Loading Error", str(e))
+                return
+            else:
+                raise e
         except Exception as e:
-            self.gui.show_warning("Posac Error", str(e))
-            return
+            if IS_PROD():
+                self.gui.show_warning("Posac Error", str(e))
+                return
+            else:
+                raise e
         try:
             technical_options = self.gui.get_technical_options()
             if technical_options["posac_axes"] == "Yes":

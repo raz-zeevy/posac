@@ -1,9 +1,12 @@
 import tkinter as tk
 
+from lib.controller.validator import Validator
+
 
 class Navigator:
-    def __init__(self, gui):
+    def __init__(self, gui, controller):
         self.gui = gui
+        self.controller = controller
         self.cur_page = 0
         self.notebook = self.gui.notebook
         self.navigation = self.gui.navigation
@@ -35,6 +38,7 @@ class Navigator:
         self.gui.root.bind('<Left>', handle_left)
         self.gui.root.bind('<Right>', handle_right)
         self.gui.menu.entryconfig("Options", command=self.gui.show_options_window)
+
     def _update_buttons(self):
         if self.cur_page == self.min_page:
             self.navigation.button_previous.config(state="disabled")
@@ -66,6 +70,11 @@ class Navigator:
         # next_trait
         # else:
         # next_page()
+        try:
+            self.validate_page()
+        except ValueError as e:
+            self.gui.show_error("Error", str(e))
+            return
         if self.cur_page == self.traits_tab_num and \
                 self.gui.notebook.traits_tab._current_trait < \
                 len(self.gui.notebook.traits_tab._traits):
@@ -130,3 +139,9 @@ class Navigator:
     def show_first_page(self):
         self.gui.notebook_frame.pack_forget()
         self.gui.start_page.pack(expand=True, fill='both')
+
+    def validate_page(self):
+        # checks if the user is on the general tab
+        if self.cur_page == 0:
+            # checks if the data file is valid
+            Validator.validate_data_file(self.controller)

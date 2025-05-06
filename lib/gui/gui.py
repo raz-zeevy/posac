@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from tkinter import filedialog
 
@@ -30,7 +31,7 @@ def gui_only(func, *args, **kwargs):
     return wrapper
 
 class GUI():
-    def __init__(self):
+    def __init__(self, controller):
         # Main window
         self.root = ttk.Window(
             themename=THEME_NAME,
@@ -56,7 +57,7 @@ class GUI():
         #
         Helpable.init(self.root)
         self.init_window()
-        self.navigator = Navigator(self)
+        self.navigator = Navigator(self, controller)
         self.view_results = None
 
     def run_process(self):
@@ -172,14 +173,41 @@ class GUI():
         else:
             return MessageWindow.show_message(self.root, msg, title)
 
-    def save_file_diaglogue(self, file_types=None, default_extension=None,
-                            initial_file_name=None, title=None):
-        file_name = filedialog.asksaveasfilename(filetypes=file_types,
-                                                 defaultextension=default_extension,
-                                                 title=title,
-                                                 confirmoverwrite=True,
-                                                 initialfile=initial_file_name)
-        return file_name
+    def save_file_diaglogue(
+        self,
+        file_types=None,
+        default_extension=None,
+        initial_file_name=None,
+        title=None,
+        allow_overwrite=True,
+    ):
+        while True:
+            file_name = filedialog.asksaveasfilename(
+                filetypes=file_types,
+                defaultextension=default_extension,
+                title=title,
+                initialfile=initial_file_name,
+            )
+
+            # User cancelled the dialog
+            if not file_name:
+                return None
+
+            # Check if file already exists
+            if os.path.exists(file_name):
+                if allow_overwrite:
+                    return file_name
+                else:
+                    # Show error message that file exists and cannot be overwritten
+                    self.show_error(
+                        "File Exists",
+                        f"The file '{os.path.basename(file_name)}' already exists and cannot be overwritten.\n\nPlease choose a different filename.",
+                    )
+                    # Keep initial_file_name for next dialog
+                    initial_file_name = os.path.basename(file_name)
+            else:
+                # File doesn't exist, return the filename
+                return file_name
 
     def get_input_file_name(self) -> str:
         """
@@ -256,5 +284,5 @@ class GUI():
         pass
 
 if __name__ == '__main__':
-    gui = GUI()
+    gui = GUI(None)
     gui.run_process()

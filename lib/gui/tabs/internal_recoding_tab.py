@@ -10,10 +10,25 @@ from lib.utils import WINDOW_WIDTH, real_size, rreal_size
 
 
 class RecodingOperation:
-    def __init__(self):
-        self.selected_variables: str = ""
-        self.recoding_pairs: List[Tuple[str, str]] = []
-        self.invert: bool = False
+    def __init__(
+        self,
+        selected_variables: str = "",
+        recoding_pairs: List[Tuple[str, str]] = [],
+        invert: bool = False,
+    ):
+        # validate types
+        if not isinstance(selected_variables, str) and not isinstance(
+            selected_variables, int
+        ):
+            raise ValueError("selected_variables must be a string or an integer")
+        if not isinstance(recoding_pairs, list):
+            raise ValueError("recoding_pairs must be a list")
+        if not isinstance(invert, bool):
+            raise ValueError("invert must be a boolean")
+
+        self.selected_variables: str = selected_variables
+        self.recoding_pairs: List[Tuple[str, str]] = recoding_pairs
+        self.invert: bool = invert
 
     def __repr__(self):
         return f"RecodingOperation(selected_variables={self.selected_variables}, recoding_pairs={self.recoding_pairs}, invert={self.invert})"
@@ -372,32 +387,22 @@ class InternalRecodingTab(tk.Frame):
         # Save current state before making changes
         self._update_current_operation()
 
+        # set the number of operations
+        self.update_operations_num(len(operations))
+
         # First update all operations
         for i, operation in enumerate(operations):
             if i < len(self._recoding_operations):
-                op = self._recoding_operations[i]
-                # Create a fresh copy of the operation data
-                op.selected_variables = operation["selected_variables"].copy()
-                op.recoding_pairs = operation["recoding_pairs"].copy()
-                op.invert = operation["invert"]
+                operation = RecodingOperation(
+                    selected_variables=operation["selected_variables"],
+                    recoding_pairs=operation["recoding_pairs"].copy(),
+                    invert=operation["invert"],
+                )
+                self._recoding_operations[i] = operation
 
         # Then make sure we're showing the first operation
         if self._recoding_operations:
-            self._current_operation = 1  # Reset to first operation
-            self.operation_box.set("1")  # Update UI selection
-
-            # Update UI with first operation's data
-            first_op = self._recoding_operations[0]
-            self.var_index_entry.delete(0, tk.END)
-            self.var_index_entry.insert(0, ",".join(first_op.selected_variables))
-
-            self.pair_tree.delete(*self.pair_tree.get_children())
-            for old_val, new_val in first_op.recoding_pairs:
-                self.pair_tree.insert("", "end", values=(old_val, new_val))
-
-            self.operation_type.set(
-                "Inversion" if first_op.invert else "Manual Recoding"
-            )
+            self.select_operation(1)
 
     def set_variables(self, variables: str):
         """Set the variable indices for the current operation"""

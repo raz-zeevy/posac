@@ -53,18 +53,64 @@ class OFilesTab(tk.Frame):
         label = BoldLabel(entry_frame, text=title, size=9)
         label.pack(side=tk.LEFT)
         entry = Entry(entry_frame, width=rreal_size(70), help=Help.OUTPUT_FILES)
-        xpad = pl_ENTRIES_INNER - (len(title) * 8)
+        xpad = real_size(pl_ENTRIES_INNER - (len(title) * 8))
         entry.pack(side=tk.LEFT, padx=real_size((xpad, 0)))
         entry.insert(0, default)
+        # Bind the entry to sync with others when it's modified in real-time
+        entry.bind("<KeyRelease>", self._sync_entries)
+        # Store the entry type to know which one it is
+        entry.type = title
         button = BrowseButton(
             entry_frame,
             command=lambda: self.browse_and_modify_entry(
                 f"Save {title.lower().capitalize()} Output To..", entry, EXT[title]
             ),
         )
-        xpad = pl_ENTRIES_INNER - 30
         button.pack(side=tk.LEFT, padx=real_size((xpad, 0)))
         return entry, button
+
+    def _sync_entries(self, event=None):
+        """Synchronize all entries in real-time when one is edited"""
+        # Determine which entry triggered the event
+        trigger_entry = event.widget if event else None
+
+        if trigger_entry:
+            # Get the path from the triggered entry
+            path = trigger_entry.get()
+            if not path:
+                return
+
+            # Get the directory and base filename without extension
+            try:
+                directory = os.path.dirname(path)
+                base_filename = os.path.splitext(os.path.basename(path))[0]
+
+                # Create new paths with appropriate extensions
+                new_posac_path = os.path.join(directory, f"{base_filename}.pos")
+                new_lsa1_path = os.path.join(directory, f"{base_filename}.ls1")
+                new_lsa2_path = os.path.join(directory, f"{base_filename}.ls2")
+
+                # Update all entries except the one that triggered the event
+                # Save the current cursor position in the active entry
+                cursor_pos = trigger_entry.index(tk.INSERT)
+
+                if trigger_entry != self.posac_entry:
+                    self.posac_entry.delete(0, tk.END)
+                    self.posac_entry.insert(0, new_posac_path.replace("/", "\\"))
+
+                if trigger_entry != self.lsa1_entry:
+                    self.lsa1_entry.delete(0, tk.END)
+                    self.lsa1_entry.insert(0, new_lsa1_path.replace("/", "\\"))
+
+                if trigger_entry != self.lsa2_entry:
+                    self.lsa2_entry.delete(0, tk.END)
+                    self.lsa2_entry.insert(0, new_lsa2_path.replace("/", "\\"))
+
+                # Restore cursor position in the active entry
+                trigger_entry.icursor(cursor_pos)
+            except Exception:
+                # If there's an error parsing the path, just return without syncing
+                return
 
     def get_default_base_name(self):
         """Get the default base name for files, using job name or data file name"""
@@ -94,6 +140,7 @@ class OFilesTab(tk.Frame):
             file_types=[file_types],
             default_extension=file_types[1][-4:],
             initial_file_name=default_filename,
+            allow_overwrite=False,
         )
 
         if output_file:

@@ -338,6 +338,9 @@ class TestScenarios:
         # self.controller.run_posac()
         # set tab to internal recoding
         self.controller.gui.navigator.set_page(3)
+        rec_tab = self.notebook.internal_recoding_tab
+        rec_tab._remove_current_operation()
+        assert not rec_tab.get_operations(), "No operations should be present"
         # add recoding operation
         self.notebook.internal_recoding_tab.add_operation()
         # set variables to 1-2,3
@@ -396,6 +399,37 @@ class TestScenarios:
             "posac_axes_out": None,
         }
 
+    def run_escape51_scenario(self):
+        SET_MODE_DEV()
+        self.controller.load_session(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\escape51_dat\escape51.mmp"
+        )
+        self.controller.gui.navigator.set_page(0)
+        self.notebook.general_tab.set_data_file(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\escape51_dat\escape51.dat"
+        )
+        self.notebook.general_tab.set_job_name("escape51")
+        self.controller.gui.navigator.next_page()
+        self.controller.gui.navigator.next_page()
+        self.controller.gui.navigator.next_page()
+        self.controller.gui.navigator.next_page()
+        self.controller.gui.navigator.next_page()
+        output_dir = os.path.abspath(r"tests\escape51_dat\output")
+        output_tab = self.controller.gui.notebook.output_files_tab
+        output_tab.set_all_from_dir(
+            output_dir,
+            "escape51",
+        )
+        self.controller.run_posac()
+        self.controller.enable_view_output()
+        self.controller.save_session(Path(output_dir).parent / "escape51.mmp")
+        return {
+            "posac_drv": None,
+            "job_pos": os.path.join(output_dir, "escape51.pos"),
+            "expected_pos": None,
+            "posac_axes_out": None,
+        }
+
     def test_w250_recoding_scenario(self, visual_mode):
         """Test the W250 recoding scenario with optional visual validation"""
         results = self.run_w250_recoding_scenrio()
@@ -423,5 +457,10 @@ class TestScenarios:
     def test_dj_test_recoding(self, visual_mode):
         """Test the DJ test recoding scenario with optional visual validation"""
         results = self.run_dj_test_recoding(visual_mode)
+        if visual_mode:
+            self._setup_visual_test()
+
+    def test_escape51_scenario(self, visual_mode):
+        results = self.run_escape51_scenario()
         if visual_mode:
             self._setup_visual_test()

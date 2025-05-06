@@ -21,6 +21,7 @@ class Session:
         with open(path, 'r') as file:
             attributes = jsonpickle.decode(file.read())
         self.state = attributes
+        self.state["controller"]["save_path"] = path
 
     def save(self, path):
         if not os.path.exists(os.path.dirname(path)):

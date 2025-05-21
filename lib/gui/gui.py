@@ -9,7 +9,7 @@ from lib.gui.components.editable_tree_view import EditableTreeView
 from lib.gui.components.help_bar import HelpBar
 from lib.gui.components.helpables import Helpable
 from lib.gui.components.menus import IconMenu, Menu
-from lib.gui.components.navigation import Navigation
+from lib.gui.components.navigation_pane import NavigationPane
 from lib.gui.const import p_ICON
 from lib.gui.navigator import Navigator
 from lib.gui.notebook import PosacNotebook
@@ -88,7 +88,7 @@ class GUI():
         self.help_bar = HelpBar(self.root)
         self.help_bar.pack(side=tk.BOTTOM, fill="x")
         #
-        self.navigation = Navigation(self.root, self)
+        self.navigation = NavigationPane(self.root, self)
         self.navigation.pack(side=tk.BOTTOM, fill="x")
         #
         self.create_main_frame()

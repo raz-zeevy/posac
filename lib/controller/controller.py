@@ -255,7 +255,7 @@ class Controller:
             result = self.gui.show_msg(
                 "Do you want to save the current session before exiting?",
                 title="Exit",
-                yes_command=self.save_session,
+                yes_command=self.show_save_session,
                 buttons=["Yes:primary", "No:secondary", "Cancel:secondary"],
             )
             if result == "Yes":

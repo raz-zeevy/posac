@@ -1,25 +1,25 @@
-from tkinter.ttk import Treeview
-import ttkbootstrap as ttk
 import tkinter as tk
+from tkinter.ttk import Treeview
+
+import ttkbootstrap as ttk
 
 from lib.gui.components.editable_tree_view import EditableTreeView
 from lib.gui.components.helpables import Helpable, HelpableFrame
-from lib.utils import real_size, rreal_size
 
-CALIBRI_FONT = ('Calibri', 10)
-SEGOE_UI_FONT = ('Segoe UI', 10)
-SEGOE_UI_FONT_BOLD = ('Segoe UI', 10, 'bold')
+CALIBRI_FONT = ("Calibri", 10)
+SEGOE_UI_FONT = ("Segoe UI", 10)
+SEGOE_UI_FONT_BOLD = ("Segoe UI", 10, "bold")
 
 
 class Label(tk.Label):
     """A label that can be used to display text."""
 
     def __init__(self, parent, **kwargs):
-        if 'font' not in kwargs:
-            kwargs['font'] = SEGOE_UI_FONT
-        if 'size' in kwargs:
-            kwargs['font'] = (kwargs['font'][0], kwargs['size'])
-            del kwargs['size']
+        if "font" not in kwargs:
+            kwargs["font"] = SEGOE_UI_FONT
+        if "size" in kwargs:
+            kwargs["font"] = (kwargs["font"][0], kwargs["size"])
+            del kwargs["size"]
         super().__init__(parent, **kwargs)
 
 
@@ -27,12 +27,11 @@ class BoldLabel(tk.Label):
     """A label that can be used to display text."""
 
     def __init__(self, parent, **kwargs):
-        if 'font' not in kwargs:
-            kwargs['font'] = SEGOE_UI_FONT_BOLD
-        if 'size' in kwargs:
-            kwargs['font'] = (
-                kwargs['font'][0], kwargs['size'], kwargs['font'][2])
-            del kwargs['size']
+        if "font" not in kwargs:
+            kwargs["font"] = SEGOE_UI_FONT_BOLD
+        if "size" in kwargs:
+            kwargs["font"] = (kwargs["font"][0], kwargs["size"], kwargs["font"][2])
+            del kwargs["size"]
         super().__init__(parent, **kwargs)
 
 
@@ -40,20 +39,23 @@ class DataButton(ttk.Button):
     """A button that can be used to navigate to a different page."""
 
     def __init__(self, parent, **kwargs):
-        if 'width' not in kwargs:
-            kwargs['width'] = 10
-        super().__init__(parent, **kwargs,
-                         bootstyle="dark", )
+        if "width" not in kwargs:
+            kwargs["width"] = 10
+        super().__init__(
+            parent,
+            **kwargs,
+            bootstyle="dark",
+        )
 
 
 class NavigationButton(Helpable, ttk.Button):
     """A button that can be used to navigate to a different page."""
 
     def __init__(self, master=None, **kwargs):
-        if 'width' not in kwargs:
-            kwargs['width'] = 15
-        if 'bootstyle' not in kwargs:
-            kwargs['bootstyle'] = 'primary'
+        if "width" not in kwargs:
+            kwargs["width"] = 15
+        if "bootstyle" not in kwargs:
+            kwargs["bootstyle"] = "primary"
         super().__init__(master=master, **kwargs)
 
 
@@ -62,14 +64,17 @@ class SelectionBox(Helpable, ttk.Combobox):
 
     def __init__(self, master=None, **kwargs):
         default_index = None
-        if 'default' in kwargs:
-            default_index = kwargs['values'].index(kwargs['default'])
-            del kwargs['default']
-        if 'width' not in kwargs:
-            kwargs['width'] = 10
-        kwargs['state'] = 'readonly'
-        super().__init__(master=master, **kwargs, )
-        self.values = kwargs['values']
+        if "default" in kwargs:
+            default_index = kwargs["values"].index(kwargs["default"])
+            del kwargs["default"]
+        if "width" not in kwargs:
+            kwargs["width"] = 10
+        kwargs["state"] = "readonly"
+        super().__init__(
+            master=master,
+            **kwargs,
+        )
+        self.values = kwargs["values"]
         if default_index is not None:
             self.current(default_index)
 
@@ -77,15 +82,30 @@ class SelectionBox(Helpable, ttk.Combobox):
 class SpinBox(Helpable, ttk.Spinbox):
     def __init__(self, master=None, **kwargs):
         default_value = None
-        if 'default' in kwargs:
-            default_value = kwargs.pop('default')
-        if 'width' not in kwargs:
-            kwargs['width'] = 10
-        super().__init__(master=master, **kwargs,
-                         state="readonly", )
+        if "default" in kwargs:
+            default_value = kwargs.pop("default")
+        if "width" not in kwargs:
+            kwargs["width"] = 10
+
+        super().__init__(master=master, **kwargs)
+
         if default_value is not None:
             self.set(default_value)
-            
+
+        # Register the validation function with Tkinter
+        validate_cmd = self.register(self._validate_value_numeric)
+        self.configure(validate="key", validatecommand=(validate_cmd, "%P"))
+
+    def _validate_value_numeric(self, value):
+        if value == "":
+            return True
+        try:
+            float(value)
+            return True
+        except ValueError:
+            return False
+
+
 class Entry(Helpable, ttk.Entry):
     def __init__(self, master=None, **kwargs):
         super().__init__(master=master, **kwargs)

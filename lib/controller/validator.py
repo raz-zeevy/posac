@@ -20,8 +20,14 @@ class Validator:
 
     @staticmethod
     @mode_dependent
-    def validate_input_page(data_path, lines_num, is_manual_input, additional_options):
-        pass
+    def validate_input_page(controller):
+        Validator.validate_data_file(controller)
+        Validator.validate_job_name(controller)
+
+    def validate_job_name(controller):
+        job_name = controller.notebook.general_tab.get_job_name()
+        if not job_name or job_name.isspace():
+            raise ValueError("Job name is required")
 
     @staticmethod
     @mode_dependent

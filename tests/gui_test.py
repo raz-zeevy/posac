@@ -79,6 +79,8 @@ class GuiTest(Controller):
         for i, row in enumerate(dummy_vars):
             assert row[:4] == test_values[i][:4]
 
+        self.gui.notebook.clear_internal_variables()
+
     def test_external_variables_tab(self):
         self.notebook.select(3)
         ev = self.notebook.external_variables_tab
@@ -199,7 +201,6 @@ class GuiTest(Controller):
             )
         assert tt.get_traits() == test_traits_1
         tt.reset_default()
-
         self.gui.notebook.clear_external_variables()
 
     def test_posacsep_tab(self):

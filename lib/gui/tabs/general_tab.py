@@ -1,5 +1,6 @@
 import tkinter as tk
 from pathlib import Path
+from tkinter import messagebox
 
 from lib.gui.components.form import BrowseButton, Entry, Label, SelectionBox, SpinBox
 from lib.help.posac_help import Help
@@ -44,7 +45,7 @@ class GeneralTab(tk.Frame):
             to=999,
             default=1,
             width=6,
-            help=Help.LINES_PER_CASE
+            help=Help.LINES_PER_CASE,
         )
         self.plot_item_diagram_entry = self._create_label_combo(
             "Do you want item diagrams plotted?", ["Yes", "No"],
@@ -104,18 +105,72 @@ class GeneralTab(tk.Frame):
         from_label = Label(id_location_right, text="From")
         from_label.pack(side=tk.LEFT, padx=(0, 5))
 
-        self.id_location_from_entry = SpinBox(
-            id_location_right, width=5, from_=0, to=999, default=0
-        )
+        # Replace SpinBox with Entry
+        self.id_location_from_entry = Entry(id_location_right, width=5)
         self.id_location_from_entry.pack(side=tk.LEFT, padx=(0, 5))
+        self.id_location_from_entry.insert(0, "0")  # Default value
+
+        # Register numeric validation
+        validate_cmd = self.id_location_from_entry.register(
+            self._validate_numeric_input
+        )
+        self.id_location_from_entry.configure(
+            validate="key", validatecommand=(validate_cmd, "%P")
+        )
 
         to_label = Label(id_location_right, text="To")
         to_label.pack(side=tk.LEFT, padx=(0, 5))
 
-        self.id_location_to_entry = SpinBox(
-            id_location_right, width=5, from_=0, to=999, default=0
-        )
+        # Replace SpinBox with Entry
+        self.id_location_to_entry = Entry(id_location_right, width=5)
         self.id_location_to_entry.pack(side=tk.LEFT)
+        self.id_location_to_entry.insert(0, "0")  # Default value
+
+        # Register numeric validation
+        self.id_location_to_entry.configure(
+            validate="key", validatecommand=(validate_cmd, "%P")
+        )
+
+        # Add validation for range
+        self.id_location_from_entry.bind("<FocusOut>", self._validate_id_location_range)
+        self.id_location_to_entry.bind("<FocusOut>", self._validate_id_location_range)
+
+    def _validate_numeric_input(self, value):
+        """Validate that input is numeric"""
+        if value == "":
+            return True
+        try:
+            int(value)
+            return True
+        except ValueError:
+            return False
+
+    def _validate_id_location_range(self, event=None):
+        """Validate that 'from' is not greater than 'to'"""
+        try:
+            from_val = int(self.id_location_from_entry.get())
+            to_val = int(self.id_location_to_entry.get())
+
+            if from_val > to_val:
+                messagebox.showerror(
+                    "Invalid Range", "'From' value cannot be greater than 'To' value"
+                )
+                # Reset both values to 0
+                self.id_location_from_entry.delete(0, tk.END)
+                self.id_location_from_entry.insert(0, "0")
+                self.id_location_to_entry.delete(0, tk.END)
+                self.id_location_to_entry.insert(0, "0")
+        except ValueError:
+            # Only show error if both fields have values and they're invalid
+            if self.id_location_from_entry.get() and self.id_location_to_entry.get():
+                messagebox.showerror(
+                    "Invalid Input", "Please enter valid numeric values"
+                )
+                # Reset both values to 0
+                self.id_location_from_entry.delete(0, tk.END)
+                self.id_location_from_entry.insert(0, "0")
+                self.id_location_to_entry.delete(0, tk.END)
+                self.id_location_to_entry.insert(0, "0")
 
     def _create_label_entry(self, text, **kwargs):
         frame = tk.Frame(self)
@@ -213,10 +268,12 @@ class GeneralTab(tk.Frame):
 
     def get_id_location(self):
         try:
-            return (
-                int(self.id_location_from_entry.get()),
-                int(self.id_location_to_entry.get())
-            )
+            from_val = int(self.id_location_from_entry.get() or "0")
+            to_val = int(self.id_location_to_entry.get() or "0")
+
+            if from_val <= to_val:
+                return (from_val, to_val)
+            return (0, 0)
         except ValueError:
             return (0, 0)
 

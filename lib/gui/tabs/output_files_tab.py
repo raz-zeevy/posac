@@ -4,7 +4,7 @@ from tkinter import ttk
 
 from lib.gui.components.form import BoldLabel, BrowseButton, Entry
 from lib.help.posac_help import Help
-from lib.utils import real_size, rreal_size
+from lib.utils import real_size
 
 py_ENTRIES = 25
 pl_ENTRIES = 75
@@ -48,25 +48,40 @@ class OFilesTab(tk.Frame):
         self.exit_button.pack(pady=real_size((60, 0)))
 
     def _create_output_entry(self, title, default):
+        # Use a frame that can expand horizontally
         entry_frame = tk.Frame(self)
-        entry_frame.pack(pady=real_size(py_ENTRIES))
+        entry_frame.pack(fill="x", pady=real_size(py_ENTRIES), padx=real_size(10))
+
+        # Add a label on the left
         label = BoldLabel(entry_frame, text=title, size=9)
-        label.pack(side=tk.LEFT)
-        entry = Entry(entry_frame, width=rreal_size(70), help=Help.OUTPUT_FILES)
-        xpad = real_size(pl_ENTRIES_INNER - (len(title) * 8))
-        entry.pack(side=tk.LEFT, padx=real_size((xpad, 0)))
+        label.pack(side=tk.LEFT, padx=(5, 0))
+
+        # Add the browse button on the right with fixed position
+        button = BrowseButton(
+            entry_frame,
+            command=lambda: self.browse_and_modify_entry(
+                f"Save {title.lower().capitalize()} Output To..", None, EXT[title]
+            ),
+        )
+        button.pack(side=tk.RIGHT, padx=(0, 5))
+
+        # Add the entry that will expand/shrink in the middle
+        entry = Entry(entry_frame, help=Help.OUTPUT_FILES)
+        entry.pack(side=tk.LEFT, fill="x", expand=True, padx=(10, 10))
         entry.insert(0, default)
+
         # Bind the entry to sync with others when it's modified in real-time
         entry.bind("<KeyRelease>", self._sync_entries)
         # Store the entry type to know which one it is
         entry.type = title
-        button = BrowseButton(
-            entry_frame,
+
+        # Save the entry reference in the button's command
+        button.config(
             command=lambda: self.browse_and_modify_entry(
                 f"Save {title.lower().capitalize()} Output To..", entry, EXT[title]
-            ),
+            )
         )
-        button.pack(side=tk.LEFT, padx=real_size((xpad, 0)))
+
         return entry, button
 
     def _sync_entries(self, event=None):

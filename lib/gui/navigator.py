@@ -9,7 +9,7 @@ class Navigator:
         self.controller = controller
         self.cur_page = 0
         self.notebook = self.gui.notebook
-        self.navigation = self.gui.navigation
+        self.navigation_pane = self.gui.navigation
         self._bind()
         #
         self.max_page = len(self.gui.notebook.tabs()) - 1
@@ -18,8 +18,8 @@ class Navigator:
         self.traits_tab_num = 6
 
     def _bind(self):
-        self.navigation.button_next.config(command=self.next_tab_clicked)
-        self.navigation.button_previous.config(command=self.prev_tab_clicked)
+        self.navigation_pane.button_next.config(command=self.next_tab_clicked)
+        self.navigation_pane.button_previous.config(command=self.prev_tab_clicked)
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_switch)
 
         # Add keyboard navigation bindings with focus check
@@ -41,13 +41,15 @@ class Navigator:
 
     def _update_buttons(self):
         if self.cur_page == self.min_page:
-            self.navigation.button_previous.config(state="disabled")
+            self.navigation_pane.button_previous.config(state="disabled")
         else:
-            self.navigation.button_previous.config(state="normal")
+            self.navigation_pane.button_previous.config(state="normal")
         if self.cur_page == self.max_page:
-            self.navigation.button_next.config(state="disabled")
+            self.navigation_pane.button_next.config(state="disabled")
+            self.navigation_pane.enable_run_button()
         else:
-            self.navigation.button_next.config(state="normal")
+            self.navigation_pane.disable_run_button()
+            self.navigation_pane.button_next.config(state="normal")
 
     def on_tab_switch(self, event):
         # this is a hack to prevent the event from being called when not needed
@@ -144,4 +146,4 @@ class Navigator:
         # checks if the user is on the general tab
         if self.cur_page == 0:
             # checks if the data file is valid
-            Validator.validate_data_file(self.controller)
+            Validator.validate_input_page(self.controller)

@@ -81,7 +81,9 @@
             "args": [
                 "tests/",
                 "-v",
-                "--tb=short"
+                "--tb=short",
+                "--pdb"
+
             ],
             "console": "integratedTerminal",
             "justMyCode": false

@@ -1,13 +1,8 @@
 import tkinter as tk
 from typing import List
 
-import ttkbootstrap as ttk
-
-from lib.gui.components.editable_tree_view import EditableTreeView
-from lib.gui.components.form import Label, SelectionBox,\
-    BoldLabel, Entry
+from lib.gui.components.form import BoldLabel, Entry, Label, SelectionBox
 from lib.gui.components.ranges_table import RangesTable
-
 from lib.help.posac_help import Help
 from lib.utils import real_size
 
@@ -85,7 +80,7 @@ class TraitsTab(tk.Frame):
         upper_frame.pack(fill='x', padx=0, pady=real_size(py_TOP_INPUTS))
         # Traits Selection
         traits_num_frame = tk.Frame(upper_frame)
-        trait_num_label = Label(traits_num_frame, text='Number of Traits')
+        trait_num_label = Label(traits_num_frame, text="Trait Number")
         trait_num_label.pack(side='left')
         self.traits_num_box = SelectionBox(traits_num_frame,
                                            values=[str(i + 1) for i in
@@ -143,7 +138,7 @@ class TraitsTab(tk.Frame):
 
     def get_traits_values(self) -> List[dict]:
         """
-        This function returns the traits values in the format that is 
+        This function returns the traits values in the format that is
         expected by the POSAC input writer
         the data is the ranges for traits without the first two columns
         (external variable index and number of ranges)
@@ -151,7 +146,7 @@ class TraitsTab(tk.Frame):
         traits = []
         for trait in self._traits:
             trait_value = {}
-            trait_value['data'] = [var[2:] for var in trait.data]
+            trait_value["data"] = [var[1:] for var in trait.data]
             trait_value['label'] = trait.label
             traits.append(trait_value)
         return traits
@@ -194,8 +189,7 @@ class TraitsTab(tk.Frame):
         for i, trait in enumerate(traits):
             self.set_trait(i+1, label=trait.label,
                            data=trait.data)
-            self.select_trait(i+1)
-            
+            self.select_trait(i + 1)
 
     #######
     # API #
@@ -205,11 +199,11 @@ class TraitsTab(tk.Frame):
         self._update_traits_from_table()
         while len(self._traits) < traits_num:
             ranges = [RangesTable.DEFAULT_VALUE] * var_num
-            label = f'trait{len(self._traits) + 1}'
+            label = f"trait{len(self._traits) + 1}"
             self._traits.append(self.TraitData(label, ranges))
         while len(self._traits) > traits_num:
             self._traits.pop()
-        self._current_trait = min(self._current_trait, len(self._traits))
+        self._current_trait = max(1, min(self._current_trait, len(self._traits)))
         if traits_num == 0:
             self._update_frames(self.TabContext.NO_TRAITS)
         else:
@@ -223,13 +217,14 @@ class TraitsTab(tk.Frame):
 
     def remove_external_variable(self):
         for trait in self._traits:
-            if trait: trait.data.pop()
+            if trait:
+                trait.data.pop()
         if self._traits:
             self.select_trait(self._current_trait)
 
     def reset_default(self):
         for trait in self._traits:
-            trait.label = f'trait{self._traits.index(trait) + 1}'
+            trait.label = f"trait{self._traits.index(trait) + 1}"
             trait.data = [RangesTable.DEFAULT_VALUE] * len(trait.data)
         if self._traits:
             self.select_trait(self._current_trait)
@@ -237,8 +232,14 @@ class TraitsTab(tk.Frame):
     def clear_external_variables(self):
         self._traits = []
         self.update_traits_num(0, 0)
-        
+
     def add_trait(self, label : str, data : List[List]):
+        """
+        Add a trait to the traits list
+        :param label: the label of the trait
+        :param data: the data of the tra
+        :return:
+        """
         self._traits.append(self.TraitData(label, data))
         self.select_trait(len(self._traits))
         self.update_traits_num(len(self._traits), len(data))

@@ -155,7 +155,7 @@ class OFilesTab(tk.Frame):
             file_types=[file_types],
             default_extension=file_types[1][-4:],
             initial_file_name=default_filename,
-            allow_overwrite=False,
+            allow_overwrite=True,
         )
 
         if output_file:

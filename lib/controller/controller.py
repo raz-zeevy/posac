@@ -7,7 +7,6 @@ from lib.controller.graph_generator import generate_graphs, generate_posacsep_gr
 from lib.controller.session import Session
 from lib.controller.sessions_history import SessionsHistory
 from lib.controller.validator import Validator
-from lib.error_handler import ErrorReporter, install_tk_exception_handler
 from lib.gui.gui import GUI
 from lib.posac.posac_module import PosacModule
 from lib.utils import (
@@ -35,9 +34,9 @@ class Controller:
         self.history = SessionsHistory(callback=self.update_history)
 
         # Initialize error reporter
-        self.error_reporter = ErrorReporter.get_instance(self.gui, self)
-        # Install Tkinter exception handler
-        install_tk_exception_handler(self.gui.root)
+        # self.error_reporter = ErrorReporter.get_instance(self.gui, self)
+        # # Install Tkinter exception handler
+        # install_tk_exception_handler(self.gui.root)
         self.bind()
         self.restart_session()
         self.gui.navigator.prev_page()

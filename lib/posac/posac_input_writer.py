@@ -1,75 +1,89 @@
 import os
-from typing import List, Dict
+from typing import Dict, List
 
 from lib.common import parse_range_string
 from lib.utils import *
 
-
 SHEMOR_DIRECTIVES = {
-    'A': """FOR X,Y RECODE 0 THRU  25 = 1,  26 THRU  50 = 2,
+    "A": """FOR X,Y RECODE 0 THRU  25 = 1,  26 THRU  50 = 2,
               51 THRU  75 = 3,  76 THRU 100 = 4.
 FOR J,L RECODE 0 THRU  50 = 1,  51 THRU 100 = 2,
              101 THRU 150 = 3, 151 THRU 200 = 4.""",
-    'B': """FOR X,Y RECODE  0 THRU 45 = 1, 46 THRU 75 = 2, 76 THRU 100 = 3.
+    "B": """FOR X,Y RECODE  0 THRU 45 = 1, 46 THRU 75 = 2, 76 THRU 100 = 3.
             FOR J RECODE 0 THRU 60 = 1, 61 THRU 110 = 2, 111 THRU 150 = 3,
             151 THRU 200 = 4.
             FOR L  RECODE 0 THRU 100 =1 , 101 THRU 200 = 2.""",
 }
 
+
 class PosacInputWriter:
     def __init__(self):
         pass
 
-    def create_posac_input_file(self,
-                                job_name: str,
-                                num_variables: int,
-                                idata: int,
-                                lowfreq: int,
-                                missing: int,
-                                ipower: int,
-                                itemdplt: int,
-                                nlab: int,
-                                nxt: int,
-                                map_: int,
-                                iextdiag: int,
-                                itable: int,
-                                initx: int,
-                                iboxstrng: int,
-                                iff: int,
-                                itrm: int,
-                                iwrtfls: int,
-                                ifshmr: int,
-                                ifrqone: int,
-                                variables_details: list,
-                                min_category: int = 4,
-                                max_category: int = 4,
-                                nd1: int = None,
-                                nd2: int = None,
-                                variable_labels=None,
-                                ext_var_ranges: List[List[int]] = None,
-                                traits: List[
-                                    Dict[str, List[List[int]]]] = None,
-                                init_approx_format: str = None,
-                                init_approx: List[List[float]] = None,
-                                boxstring: str = None,
-                                form_feed: str = None,
-                                shemor_directives_key: str = None,
-                                record_length: int = None):
-
+    def create_posac_input_file(
+        self,
+        job_name: str,
+        num_variables: int,
+        idata: int,
+        lowfreq: int,
+        missing: int,
+        ipower: int,
+        itemdplt: int,
+        nlab: int,
+        nxt: int,
+        map_: int,
+        iextdiag: int,
+        itable: int,
+        initx: int,
+        iboxstrng: int,
+        iff: int,
+        itrm: int,
+        iwrtfls: int,
+        ifshmr: int,
+        ifrqone: int,
+        variables_details: list,
+        min_category: int = 4,
+        max_category: int = 4,
+        nd1: int = None,
+        nd2: int = None,
+        variable_labels=None,
+        ext_var_ranges: List[List[int]] = None,
+        traits: List[Dict[str, List[List[int]]]] = None,
+        init_approx_format: str = None,
+        init_approx: List[List[float]] = None,
+        boxstring: str = None,
+        form_feed: str = None,
+        shemor_directives_key: str = None,
+        record_length: int = None,
+    ):
         if not os.path.exists(RUN_FILES_DIR):
             os.makedirs(RUN_FILES_DIR)
 
         self.ex_var_first_i = num_variables - nxt + 1
 
-        with open(f'{RUN_FILES_DIR}/{DRV_IN_NAME}', "w") as f:
+        with open(f"{RUN_FILES_DIR}/{DRV_IN_NAME}", "w") as f:
             self.write_title_card(f, job_name)
-            self.write_parameter_card(f, num_variables, idata, lowfreq,
-                                      missing,
-                                      ipower, itemdplt, nlab, nxt, map_,
-                                      iextdiag,
-                                      itable, initx, iboxstrng, iff, itrm,
-                                      iwrtfls,
-                                      ifshmr, ifrqone)
+            self.write_parameter_card(
+                f,
+                num_variables,
+                idata,
+                lowfreq,
+                missing,
+                ipower,
+                itemdplt,
+                nlab,
+                nxt,
+                map_,
+                iextdiag,
+                itable,
+                initx,
+                iboxstrng,
+                iff,
+                itrm,
+                iwrtfls,
+                ifshmr,
+                ifrqone,
+            )
             self.write_input_format(f, variables_details)
             if missing != 0 or True:
                 self.write_min_max_category(f, min_category, max_category)
@@ -93,44 +107,79 @@ class PosacInputWriter:
     def write_title_card(self, f, job_name: str):
         f.write(f"{job_name}\n")
 
-    def write_parameter_card(self, f, num_variables: int, idata: int,
-                             lowfreq: int,
-                             missing: int, ipower: int, itemdplt: int,
-                             nlab: int,
-                             nxt: int, map_: int, iextdiag: int, itable: int,
-                             initx: int, iboxstrng: int, iff: int, itrm: int,
-                             iwrtfls: int, ifshmr: int, ifrqone: int):
-        params = [num_variables, idata, lowfreq, missing, ipower, itemdplt,
-                  nlab, nxt, map_, iextdiag, itable, initx, iboxstrng, iff,
-                  itrm, iwrtfls, ifshmr, ifrqone]
+    def write_parameter_card(
+        self,
+        f,
+        num_variables: int,
+        idata: int,
+        lowfreq: int,
+        missing: int,
+        ipower: int,
+        itemdplt: int,
+        nlab: int,
+        nxt: int,
+        map_: int,
+        iextdiag: int,
+        itable: int,
+        initx: int,
+        iboxstrng: int,
+        iff: int,
+        itrm: int,
+        iwrtfls: int,
+        ifshmr: int,
+        ifrqone: int,
+    ):
+        params = [
+            num_variables,
+            idata,
+            lowfreq,
+            missing,
+            ipower,
+            itemdplt,
+            nlab,
+            nxt,
+            map_,
+            iextdiag,
+            itable,
+            initx,
+            iboxstrng,
+            iff,
+            itrm,
+            iwrtfls,
+            ifshmr,
+            ifrqone,
+        ]
         f.write("".join([f"{param:4}" for param in params]) + "\n")
 
     def write_input_format(self, f, variables_details: List[Dict]):
         """Write the input format string where all variables are on the same line.
         Each variable takes 2 characters and position is based on its index.
-        
+
         Example:
             For variables with indices 1,2,3 the format will be:
             "(T1,I1,T3,I1,T5,I1)"
         """
-        input_format = "(" + ",".join([
-            f"T{(int(var['index'])-1)*2+1},I2" 
-            for var in variables_details
-        ]) + ")"
+        input_format = (
+            "("
+            + ",".join(
+                [f"T{(int(var['index']) - 1) * 2 + 1},I2" for var in variables_details]
+            )
+            + ")"
+        )
         f.write(f"{input_format}\n")
 
     def write_legacy_input_format(self, f, variables_details: List[Dict]):
         """Legacy method for backward compatibility.
         Uses explicit column and width from variables_details.
         """
-        input_format = "(" + ",".join([
-            f"T{var['col']},I{var['width']}" 
-            for var in variables_details
-        ]) + ")"
+        input_format = (
+            "("
+            + ",".join([f"T{var['col']},I{var['width']}" for var in variables_details])
+            + ")"
+        )
         f.write(f"{input_format}\n")
 
-    def write_min_max_category(self, f, min_category: int,
-                               max_category: int):
+    def write_min_max_category(self, f, min_category: int, max_category: int):
         if min_category or max_category:
             f.write(f"{min_category:4}{max_category:4}\n")
 
@@ -138,11 +187,11 @@ class PosacInputWriter:
         f.write(f"{nd1:4}{nd2:4}\n")
 
     def write_variable_labels(self, f, var_details: List[Dict]):
-        var_label_str = ''
+        var_label_str = ""
         for var in var_details:
             var_label_str += f"{int(var['index']):4}      {var['label']}\n"
         f.write(var_label_str)
-        
+
     def write_ext_var_ranges(self, f, ext_var_ranges: List[List[str]]):
         for i, var_ranges in enumerate(ext_var_ranges):
             f.write(f"{i+self.ex_var_first_i:4}{len(var_ranges):4}")

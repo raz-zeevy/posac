@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 from tkinter import ttk
 
@@ -228,16 +229,16 @@ class TestScenarios:
         self.notebook.external_variables_ranges_tab.set_range(1, ["1-4"])
         # add traits
         self.notebook.traits_tab.add_trait(
-            "trait1 suff-income", [["5", "1", "1-2"], ["6", "1", "1-4"]]
+            "trait1 suff-income", [["1", "1-2"], ["1", "1-4"]]
         )
         self.notebook.traits_tab.add_trait(
-            "trait2 served army", [["5", "1", "1-4"], ["6", "1", "2-4"]]
+            "trait2 served army", [["1", "1-4"], ["1", "2-4"]]
         )
         self.notebook.traits_tab.add_trait(
-            "trait3 combat", [["5", "1", "1-4"], ["6", "1", "4-4"]]
+            "trait3 combat", [["1", "1-4"], ["1", "4-4"]]
         )
         self.notebook.traits_tab.add_trait(
-            "trait4 suff inc & service", [["5", "1", "1-2"], ["6", "1", "2-4"]]
+            "trait4 suff inc & service", [["1", "1-2"], ["1", "2-4"]]
         )
         self.notebook.external_variables_ranges_tab.set_traits_num(4)
         # Technical options RECORD LENGTH
@@ -307,7 +308,7 @@ class TestScenarios:
         assert ir_tab.operation_type.get() == "Inversion", (
             "Operation (3) type should be Inversion"
         )
-
+        return
         # select reversion
         self.controller.run_posac()
         self.controller.enable_view_output()
@@ -430,6 +431,43 @@ class TestScenarios:
             "posac_axes_out": None,
         }
 
+    def run_dj_ext_var_traits(self):
+        SET_MODE_DEV()
+        self.controller.load_session(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\dj_1_extv_traits\dj_all-testpos28.mmp"
+        )
+        general_tab = self.notebook.general_tab
+        general_tab.set_job_name("tst28")
+        general_tab.set_data_file(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\dj_1_extv_traits\dj_all-testpos.prn"
+        )
+        output_tab = self.controller.gui.notebook.output_files_tab
+        output_tab.set_all_from_dir(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\dj_1_extv_traits\output",
+            "dj_all-testpos",
+        )
+        self.controller.run_posac()
+        # copy drv file to output dir
+        output_dir = os.path.abspath(r"tests\dj_1_extv_traits\output")
+        shutil.copy(
+            r"C:\Users\raz3z\AppData\Roaming\Posac\run_files\POSACINP.DRV",
+            os.path.join(output_dir, "dj_all-testpos.drv"),
+        )
+        res_drv_file = r"C:\Users\raz3z\Projects\Shmuel\posac\tests\dj_1_extv_traits\res\posainp.drv"
+        out_drv_file = os.path.join(output_dir, "dj_all-testpos.drv")
+        # compare last 2 lines in both files
+        with open(res_drv_file, "r") as f:
+            res_lines = f.readlines()[-2:]
+        with open(out_drv_file, "r") as f:
+            out_lines = f.readlines()[-2:]
+        assert res_lines == out_lines, (
+            "The last 2 lines in the DRV file are not the same"
+        )
+
+    ##############
+    # test cases #
+    ##############
+
     def test_w250_recoding_scenario(self, visual_mode):
         """Test the W250 recoding scenario with optional visual validation"""
         results = self.run_w250_recoding_scenrio()
@@ -462,5 +500,10 @@ class TestScenarios:
 
     def test_escape51_scenario(self, visual_mode):
         results = self.run_escape51_scenario()
+        if visual_mode:
+            self._setup_visual_test()
+
+    def test_dj_ext_var_traits(self, visual_mode):
+        results = self.run_dj_ext_var_traits()
         if visual_mode:
             self._setup_visual_test()

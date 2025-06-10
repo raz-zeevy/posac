@@ -23,11 +23,20 @@ class Validator:
     def validate_input_page(controller):
         Validator.validate_data_file(controller)
         Validator.validate_job_name(controller)
+        Validator.validate_to_from_ranges(controller)
 
     def validate_job_name(controller):
         job_name = controller.notebook.general_tab.get_job_name()
         if not job_name or job_name.isspace():
-            raise ValueError("Job name is required")
+            raise ValueError(
+                "Job name is required. Please enter any name for your future reference."
+            )
+
+    def validate_to_from_ranges(controller):
+        from_val = int(controller.notebook.general_tab.id_location_from_entry.get())
+        to_val = int(controller.notebook.general_tab.id_location_to_entry.get())
+        if from_val > to_val:
+            raise ValueError("'From' value cannot be greater than 'To' value")
 
     @staticmethod
     @mode_dependent

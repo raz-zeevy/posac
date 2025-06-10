@@ -199,6 +199,7 @@ class OptionsWindow(Window):
         self.create_widgets()
         self.update_idletasks()  # Ensure all elements are rendered before centering
         self.center_window()
+        self.set_settings(**self.DEFAULT_VALUES)
 
     def create_widgets(self):
         self.create_notebook()
@@ -354,7 +355,11 @@ class OptionsWindow(Window):
                 raise ValueError(f"Unknown setting: {key}")
 
         if "posac_axes" in settings:
-            self.posac_axes_frame.save_axes_var.set(settings["posac_axes"])
+            self.posac_axes_frame.save_axes_var.set(
+                "Yes"
+                if (settings["posac_axes"] and settings["posac_axes"] != "No")
+                else "No"
+            )
 
         if "set_selection" in settings:
             self.posac_axes_frame.set_selection_var.set(settings["set_selection"])

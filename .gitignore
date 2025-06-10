@@ -1,15 +1,21 @@
-secret
+# Env and IOE
+**/secret
 __pycache__
-**/__pycache__/**
 /venv
-tests/output
-/build
-/dist
+**/__pycache__/**
 .env
-.vscode/
+.vscode
 .pytest_cache/
 .idea/
+.vscode/
+# Build
+/build
+/dist
+# Tests
+tests/output
+# Scripts
 scripts/email/config/
+# POSAC FILES
 *.SCR
 *.pos
 *.ls1
@@ -17,5 +23,3 @@ scripts/email/config/
 *.pax
 *.OUT
 *.TAB
-FORT9
-FORT10

@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from lib.common import parse_range_string
 from lib.utils import *
@@ -55,6 +55,8 @@ class PosacInputWriter:
         form_feed: str = None,
         shemor_directives_key: str = None,
         record_length: int = None,
+        case_id_location: Tuple[int, int] = None,
+        subject_type: str = None,
     ):
         if not os.path.exists(RUN_FILES_DIR):
             os.makedirs(RUN_FILES_DIR)
@@ -84,7 +86,9 @@ class PosacInputWriter:
                 ifshmr,
                 ifrqone,
             )
-            self.write_input_format(f, variables_details)
+            self.write_input_format(
+                f, variables_details, case_id_location, subject_type, missing
+            )
             if missing != 0 or True:
                 self.write_min_max_category(f, min_category, max_category)
             if ipower != 0:
@@ -151,7 +155,14 @@ class PosacInputWriter:
         ]
         f.write("".join([f"{param:4}" for param in params]) + "\n")
 
-    def write_input_format(self, f, variables_details: List[Dict]):
+    def write_input_format(
+        self,
+        f,
+        variables_details: List[Dict],
+        case_id_location: Tuple[int, int],
+        subject_type: str,
+        missing: int,
+    ):
         """Write the input format string where all variables are on the same line.
         Each variable takes 2 characters and position is based on its index.
 
@@ -159,14 +170,29 @@ class PosacInputWriter:
             For variables with indices 1,2,3 the format will be:
             "(T1,I1,T3,I1,T5,I1)"
         """
-        input_format = (
-            "("
-            + ",".join(
-                [f"T{(int(var['index']) - 1) * 2 + 1},I2" for var in variables_details]
-            )
-            + ")"
+        input_format = "("
+        if subject_type in ["P", "I"]:
+            last_var_index = variables_details[-1]["index"]
+            input_format += f"T{int(last_var_index) * 2 + 1},A2,"
+        input_format += ",".join(
+            [f"T{(int(var['index']) - 1) * 2 + 1},I2" for var in variables_details]
         )
+        input_format += ")"
         f.write(f"{input_format}\n")
+        # write the valid values
+        if missing == 1:
+            valid_lows = []
+            valid_highs = []
+            for var in variables_details:
+                valid_lows.append(var["valid_low"])
+                valid_highs.append(var["valid_high"])
+            valid_values_string = (
+                "".join([f"{val:>4}" for val in valid_lows])
+                + "\n"
+                + "".join([f"{val:>4}" for val in valid_highs])
+                + "\n"
+            )
+            f.write(valid_values_string)
 
     def write_legacy_input_format(self, f, variables_details: List[Dict]):
         """Legacy method for backward compatibility.

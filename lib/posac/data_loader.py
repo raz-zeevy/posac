@@ -1,6 +1,7 @@
 import logging
 import re
-from typing import List, Optional
+from pathlib import Path
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 
@@ -25,15 +26,26 @@ class VariableFormat:
         label (str, optional): Label/name for the variable
     """
 
-    def __init__(self, index: int, line: int, col: int, width: int, label: str = ""):
+    def __init__(
+        self,
+        index: int,
+        line: int,
+        col: int,
+        width: int,
+        label: str = "",
+        valid_low: int = 0,
+        valid_high: int = 9,
+    ):
         self.index = int(index)
         self.line = int(line)
         self.col = int(col)
         self.width = int(width)
         self.label = str(label)
+        self.valid_low = int(valid_low)
+        self.valid_high = int(valid_high)
 
     def __repr__(self):
-        return f"VariableFormat(index={self.index}, line={self.line}, col={self.col}, width={self.width}, label='{self.label}')"
+        return f"VariableFormat(index={self.index}, line={self.line}, col={self.col}, width={self.width}, label='{self.label}', valid_low={self.valid_low}, valid_high={self.valid_high})"
 
     def to_dict(self) -> dict:
         """Convert to dictionary format for backward compatibility"""
@@ -43,6 +55,8 @@ class VariableFormat:
             "col": self.col,
             "width": self.width,
             "label": self.label,
+            "valid_low": self.valid_low,
+            "valid_high": self.valid_high,
         }
 
 
@@ -140,8 +154,23 @@ def load_other_formats(
     delimiter: Optional[str] = None,
     manual_format: Optional[List[VariableFormat]] = None,
     safe_mode: bool = False,
-) -> np.ndarray:
-    """Load custom-formatted files with fixed-width fields or custom delimiters."""
+    appendix_fields: Tuple[int, int] = None,
+) -> Tuple[np.ndarray, Union[np.ndarray, None]]:
+    """
+    Load custom-formatted files with fixed-width fields or custom delimiters.
+
+    Args:
+        path: Path to the data file
+        lines_per_var: Number of lines per variable
+        delimiter: Delimiter to use for the data
+        manual_format: Manual format of the data
+        safe_mode: Whether to validate the input format
+        appendix_fields: Tuple of the appendix fields (start col, end col) or
+            (variable_ix, -1) if it's a csv file
+
+    Returns:
+        np.ndarray: Data matrix
+    """
     data = []
     failed_rows = []
     errors = set()
@@ -203,7 +232,21 @@ def load_other_formats(
     if failed_rows:
         logger.warning(f"Warning: Failed to load rows at indices: {failed_rows}")
 
-    return np.array(data, dtype=int)
+    has_appendix_fields = appendix_fields != (0, 0)
+    if has_appendix_fields:
+        # get for each line the values from col appendix_fields[0] to appendix_fields[1] [single value per line]
+        appendix_data = []
+        with open(path, "r", encoding="utf-8") as file:
+            lines = file.readlines()
+            lines = [filter_non_ascii(line) for line in lines]
+            for line in lines:
+                appendix_data.append(
+                    int(line[appendix_fields[0] - 1 : appendix_fields[1]].strip())
+                )
+
+    return np.array(data, dtype=int), (
+        np.array(appendix_data, dtype=int) if has_appendix_fields else None
+    )
 
 
 def create_posac_data_file(data_matrix: np.ndarray, output_path: str) -> None:
@@ -223,6 +266,7 @@ def create_posac_data_file(data_matrix: np.ndarray, output_path: str) -> None:
             raise ValueError(f"Value {item} is not an integer")
         if item < 0 or item > 99:
             raise ValueError(f"Value {item} cannot be formatted as 2 characters")
+        # return 2 characters, left padded with zeros
         return f"{item:2d}"
 
     try:
@@ -232,6 +276,28 @@ def create_posac_data_file(data_matrix: np.ndarray, output_path: str) -> None:
                 file.write(line + "\n")
     except IOError as e:
         raise IOError(f"Failed to write to {output_path}: {str(e)}")
+
+def add_apendix_data(
+    data_path: str,
+    appendix_data: np.ndarray,
+) -> None:
+    """Add the appendix data to the data_matrix.
+
+    Args:
+        data_path: Path to the data file
+        appendix_columns: Tuple of the appendix columns (start col, end col)
+        appendix_variable: Index of the appendix variable
+    """
+    if not Path(data_path).exists():
+        raise FileNotFoundError(f"File {data_path} does not exist")
+
+    appendix_data = appendix_data.reshape(-1, 1)
+    data = np.genfromtxt(data_path, delimiter=2, dtype=int)
+    data = np.concatenate((data, appendix_data), axis=1)
+
+    # save the data to the data_path
+    np.savetxt(data_path, data, fmt="%2d", delimiter="")
+
 
 if __name__ == '__main__':
     # Example usage

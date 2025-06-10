@@ -6,9 +6,10 @@ from lib.gui.tabs.internal_recoding_tab import RecodingOperation
 
 
 class RecodingError(Exception):
-    """Custom exception for recoding errors"""
+    """Custom exception for recoding errors add "recoding error: " to the message"""
 
-    pass
+    def __init__(self, message: str):
+        super().__init__(f"recoding error: {message}")
 
 
 def validate_recoding_operation(data: np.ndarray, operation: RecodingOperation) -> None:
@@ -30,7 +31,9 @@ def validate_recoding_operation(data: np.ndarray, operation: RecodingOperation) 
         for idx in operation.selected_variables_parsed:
             var_idx = int(idx) - 1
             if var_idx < 0 or var_idx >= data.shape[1]:
-                raise RecodingError(f"Invalid variable index: {idx}")
+                raise RecodingError(
+                    f"Cannot recode variable {idx}. Invalid variable index."
+                )
 
         # Validate recoding pairs
         try:

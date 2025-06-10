@@ -2,10 +2,10 @@ import os
 import subprocess
 from contextlib import contextmanager
 from logging import getLogger
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from lib.gui.tabs.internal_recoding_tab import RecodingOperation
-from lib.posac.data_loader import create_posac_data_file
+from lib.posac.data_loader import add_apendix_data, create_posac_data_file
 from lib.posac.data_loader import load_other_formats as load_data_manual
 from lib.posac.posac_input_writer import PosacInputWriter
 from lib.posac.recoding import apply_recoding
@@ -13,30 +13,8 @@ from lib.utils import *
 
 logger = getLogger(__name__)
 
-NO_POSACSEP = """
-STOP POSAC Completed
-STOP LSA1 Completed
-STOP LSA2 Completed
-At line 263 of file POSACSEP.FOR (unit = 5, file = 'stdin')
-Fortran runtime error: End of file
-
-Error termination. Backtrace:
-
-Could not print backtrace: libbacktrace could not find executable to open
-#0  0x433a93
-#1  0x42c3be
-#2  0x4289c2
-#3  0x42dbdf
-#4  0x43eb70
-#5  0x42e61d
-#6  0x446f8e
-#7  0x404b3a
-#8  0x4055b5
-#9  0x405dd3
-#10  0x401232
-
-
-Process finished with exit code 0"""
+FALSE_ERROR = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP POSAC Completed\nSTOP LSA1 Completed\nSTOP LSA2 Completed\nNote: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP  \n"
+FALSE_ERROR_SHORT = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 2\n"
 
 @contextmanager
 def cwd(path):
@@ -56,15 +34,27 @@ class PosacModule:
         self.posacsep = [2] * 8  # Example list, replace with actual values
         # self.posacsep = []
 
-    def prepare_data_file(self, data_file: str,
-                          lines_per_var,
-                          manual_format,
-                          recoding_operations: List[RecodingOperation]):
+    def prepare_data_file(
+        self,
+        data_file: str,
+        lines_per_var,
+        manual_format,
+        recoding_operations: List[RecodingOperation],
+        appendix_fields: Tuple[int, int],
+    ):
         """Prepare data files for POSAC analysis.
 
         Creates two files if recoding is applied:
         - POSACDATA_ORG.DAT: Original data without recoding
         - POSACDATA.DAT: Data after applying recoding operations
+
+        Args:
+            data_file: Path to the data file
+            lines_per_var: Number of lines per variable
+            manual_format: Manual format of the data
+            recoding_operations: List of recoding operations
+            appendix_fields: Tuple of the appendix fields (start col, end col) or
+              (variable_ix, -1) if it's a csv file
 
         Raises:
             PosacDataError: If there are issues with data loading or file creation
@@ -72,11 +62,12 @@ class PosacModule:
         """
         try:
             # First load the data
-            data_matrix = load_data_manual(
+            data_matrix, appendix_data = load_data_manual(
                 data_file,
                 lines_per_var=lines_per_var,
                 manual_format=manual_format,
                 safe_mode=False,
+                appendix_fields=appendix_fields,
             )
 
             # If we have recoding operations, save both original and recoded data
@@ -96,7 +87,13 @@ class PosacModule:
                 except IOError as e:
                     raise PosacDataError(f"Failed to save data file: {str(e)}")
 
+            # Add the appendix data to the data_file (case_id / profile_frequencies)
+            if appendix_data is not None:
+                add_apendix_data(data_path=p_DATA_FILE, appendix_data=appendix_data)
+
         except Exception as e:
+            if IS_DEV():
+                raise e
             raise PosacDataError(f"Error preparing data files: {str(e)}")
 
     def create_files(
@@ -136,12 +133,18 @@ class PosacModule:
         form_feed: str = None,
         shemor_directives_key: str = None,
         record_length: int = None,
+        case_id_location: Tuple[int, int] = None,
+        subject_type: str = None,
     ):
         if not os.path.exists(RUN_FILES_DIR):
             os.makedirs(RUN_FILES_DIR)
         input_writer = PosacInputWriter()
         self.prepare_data_file(
-            data_file, lines_per_var, variables_details, recoding_operations
+            data_file,
+            lines_per_var,
+            variables_details,
+            recoding_operations,
+            case_id_location,
         )
         input_writer.create_posac_input_file(
             job_name=job_name,
@@ -176,6 +179,8 @@ class PosacModule:
             form_feed=form_feed,
             shemor_directives_key=shemor_directives_key,
             record_length=record_length,
+            case_id_location=case_id_location,
+            subject_type=subject_type,
         )
 
     def run(self, posac_out: str,
@@ -230,7 +235,7 @@ class PosacModule:
                 full_command,
                 shell=True,
                 stdin=subprocess.PIPE,
-                # stdout=subprocess.PIPE,
+                stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
             )
@@ -241,15 +246,20 @@ class PosacModule:
             except subprocess.TimeoutExpired:
                 process.kill()
                 stdout, stderr = process.communicate()
-            # Print the output and error, if any
-            if process.returncode != 0:
-                raise Exception(f"POSAC script failed : {process.stderr}")
-            # if not stdout:
-            #     raise Exception(
-            #         "Something went wrong with the POSAC script, make sure the output paths are vaid paths"
-            #     )
-            print("Output:", stdout)
-            print("Error:", stderr)
+            self.process_results(process, stdout, stderr)
+
+    def process_results(self, process, stdout, stderr):
+        if process.returncode != 0:
+            raise Exception(f"POSAC script failed : {process.stderr}")
+        if "Cannot write to file opened for READ" in stderr:
+            raise Exception(
+                "Permission denied in writing to output file. "
+                "Make sure the file is not open in another program, or the "
+                "path is valid and accessible."
+            )
+        elif stderr and stderr not in [FALSE_ERROR]:
+            print("Error:\n**************\n", stderr)
+            raise Exception("See the output file for more details")
 
     @staticmethod
     def open_running_files_dir():

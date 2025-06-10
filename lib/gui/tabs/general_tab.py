@@ -1,6 +1,7 @@
 import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox
+from typing import Tuple
 
 from lib.gui.components.form import BrowseButton, Entry, Label, SelectionBox, SpinBox
 from lib.help.posac_help import Help
@@ -150,16 +151,6 @@ class GeneralTab(tk.Frame):
         try:
             from_val = int(self.id_location_from_entry.get())
             to_val = int(self.id_location_to_entry.get())
-
-            if from_val > to_val:
-                messagebox.showerror(
-                    "Invalid Range", "'From' value cannot be greater than 'To' value"
-                )
-                # Reset both values to 0
-                self.id_location_from_entry.delete(0, tk.END)
-                self.id_location_from_entry.insert(0, "0")
-                self.id_location_to_entry.delete(0, tk.END)
-                self.id_location_to_entry.insert(0, "0")
         except ValueError:
             # Only show error if both fields have values and they're invalid
             if self.id_location_from_entry.get() and self.id_location_to_entry.get():
@@ -266,7 +257,7 @@ class GeneralTab(tk.Frame):
     def get_subject_type(self):
         return self.subject_type_combo.get()
 
-    def get_id_location(self):
+    def get_id_location(self) -> Tuple[int, int]:
         try:
             from_val = int(self.id_location_from_entry.get() or "0")
             to_val = int(self.id_location_to_entry.get() or "0")

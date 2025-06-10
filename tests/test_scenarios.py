@@ -6,7 +6,7 @@ from tkinter import ttk
 import pytest
 
 from lib.controller.controller import Controller
-from lib.utils import SET_MODE_DEV
+from lib.utils import RUN_FILES_DIR, SET_MODE_DEV
 
 
 class TestScenarios:
@@ -308,7 +308,7 @@ class TestScenarios:
         assert ir_tab.operation_type.get() == "Inversion", (
             "Operation (3) type should be Inversion"
         )
-        return
+
         # select reversion
         self.controller.run_posac()
         self.controller.enable_view_output()
@@ -447,6 +447,7 @@ class TestScenarios:
             "dj_all-testpos",
         )
         self.controller.run_posac()
+        self.controller.enable_view_output()
         # copy drv file to output dir
         output_dir = os.path.abspath(r"tests\dj_1_extv_traits\output")
         shutil.copy(
@@ -464,9 +465,78 @@ class TestScenarios:
             "The last 2 lines in the DRV file are not the same"
         )
 
+    def run_appendix_data_cases_id(self):
+        SET_MODE_DEV()
+        self.controller.load_session(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\case_id\dj_all-testposIdSub.mmp"
+        )
+        # set output tab to the output dir
+        output_tab = self.controller.gui.notebook.output_files_tab
+        output_tab.set_all_from_dir(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\case_id\output",
+            "dj_all-testposIdSub",
+        )
+        self.controller.run_posac()
+        output_dir = os.path.abspath(r"tests\case_id\output")
+        return {
+            "posac_drv": None,
+            "job_pos": os.path.join(output_dir, "dj_all-testposIdSub.pos"),
+            "expected_pos": None,
+            "posac_axes_out": None,
+        }
+
+    def run_missing_values_not_zero(self):
+        SET_MODE_DEV()
+        test_dir = os.path.abspath(r"tests\missing_values")
+        self.controller.load_session(os.path.join(test_dir, "missing_values.mmp"))
+        self.controller.gui.navigator.set_page(0)
+        self.notebook.general_tab.set_data_file(
+            os.path.join(test_dir, "dj_all-testpos.prn")
+        )
+        self.notebook.general_tab.set_job_name("missing_values")
+        self.controller.gui.navigator.next_page()
+        self.controller.gui.navigator.next_page()
+        # set output tab to the output dir
+        output_tab = self.controller.gui.notebook.output_files_tab
+        output_tab.set_all_from_dir(
+            os.path.join(test_dir, "output"),
+            "missing_values",
+        )
+        self.controller.run_posac()
+        # assert drv_file is equal to the res/posac.drv file
+        res_drv_file = os.path.join(test_dir, "res", "posac.drv")
+        out_drv_file = os.path.join(RUN_FILES_DIR, "POSACINP.DRV")
+        with open(res_drv_file, "r") as f:
+            res_lines = f.readlines()
+        with open(out_drv_file, "r") as f:
+            out_lines = f.readlines()
+        # ignore line index 2 in both
+        res_lines = res_lines[:2] + res_lines[3:]
+        out_lines = out_lines[:2] + out_lines[3:]
+        for i, _ in enumerate(res_lines):
+            assert res_lines[i].strip() == out_lines[i].strip(), (
+                f"Line {i} in the DRV file is not equal to the res/posac.drv file"
+            )
+        return {
+            "posac_drv": None,
+            "job_pos": os.path.join(test_dir, "output", "missing_values.pos"),
+            "expected_pos": None,
+            "posac_axes_out": None,
+        }
+
     ##############
     # test cases #
     ##############
+
+    def test_missing_values_not_zero(self, visual_mode):
+        results = self.run_missing_values_not_zero()
+        if visual_mode:
+            self._setup_visual_test()
+
+    def test_appendix_data_cases_id(self, visual_mode):
+        results = self.run_appendix_data_cases_id()
+        if visual_mode:
+            self._setup_visual_test()
 
     def test_w250_recoding_scenario(self, visual_mode):
         """Test the W250 recoding scenario with optional visual validation"""

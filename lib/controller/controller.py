@@ -177,11 +177,28 @@ class Controller:
             return
         try:
             if notepad:
-                subprocess.run(["notepad", file], check=True)
+                # Use Popen instead of run - don't wait for completion
+                subprocess.Popen(["notepad", file])
             elif word:
-                subprocess.run(["start", "winword", file], shell=True, check=True)
+                # For Windows-specific commands with shell=True, use startupinfo to hide console
+                if IS_PROD():
+                    startupinfo = subprocess.STARTUPINFO()
+                    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                    subprocess.Popen(
+                        ["start", "winword", file], shell=True, startupinfo=startupinfo
+                    )
+                else:
+                    subprocess.Popen(["start", "winword", file], shell=True)
             elif excel:
-                subprocess.run(["start", "excel", file], shell=True, check=True)
+                # Same approach for Excel
+                if IS_PROD():
+                    startupinfo = subprocess.STARTUPINFO()
+                    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                    subprocess.Popen(
+                        ["start", "excel", file], shell=True, startupinfo=startupinfo
+                    )
+                else:
+                    subprocess.Popen(["start", "excel", file], shell=True)
             else:
                 raise UserWarning("Please specify a program to open the file with")
         except FileNotFoundError:
@@ -190,6 +207,11 @@ class Controller:
             )
         except subprocess.CalledProcessError as e:
             self.gui.show_warning("error", f"Failed to open {file}: {e}")
+        except Exception as e:
+            if IS_PROD():
+                self.gui.show_warning("error", f"Error opening file: {e}")
+            else:
+                raise e
 
     def show_diagram_window(self):
         logger.debug("Attempting to show diagram window")
@@ -318,13 +340,17 @@ class Controller:
         self.job_name = self.notebook.general_tab.get_job_name()
         self.int_vars_num = self.notebook.internal_variables_tab.get_vars_num()
         self.lines_per_case = self.notebook.general_tab.get_lines_per_case()
+        self.case_id_location: tuple[int, int] = (
+            self.notebook.general_tab.get_id_location()
+        )
+        #
+        self.lowfreq = self.notebook.general_tab.get_only_freq()
         self.recoding_operations = self.notebook.internal_recoding_tab.get_operations()
         ext_vars_num = self.notebook.external_variables_tab.get_vars_num()
         self.num_variables = self.int_vars_num + ext_vars_num
-        st = self.notebook.general_tab.get_subject_type()
-        self.idata = 0 if st == "S" else 1
-        self.lowfreq = self.notebook.general_tab.get_only_freq()
-        self.missing = 0  # todo: self.notebook.general_tab.get_subject_type()
+        self.subject_type = self.notebook.general_tab.get_subject_type()
+        self.idata = int(self.subject_type == "P")
+        self.missing = int(not self.notebook.zero_option_tab.get_zero_option())
         self.ipower = 1  # todo:
         """
         C                IF IPOWER=0 OR BLANK POWER OF THE BALANCING
@@ -373,7 +399,15 @@ C                         BY THE USER  (SEE LINE I. BELOW)
             for var in self.notebook.external_variables_tab.get_all_variables_values()
         )
         self.variables_details = [
-            dict(index=var[0], line=var[1], width=var[2], col=var[3], label=var[4])
+            dict(
+                index=var[0],
+                line=var[1],
+                width=var[2],
+                col=var[3],
+                label=var[4],
+                valid_low=var[5],
+                valid_high=var[6],
+            )
             for var in vars
         ]
         # todo: fix
@@ -445,6 +479,8 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                 form_feed=self.form_feed,
                 shemor_directives_key=self.shemor_directives_key,
                 record_length=self.record_length,
+                case_id_location=self.case_id_location,
+                subject_type=self.subject_type,
             )
         except DataLoadingException as e:
             if IS_PROD():

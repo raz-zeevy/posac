@@ -98,8 +98,55 @@ INTERNAL POSAC
  NUMBER OF CASES IN FILE .......................1165
  NUMBER OF CASES WITH SYSTEM-MISSING VALUES ....   0
  NUMBER OF READ CASES ..........................1165
- NUMBER OF CASES WITH USER-MISSING VALUES ...... 108
- NUMBER OF RETAINED CASES ......................1057
+ NUMBER OF CASES WITH USER-MISSING VALUES ...... 910
+ NUMBER OF RETAINED CASES ...................... 255
+
+
+ THERE ARE  16 DIFFERENT PROFILES
+
+
+  ID   PROFILE                                 SCO  FREQ   SERIAL CASE NUMBER
+  --   -------                                 ---  ----   ------------------
+
+   2   9 9 9 1                                  28    91     1          5         22         24         43         67         68         70      
+                                                            72         87         91         99        101        110        129        135      
+                                                           137        138        142        158        166        178        183        185      
+                                                           224        233        235        240        241        247        271        363      
+                                                           368        383        385        392        405        406        463        473      
+                                                           475        494        499        504        513        517        522        523      
+                                                           526        528        567        580        581        586        621        647      
+                                                           654        704        739        757        801        805        827        828      
+                                                           840        847        848        861        873        877        884        885      
+                                                           891        894        897        906        916        956        959        962      
+                                                           967        989        992        994        996        999       1013       1025      
+                                                          1045       1099       1143      
+  13   8 8 8 2                                  26    33     4        162        222        265        334        412        506        552      
+                                                           609        634        636        638        660        671        678        680      
+                                                           686        721        743        783        793        929        965        988      
+                                                          1009       1010       1049       1075       1076       1082       1089       1149      
+                                                          1161      
+  11   8 9 8 2                                  27    11     6        558        740        868        975       1020       1043       1072      
+                                                          1085       1092       1102      
+  16   8 8 8 1                                  25     7     9         81         96        140        170        679       1067      
+   6   9 8 8 2                                  27    14    27         58        131        141        331        482        531        725      
+                                                           728        742        744        755        966        998      
+   1   9 9 9 2                                  29    34    30         50        124        126        134        283        323        347      
+                                                           365        430        440        456        460        465        466        481      
+                                                           484        548        554        555        616        619        682        683      
+                                                           860        888        977        978        983        995       1041       1073      
+                                                          1140       1159      
+   7   8 9 9 1                                  27    12    60         95        108        173        196        438        653        768      
+                                                           846        984       1086       1094      
+   8   9 8 9 1                                  27     6    61        223        242        253        337        656      
+   3   9 9 8 2                                  28    14    63        195        249        290        452        569        611        782      
+                                                           790        794        953        963       1038       1060      
+  12   8 8 9 1                                  26     3    77        291        293      
+   9   9 9 8 1                                  27     7    93        143        145        285        369        927       1162      
+  10   8 8 9 2                                  27     5   109        144        266        663        946      
+  14   9 8 8 1                                  26     4   125        864        928        961      
+  15   8 9 8 1                                  26     2   167       1004      
+   4   8 9 9 2                                  28     8   213        292        485        536        582        910       1071       1165      
+   5   9 8 9 2                                  28     4   274        559        576        765      
 
 
  THERE ARE  16 DIFFERENT PROFILES
@@ -108,53 +155,53 @@ INTERNAL POSAC
   ID   PROFILE
   --   -------
 
-   1   2 2 2 2                                   SCO=  8   FREQ= 142   GREATER THAN PROFILES:  2  3  4  5
+   1   9 9 9 2                                   SCO= 29   FREQ=  34   GREATER THAN PROFILES:  2  3  4  5
                                                                        SMALLER THAN PROFILES:  -
 
-   2   2 1 2 2                                   SCO=  7   FREQ=  45   GREATER THAN PROFILES:  6  7  9
+   2   9 9 9 1                                   SCO= 28   FREQ=  91   GREATER THAN PROFILES:  7  8  9
                                                                        SMALLER THAN PROFILES:  1
 
-   3   1 2 2 2                                   SCO=  7   FREQ=  60   GREATER THAN PROFILES:  7  8 11
+   3   9 9 8 2                                   SCO= 28   FREQ=  14   GREATER THAN PROFILES:  6  9 11
                                                                        SMALLER THAN PROFILES:  1
 
-   4   2 2 2 1                                   SCO=  7   FREQ=  17   GREATER THAN PROFILES:  8  9 10
+   4   8 9 9 2                                   SCO= 28   FREQ=   8   GREATER THAN PROFILES:  7 10 11
                                                                        SMALLER THAN PROFILES:  1
 
-   5   2 2 1 2                                   SCO=  7   FREQ=  19   GREATER THAN PROFILES:  6 10 11
+   5   9 8 9 2                                   SCO= 28   FREQ=   4   GREATER THAN PROFILES:  6  8 10
                                                                        SMALLER THAN PROFILES:  1
 
-   6   2 1 1 2                                   SCO=  6   FREQ=  38   GREATER THAN PROFILES: 12 13
-                                                                       SMALLER THAN PROFILES:  2  5
-
-   7   1 1 2 2                                   SCO=  6   FREQ=  72   GREATER THAN PROFILES: 13 15
-                                                                       SMALLER THAN PROFILES:  2  3
-
-   8   1 2 2 1                                   SCO=  6   FREQ=  14   GREATER THAN PROFILES: 14 15
-                                                                       SMALLER THAN PROFILES:  3  4
-
-   9   2 1 2 1                                   SCO=  6   FREQ=  16   GREATER THAN PROFILES: 12 15
-                                                                       SMALLER THAN PROFILES:  2  4
-
-  10   2 2 1 1                                   SCO=  6   FREQ=  22   GREATER THAN PROFILES: 12 14
-                                                                       SMALLER THAN PROFILES:  4  5
-
-  11   1 2 1 2                                   SCO=  6   FREQ=  22   GREATER THAN PROFILES: 13 14
+   6   9 8 8 2                                   SCO= 27   FREQ=  14   GREATER THAN PROFILES: 13 14
                                                                        SMALLER THAN PROFILES:  3  5
 
-  12   2 1 1 1                                   SCO=  5   FREQ=  38   GREATER THAN PROFILES: 16
-                                                                       SMALLER THAN PROFILES:  6  9 10
+   7   8 9 9 1                                   SCO= 27   FREQ=  12   GREATER THAN PROFILES: 12 15
+                                                                       SMALLER THAN PROFILES:  2  4
 
-  13   1 1 1 2                                   SCO=  5   FREQ= 115   GREATER THAN PROFILES: 16
-                                                                       SMALLER THAN PROFILES:  6  7 11
+   8   9 8 9 1                                   SCO= 27   FREQ=   6   GREATER THAN PROFILES: 12 14
+                                                                       SMALLER THAN PROFILES:  2  5
 
-  14   1 2 1 1                                   SCO=  5   FREQ=  26   GREATER THAN PROFILES: 16
-                                                                       SMALLER THAN PROFILES:  8 10 11
+   9   9 9 8 1                                   SCO= 27   FREQ=   7   GREATER THAN PROFILES: 14 15
+                                                                       SMALLER THAN PROFILES:  2  3
 
-  15   1 1 2 1                                   SCO=  5   FREQ=  37   GREATER THAN PROFILES: 16
-                                                                       SMALLER THAN PROFILES:  7  8  9
+  10   8 8 9 2                                   SCO= 27   FREQ=   5   GREATER THAN PROFILES: 12 13
+                                                                       SMALLER THAN PROFILES:  4  5
 
-  16   1 1 1 1                                   SCO=  4   FREQ= 374   GREATER THAN PROFILES:  -
-                                                                       SMALLER THAN PROFILES: 12 13 14 15  7  8  9
+  11   8 9 8 2                                   SCO= 27   FREQ=  11   GREATER THAN PROFILES: 13 15
+                                                                       SMALLER THAN PROFILES:  3  4
+
+  12   8 8 9 1                                   SCO= 26   FREQ=   3   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  7  8 10
+
+  13   8 8 8 2                                   SCO= 26   FREQ=  33   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  6 10 11
+
+  14   9 8 8 1                                   SCO= 26   FREQ=   4   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  6  8  9
+
+  15   8 9 8 1                                   SCO= 26   FREQ=   2   GREATER THAN PROFILES: 16
+                                                                       SMALLER THAN PROFILES:  7  9 11
+
+  16   8 8 8 1                                   SCO= 25   FREQ=   7   GREATER THAN PROFILES:  -
+                                                                       SMALLER THAN PROFILES: 12 13 14 15  7  9 11
 
 
  BALANCING WEIGHT POWER ......   4.000  FOR INCOMPARABLES
@@ -172,11 +219,11 @@ INTERNAL POSAC
       บ
     1 บ 1.00
       บ
-    2 บ 0.75 1.00
+    2 บ 0.77 1.00
       บ
-    3 บ 0.69 0.79 1.00
+    3 บ 0.74 0.86 1.00
       บ
-    4 บ 0.63 0.68 0.80 1.00
+    4 บ-0.59-0.65-0.78 1.00
 
    * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
 
@@ -189,32 +236,32 @@ INTERNAL POSAC
  TIME OF LAST ITERATION ......     0.000  SECONDS
 
  PROPORTION OF PROFILE-PAIRS CORRECTLY REPRESENTED
- CORREP COEFFICIENT .......... 0.9603
+ CORREP COEFFICIENT .......... 0.9549
 
  SCORE--DISTANCE WEIGHTED COEFFICIENT
- SCODIS COEFFICIENT .......... 0.9880
+ SCODIS COEFFICIENT .......... 0.9962
 
 
                                                                    BASE COORDINATES       TRANSFORMED COORDINATES
 
   ID   PROFILE                                  SCO  FREQ               X         Y               JOINT   LATERAL
   --   -------                                  ---  ----               -         -               -----   -------
-   1   2 2 2 2                                    8   142          100.00    100.00              200.00    100.00
-   2   2 1 2 2                                    7    45           80.00     66.67              146.67    113.33
-   3   1 2 2 2                                    7    60           93.33     40.00              133.33    153.33
-   4   2 2 2 1                                    7    17           40.00     93.33              133.33     46.67
-   5   2 2 1 2                                    7    19           66.67     73.33              140.00     93.33
-   6   2 1 1 2                                    6    38           60.00     53.33              113.33    106.67
-   7   1 1 2 2                                    6    72           73.33     26.67              100.00    146.67
-   8   1 2 2 1                                    6    14           46.67     60.00              106.67     86.67
-   9   2 1 2 1                                    6    16           13.33     80.00               93.33     33.33
-  10   2 2 1 1                                    6    22           20.00     86.67              106.67     33.33
-  11   1 2 1 2                                    6    22           86.67     13.33              100.00    173.33
-  12   2 1 1 1                                    5    38            6.67     46.67               53.33     60.00
-  13   1 1 1 2                                    5   115           53.33      6.67               60.00    146.67
-  14   1 2 1 1                                    5    26           33.33     33.33               66.67    100.00
-  15   1 1 2 1                                    5    37           26.67     20.00               46.67    106.67
-  16   1 1 1 1                                    4   374            0.00      0.00                0.00    100.00
+   1   9 9 9 2                                   29    34          100.00    100.00              200.00    100.00
+   2   9 9 9 1                                   28    91           46.67     93.33              140.00     53.33
+   3   9 9 8 2                                   28    14           93.33     46.67              140.00    146.67
+   4   8 9 9 2                                   28     8           73.33     66.67              140.00    106.67
+   5   9 8 9 2                                   28     4           66.67     80.00              146.67     86.67
+   6   9 8 8 2                                   27    14           80.00     20.00              100.00    160.00
+   7   8 9 9 1                                   27    12           13.33     73.33               86.67     40.00
+   8   9 8 9 1                                   27     6           20.00     86.67              106.67     33.33
+   9   9 9 8 1                                   27     7           40.00     53.33               93.33     86.67
+  10   8 8 9 2                                   27     5           60.00     40.00              100.00    120.00
+  11   8 9 8 2                                   27    11           86.67     13.33              100.00    173.33
+  12   8 8 9 1                                   26     3            6.67     60.00               66.67     46.67
+  13   8 8 8 2                                   26    33           53.33      6.67               60.00    146.67
+  14   9 8 8 1                                   26     4           33.33     33.33               66.67    100.00
+  15   8 9 8 1                                   26     2           26.67     26.67               53.33    100.00
+  16   8 8 8 1                                   25     7            0.00      0.00                0.00    100.00
 
 
   COEFFICIENT OF WEAK MONOTONICITY BETWEEN EACH OBSERVED ITEM AND THE FACTORS :
@@ -222,10 +269,10 @@ INTERNAL POSAC
 
   ITEM     J     L     X     Y     P     Q
   ----     -     -     -     -     -     -
-    1   0.96 -0.90  0.73  1.00  0.95  0.93
-    2   0.97 -0.10  0.90  0.94  0.94  0.96
-    3   0.97  0.22  0.93  0.91  0.95  0.95
-    4   0.97  0.98  1.00  0.74  0.94  0.96
+    1   0.97 -0.66  0.47  0.93  0.90  0.93
+    2   0.96 -0.73  0.41  0.94  0.92  0.94
+    3   0.95 -0.99 -0.17  1.00  0.94  0.91
+    4   0.13  1.00  1.00 -0.71  0.24 -0.06
                          TWO-DIMENSIONAL CONFIGURATION OF THE SCALOGRAM (BASE COORDINATES)
 
                                                   ID FROM   1 TO  16
@@ -235,44 +282,44 @@ INTERNAL POSAC
    100..บ                                                                                                     1บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                         4                                                            บ
+        บ                                               2                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                    10                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ               9                                                                                      บ
+        บ                     8                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                   5                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                 2                    บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                               8                                                      บ
+        บ               7                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                             6                                        บ
         บ                                                                                                      บ
-    50..บ                                                                                                      บ
+        บ                                                                           4                          บ
+        บ                                                                                                      บ
         บ                                                                                                      บ
         บ      12                                                                                              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
+        บ                                         9                                                            บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
         บ                                                                                               3      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            10                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                  14                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                           7                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
         บ                          15                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                 6                    บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                      11              บ
@@ -293,57 +340,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                     2บ
+   100..บ                                                                                                     9บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                         2                                                            บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                     2                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ               2                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                   2                                  บ
+        บ                                               9                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                 2                    บ
+        บ                     9                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                               1                                                      บ
+        บ                                                                   9                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                             2                                        บ
+        บ               8                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           8                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ       8                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         9                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ       2                                                                                              บ
+        บ                                                                                               9      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                               1      บ
+        บ                                                             8                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                   1                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                           1                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                           1                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                       1              บ
+        บ                                   9                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                       1                                              บ
+        บ                           8                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บ 1                                                                                                    บ
+        บ                                                                                 9                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                       8              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                       8                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 8                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -354,57 +401,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                     2บ
+   100..บ                                                                                                     9บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                         2                                                            บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                     2                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ               1                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                   2                                  บ
+        บ                                               9                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                 1                    บ
+        บ                     8                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                               2                                                      บ
+        บ                                                                   8                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                             1                                        บ
+        บ               9                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           9                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ       8                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         9                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ       1                                                                                              บ
+        บ                                                                                               9      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                               2      บ
+        บ                                                             8                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                   2                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                           1                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                           1                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                       2              บ
+        บ                                   8                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                       1                                              บ
+        บ                           9                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บ 1                                                                                                    บ
+        บ                                                                                 8                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                       9              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                       8                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 8                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -415,57 +462,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                     2บ
+   100..บ                                                                                                     9บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                         2                                                            บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                     1                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ               2                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                   1                                  บ
+        บ                                               9                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                 2                    บ
+        บ                     9                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                               2                                                      บ
+        บ                                                                   9                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                             1                                        บ
+        บ               9                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                           9                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ       9                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         8                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ       1                                                                                              บ
+        บ                                                                                               8      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                               2      บ
+        บ                                                             9                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                   1                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                           2                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                           2                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                       1              บ
+        บ                                   8                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                       1                                              บ
+        บ                           8                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บ 1                                                                                                    บ
+        บ                                                                                 8                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                       8              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                       8                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บ 8                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -479,44 +526,44 @@ INTERNAL POSAC
    100..บ                                                                                                     2บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                         1                                                            บ
+        บ                                               1                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                     1                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ               1                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
         บ                                                                   2                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                 2                    บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                               1                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                             2                                        บ
-        บ                                                                                                      บ
-    50..บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ       1                                                                                              บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                               2      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                   1                                                                  บ
+        บ               1                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                           2                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
+        บ       1                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                         1                                                            บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                               2      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                             2                                        บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                   1                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
         บ                           1                                                                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                 2                    บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                       2              บ
@@ -562,28 +609,28 @@ INTERNAL POSAC
        INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
   ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
   --   ---------   --------   -------   ----------   -------
-   1      142          90        52         63       2 2 2 2
-   2       45          27        18         60       2 1 2 2
-   3       60          31        29         52       1 2 2 2
-   4       17           7        10         41       2 2 2 1
-   5       19          10         9         53       2 2 1 2
-   6       38          15        23         39       2 1 1 2
-   7       72          42        30         58       1 1 2 2
-   8       14          10         4         71       1 2 2 1
-   9       16           6        10         38       2 1 2 1
-  10       22           9        13         41       2 2 1 1
-  11       22          10        12         45       1 2 1 2
-  12       38          17        21         45       2 1 1 1
-  13      115          34        81         30       1 1 1 2
-  14       26          10        16         38       1 2 1 1
-  15       37          20        17         54       1 1 2 1
-  16      374         108       266         29       1 1 1 1
+   1       34          34         0        100       9 9 9 2
+   2       91          91         0        100       9 9 9 1
+   3       14          14         0        100       9 9 8 2
+   4        8           8         0        100       8 9 9 2
+   5        4           4         0        100       9 8 9 2
+   6       14          14         0        100       9 8 8 2
+   7       12          12         0        100       8 9 9 1
+   8        6           6         0        100       9 8 9 1
+   9        7           7         0        100       9 9 8 1
+  10        5           5         0        100       8 8 9 2
+  11       11          11         0        100       8 9 8 2
+  12        3           3         0        100       8 8 9 1
+  13       33          33         0        100       8 8 8 2
+  14        4           4         0        100       9 8 8 1
+  15        2           2         0        100       8 9 8 1
+  16        7           7         0        100       8 8 8 1
 
- TOTAL   1057         446       611         42
+ TOTAL    255         255         0        100
 
 
- MU(TRAIT,X)= 0.397                    MU(TRAIT,J)= 0.426
- MU(TRAIT,Y)= 0.402                    MU(TRAIT,L)= 0.042
+ MU(TRAIT,X)=  .                       MU(TRAIT,J)=  .   
+ MU(TRAIT,Y)=  .                       MU(TRAIT,L)=  .   
 
   * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
                         ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  1  : trait1 suff-income                      
@@ -592,57 +639,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                    D*บ
+   100..บ                                                                                                    I*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        C*                                                            บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                    C*                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ              B*                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                  C*                                  บ
+        บ                                              I*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                D*                    บ
+        บ                    I6                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                              D*                                                      บ
+        บ                                                                  I4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                            B*                                        บ
+        บ              I*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          I8                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      I3                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        I7                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ      C*                                                                                              บ
+        บ                                                                                              I*      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                              C*      บ
+        บ                                                            I5                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                  B*                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                          C*                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                          C*                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                      C*              บ
+        บ                                  I4                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                      B*                                              บ
+        บ                          I2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บB*                                                                                                    บ
+        บ                                                                                I*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      I*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      I*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บI7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -656,54 +703,54 @@ INTERNAL POSAC
    100..บ                                                                                                    H*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        A*                                                            บ
+        บ                                              H*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                    A*                                                                                บ
+        บ                    H6                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ              A*                                                                                      บ
+        บ                                                                  H4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                  H*                                  บ
+        บ              H*                                                                                      บ
         บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          H8                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      H3                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        H7                                                            บ
+        บ                                                                                                      บ
+    50..บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                              H*      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                            H5                                        บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                  H4                                                                  บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                          H2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                H*                    บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                              H*                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                            A*                                        บ
-        บ                                                                                                      บ
-    50..บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ      A*                                                                                              บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                              H*      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                  A*                                                                  บ
+        บ                                                                                      H*              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                          H*                          บ
+        บ                                                      H*                                              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                          H*                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                      A*              บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                      L*                                              บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-     0..บL*                                                                                                    บ
+     0..บH7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -713,28 +760,28 @@ INTERNAL POSAC
        INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
   ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
   --   ---------   --------   -------   ----------   -------
-   1      142          92        50         65       2 2 2 2
-   2       45          29        16         64       2 1 2 2
-   3       60          35        25         58       1 2 2 2
-   4       17          10         7         59       2 2 2 1
-   5       19          11         8         58       2 2 1 2
-   6       38          20        18         53       2 1 1 2
-   7       72          45        27         63       1 1 2 2
-   8       14           4        10         29       1 2 2 1
-   9       16           7         9         44       2 1 2 1
-  10       22          15         7         68       2 2 1 1
-  11       22          12        10         55       1 2 1 2
-  12       38          25        13         66       2 1 1 1
-  13      115          76        39         66       1 1 1 2
-  14       26          13        13         50       1 2 1 1
-  15       37          15        22         41       1 1 2 1
-  16      374         192       182         51       1 1 1 1
+   1       34          16        18         47       9 9 9 2
+   2       91          54        37         59       9 9 9 1
+   3       14          12         2         86       9 9 8 2
+   4        8           6         2         75       8 9 9 2
+   5        4           2         2         50       9 8 9 2
+   6       14           6         8         43       9 8 8 2
+   7       12           3         9         25       8 9 9 1
+   8        6           4         2         67       9 8 9 1
+   9        7           6         1         86       9 9 8 1
+  10        5           4         1         80       8 8 9 2
+  11       11           8         3         73       8 9 8 2
+  12        3           2         1         67       8 8 9 1
+  13       33          18        15         55       8 8 8 2
+  14        4           4         0        100       9 8 8 1
+  15        2           1         1         50       8 9 8 1
+  16        7           5         2         71       8 8 8 1
 
- TOTAL   1057         601       456         57
+ TOTAL    255         151       104         59
 
 
- MU(TRAIT,X)= 0.166                    MU(TRAIT,J)= 0.158
- MU(TRAIT,Y)= 0.128                    MU(TRAIT,L)= 0.074
+ MU(TRAIT,X)= 0.006                    MU(TRAIT,J)=-0.084
+ MU(TRAIT,Y)=-0.112                    MU(TRAIT,L)= 0.095
 
   * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
                         ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  2  : trait2 served army                      
@@ -743,57 +790,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                    D*บ
+   100..บ                                                                                                    C*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        C*                                                            บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                    D*                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ              C*                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                  C*                                  บ
+        บ                                              C*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                D*                    บ
+        บ                    D6                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                              B*                                                      บ
+        บ                                                                  C4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                            C*                                        บ
+        บ              B*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          D8                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      D3                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        E7                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ      D*                                                                                              บ
+        บ                                                                                              E*      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                              C*      บ
+        บ                                                            E5                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                  C*                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                          D*                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                          C*                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                      C*              บ
+        บ                                  I4                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                      D*                                              บ
+        บ                          C2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บC*                                                                                                    บ
+        บ                                                                                C*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      D*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      C*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บD7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -804,57 +851,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                    H*บ
+   100..บ                                                                                                    L*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        A*                                                            บ
+        บ                                              A*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                    H*                                                                                บ
+        บ                    H6                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  L4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ              L*                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                  A*                                  บ
+        บ                                                                                                      บ
+        บ                                                                          H8                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                H*                    บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                              L*                                                      บ
+        บ      H3                                                                                              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                            A*                                        บ
+        บ                                        H7                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ      H*                                                                                              บ
+        บ                                                                                              H*      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                              A*      บ
+        บ                                                            H5                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                  L*                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                          H*                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                          L*                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                      A*              บ
+        บ                                  H4                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                      H*                                              บ
+        บ                          L2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บL*                                                                                                    บ
+        บ                                                                                L*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      H*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      A*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บH7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -864,28 +911,28 @@ INTERNAL POSAC
        INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
   ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
   --   ---------   --------   -------   ----------   -------
-   1      142          31       111         22       2 2 2 2
-   2       45           9        36         20       2 1 2 2
-   3       60          12        48         20       1 2 2 2
-   4       17           4        13         24       2 2 2 1
-   5       19           6        13         32       2 2 1 2
-   6       38          10        28         26       2 1 1 2
-   7       72          20        52         28       1 1 2 2
-   8       14           2        12         14       1 2 2 1
-   9       16           1        15          6       2 1 2 1
-  10       22           3        19         14       2 2 1 1
-  11       22           3        19         14       1 2 1 2
-  12       38           4        34         11       2 1 1 1
-  13      115          22        93         19       1 1 1 2
-  14       26           5        21         19       1 2 1 1
-  15       37           7        30         19       1 1 2 1
-  16      374          49       325         13       1 1 1 1
+   1       34           0        34          0       9 9 9 2
+   2       91           0        91          0       9 9 9 1
+   3       14           0        14          0       9 9 8 2
+   4        8           0         8          0       8 9 9 2
+   5        4           0         4          0       9 8 9 2
+   6       14           0        14          0       9 8 8 2
+   7       12           0        12          0       8 9 9 1
+   8        6           0         6          0       9 8 9 1
+   9        7           0         7          0       9 9 8 1
+  10        5           0         5          0       8 8 9 2
+  11       11           0        11          0       8 9 8 2
+  12        3           0         3          0       8 8 9 1
+  13       33           0        33          0       8 8 8 2
+  14        4           0         4          0       9 8 8 1
+  15        2           0         2          0       8 9 8 1
+  16        7           0         7          0       8 8 8 1
 
- TOTAL   1057         188       869         18
+ TOTAL    255           0       255          0
 
 
- MU(TRAIT,X)= 0.243                    MU(TRAIT,J)= 0.215
- MU(TRAIT,Y)= 0.156                    MU(TRAIT,L)= 0.149
+ MU(TRAIT,X)=  .                       MU(TRAIT,J)=  .   
+ MU(TRAIT,Y)=  .                       MU(TRAIT,L)=  .   
 
   * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
                         ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  3  : trait3 combat                           
@@ -894,57 +941,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                    B*บ
+   100..บ                                                                                                    O*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        B*                                                            บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                    A*                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ              A*                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                  B*                                  บ
+        บ                                              O*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                A*                    บ
+        บ                    O6                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                              A*                                                      บ
+        บ                                                                  O4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                            B*                                        บ
+        บ              O*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          O8                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      O3                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        O7                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ      A*                                                                                              บ
+        บ                                                                                              O*      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                              A*      บ
+        บ                                                            O5                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                  A*                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                          B*                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                          A*                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                      A*              บ
+        บ                                  O4                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                      A*                                              บ
+        บ                          O2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บA*                                                                                                    บ
+        บ                                                                                O*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      O*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      O*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บO7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -955,57 +1002,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                    A*บ
+   100..บ                                                                                                    L*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        H*                                                            บ
+        บ                                              L*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                    A*                                                                                บ
+        บ                    L6                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  L4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ              L*                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                  H*                                  บ
+        บ                                                                                                      บ
+        บ                                                                          L8                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                A*                    บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                              A*                                                      บ
+        บ      L3                                                                                              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                            H*                                        บ
+        บ                                        L7                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ      L*                                                                                              บ
+        บ                                                                                              L*      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                              A*      บ
+        บ                                                            L5                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                  A*                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                          H*                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                          A*                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                      A*              บ
+        บ                                  L4                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                      A*                                              บ
+        บ                          L2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บA*                                                                                                    บ
+        บ                                                                                L*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      L*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      L*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บL7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -1015,28 +1062,28 @@ INTERNAL POSAC
        INTERNAL    EXTERNAL-FREQUENCY   PRESENCE     INTERNAL
   ID   FREQUENCY   PRESENCE   ABSENCE   PERCENTAGE   PROFILE
   --   ---------   --------   -------   ----------   -------
-   1      142          54        88         38       2 2 2 2
-   2       45          18        27         40       2 1 2 2
-   3       60          17        43         28       1 2 2 2
-   4       17           4        13         24       2 2 2 1
-   5       19           5        14         26       2 2 1 2
-   6       38           9        29         24       2 1 1 2
-   7       72          25        47         35       1 1 2 2
-   8       14           2        12         14       1 2 2 1
-   9       16           2        14         13       2 1 2 1
-  10       22           8        14         36       2 2 1 1
-  11       22           6        16         27       1 2 1 2
-  12       38          12        26         32       2 1 1 1
-  13      115          24        91         21       1 1 1 2
-  14       26           6        20         23       1 2 1 1
-  15       37           8        29         22       1 1 2 1
-  16      374          60       314         16       1 1 1 1
+   1       34          16        18         47       9 9 9 2
+   2       91          54        37         59       9 9 9 1
+   3       14          12         2         86       9 9 8 2
+   4        8           6         2         75       8 9 9 2
+   5        4           2         2         50       9 8 9 2
+   6       14           6         8         43       9 8 8 2
+   7       12           3         9         25       8 9 9 1
+   8        6           4         2         67       9 8 9 1
+   9        7           6         1         86       9 9 8 1
+  10        5           4         1         80       8 8 9 2
+  11       11           8         3         73       8 9 8 2
+  12        3           2         1         67       8 8 9 1
+  13       33          18        15         55       8 8 8 2
+  14        4           4         0        100       9 8 8 1
+  15        2           1         1         50       8 9 8 1
+  16        7           5         2         71       8 8 8 1
 
- TOTAL   1057         260       797         25
+ TOTAL    255         151       104         59
 
 
- MU(TRAIT,X)= 0.333                    MU(TRAIT,J)= 0.352
- MU(TRAIT,Y)= 0.326                    MU(TRAIT,L)= 0.044
+ MU(TRAIT,X)= 0.006                    MU(TRAIT,J)=-0.084
+ MU(TRAIT,Y)=-0.112                    MU(TRAIT,L)= 0.095
 
   * A DOT (.) IS PRINTED IF THE COEFFICIENT CANNOT BE COMPUTED.
                         ABSOLUTE EXTERNAL TRAIT DIAGRAM NUMBER  4  : trait4 suff inc & service               
@@ -1045,57 +1092,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                    B*บ
+   100..บ                                                                                                    C*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        B*                                                            บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                    B*                                                                                บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ              A*                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                  B*                                  บ
+        บ                                              C*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                B*                    บ
+        บ                    D6                                                                                บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                              A*                                                      บ
+        บ                                                                  C4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                            B*                                        บ
+        บ              B*                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                          D8                          บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ      D3                                                                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                        E7                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ      B*                                                                                              บ
+        บ                                                                                              E*      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                              B*      บ
+        บ                                                            E5                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                  B*                                                                  บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                          B*                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                          B*                                                                          บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                      B*              บ
+        บ                                  I4                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                      B*                                              บ
+        บ                          C2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บA*                                                                                                    บ
+        บ                                                                                C*                    บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                      D*              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                      C*                                              บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+     0..บD7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .
@@ -1106,57 +1153,57 @@ INTERNAL POSAC
 
 
         ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-   100..บ                                                                                                    H*บ
+   100..บ                                                                                                    L*บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                        A*                                                            บ
+        บ                                              A*                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                    H*                                                                                บ
+        บ                    H6                                                                                บ
+        บ                                                                                                      บ
+        บ                                                                                                      บ
+        บ                                                                  L4                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ              L*                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                  A*                                  บ
+        บ                                                                                                      บ
+        บ                                                                          H8                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                                                                H*                    บ
-        บ                                                                                                      บ
-        บ                                                                                                      บ
-        บ                                              L*                                                      บ
+        บ      H3                                                                                              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                            A*                                        บ
+        บ                                        H7                                                            บ
         บ                                                                                                      บ
     50..บ                                                                                                      บ
         บ                                                                                                      บ
-        บ      H*                                                                                              บ
+        บ                                                                                              H*      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                              A*      บ
+        บ                                                            H5                                        บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                  A*                                                                  บ
+        บ                                  H4                                                                  บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                          H*                          บ
+        บ                          L2                                                                          บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                          A*                                                                          บ
+        บ                                                                                L*                    บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-        บ                                                                                      A*              บ
+        บ                                                                                      H*              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                                                                      บ
         บ                                                      A*                                              บ
         บ                                                                                                      บ
         บ                                                                                                      บ
-     0..บL*                                                                                                    บ
+     0..บH7                                                                                                    บ
         ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
           .                                                 .                                                 .
           .                                                 .                                                 .

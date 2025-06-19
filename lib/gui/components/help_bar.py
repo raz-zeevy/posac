@@ -3,7 +3,7 @@ import ttkbootstrap as ttk
 class HelpBar(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
-        status_bar = ttk.Label(self, text="For Help use Menu or press F1 on "
+        status_bar = ttk.Label(self, text="For Help manual press 'Alt+F1' or press 'F1' on "
                                           "the data fields",
                                relief=ttk.SUNKEN, anchor='w',
                                background='#F0F0F0', padding=(0, 2))

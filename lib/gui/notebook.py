@@ -83,7 +83,7 @@ def undoable(method):
 
 class PosacNotebook(tkinter.ttk.Notebook):
     def __init__(self, root, parent):
-        self.parent = parent
+        self.gui = parent
         super().__init__(root)
         #
         self.undo_stack = []
@@ -169,13 +169,13 @@ class PosacNotebook(tkinter.ttk.Notebook):
 
     def undoable_command_callback(self):
         if self.undo_stack:
-            self.parent.icon_menu.m_button_undo.config(state="normal")
+            self.gui.icon_menu.m_button_undo.config(state="normal")
         else:
-            self.parent.icon_menu.m_button_undo.config(state="disabled")
+            self.gui.icon_menu.m_button_undo.config(state="disabled")
         if self.redo_stack:
-            self.parent.icon_menu.m_button_redo.config(state="normal")
+            self.gui.icon_menu.m_button_redo.config(state="normal")
         else:
-            self.parent.icon_menu.m_button_redo.config(state="disabled")
+            self.gui.icon_menu.m_button_redo.config(state="disabled")
 
     #################
     # POSAC Methods #

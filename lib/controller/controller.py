@@ -91,6 +91,11 @@ class Controller:
             "About Posac", command=self.gui.show_about_window
         )
         self.gui.menu.help_menu.entryconfig(
+            "Help Contents", command=self.gui.show_help_window
+        )
+        # bind Ctrl+F1 for the same
+        self.gui.root.bind("<Alt-F1>", lambda e: self.gui.show_help_window())
+        self.gui.menu.help_menu.entryconfig(
             "Report Error", command=self.report_manual_error
         )
         # Exit
@@ -163,6 +168,8 @@ class Controller:
         self.history.add(path)
         session = Session(path=path)
         session.load(self)
+        # set to the first page
+        self.gui.navigator.set_page(0)
 
     ##############
     # Open Files

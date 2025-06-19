@@ -23,7 +23,7 @@ class EVRangesTab(tk.Frame):
         elif context == 'ranges':
             self.not_ranges_frame.pack_forget()
             self.main_frame.pack(fill='both', expand=True, padx=0, pady=0)
-            
+
     def _create_no_ranges_label(self):
         self.not_ranges_frame = tk.Frame(self)
         label = BoldLabel(self.not_ranges_frame,

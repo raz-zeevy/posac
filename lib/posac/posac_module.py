@@ -8,6 +8,7 @@ from lib.gui.tabs.internal_recoding_tab import RecodingOperation
 from lib.posac.data_loader import add_apendix_data, create_posac_data_file
 from lib.posac.data_loader import load_other_formats as load_data_manual
 from lib.posac.posac_input_writer import PosacInputWriter
+from lib.posac.posac_output_parser import OutputParser
 from lib.posac.recoding import apply_recoding
 from lib.utils import *
 
@@ -33,6 +34,7 @@ class PosacModule:
     def __init__(self):
         self.posacsep = [2] * 8  # Example list, replace with actual values
         # self.posacsep = []
+        self.origin_data_file = None
 
     def prepare_data_file(
         self,
@@ -136,6 +138,7 @@ class PosacModule:
         case_id_location: Tuple[int, int] = None,
         subject_type: str = None,
     ):
+        self.origin_data_file = data_file
         if not os.path.exists(RUN_FILES_DIR):
             os.makedirs(RUN_FILES_DIR)
         input_writer = PosacInputWriter()
@@ -247,6 +250,7 @@ class PosacModule:
                 process.kill()
                 stdout, stderr = process.communicate()
             self.process_results(process, stdout, stderr)
+            OutputParser.replace_input_data(posac_out, self.origin_data_file)
 
     def process_results(self, process, stdout, stderr):
         if process.returncode != 0:

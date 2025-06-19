@@ -2,6 +2,7 @@ from typing import List
 
 import numpy as np
 
+from lib.common import NotIntegerError
 from lib.gui.tabs.internal_recoding_tab import RecodingOperation
 
 
@@ -42,14 +43,15 @@ def validate_recoding_operation(data: np.ndarray, operation: RecodingOperation) 
                     raise RecodingError(
                         f"Invalid recoding pair: {old}->{new}. New value must be between 0 and 99."
                     )
-        except ValueError:
+        except NotIntegerError as e:
+            raise RecodingError(f"Found non-integer value in recoding pair: {e}")
+        except ValueError as e:
             try:
                 raise RecodingError(
                     f"Invalid recoding pair: {old}->{new}. Values must be integers."
                 )
             except UnboundLocalError:
-                raise RecodingError("Invalid recoding pair: Values must be integers.")
-
+                raise RecodingError(f"Invalid recoding pair: Values must be integers")
     except ValueError as e:
         raise RecodingError(f"Invalid recoding specification: {str(e)}")
 
@@ -121,7 +123,10 @@ def apply_recoding(data: np.ndarray, operations: List[RecodingOperation]) -> np.
         return data.copy()
 
     recoded_data = data.copy()
-    for operation in operations:
-        recoded_data = apply_recoding_operation(recoded_data, operation)
+    for i, operation in enumerate(operations):
+        try:
+            recoded_data = apply_recoding_operation(recoded_data, operation)
+        except RecodingError as e:
+            raise RecodingError(f"Error applying recoding operation number {i+1}: {e}")
 
     return recoded_data

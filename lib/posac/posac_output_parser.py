@@ -207,6 +207,20 @@ class OutputParser:
             "out_coords": self.out_graph_coords,
         }
 
+    @staticmethod
+    def replace_input_data(output_path : str,
+                           new_input_data_path : str) -> None:
+        output_lines : List[str] = []
+        INPUT_STRING = "INPUT FILE .................."
+        with open(output_path, 'r', encoding='latin-1') as file:
+            for line in file:
+                if INPUT_STRING in line:
+                    # replace everything after INPUT_STRING
+                    line = line.split(INPUT_STRING)[0] + INPUT_STRING + new_input_data_path + "\n"
+                output_lines.append(line)
+        with open(output_path, 'w', encoding='latin-1') as file:
+            file.writelines(output_lines)
+
 def parse_output(file_path):
     with open(file_path, 'r', encoding='latin-1') as file:
         output_parser = OutputParser(file)
@@ -214,7 +228,8 @@ def parse_output(file_path):
 
 
 if __name__ == '__main__':
-    output_path = r"C:\Users\Raz_Z\Projects\Shmuel\posac\tests\simple_test\output\job1.pos"
-    print(json.dumps(parse_output(output_path),
-                     sort_keys=True, indent=4))
-    print("done")
+    output_path = r"C:\Users\raz3z\Projects\Shmuel\posac\tests\jneeds\output\job1.pos"
+    # print(json.dumps(parse_output(output_path),
+                    #  sort_keys=True, indent=4))
+    # print("done")
+    OutputParser.replace_input_data(output_path, r"C:\Users\raz3z\Projects\Shmuel\posac\tests\jneeds\input\job1.prn")

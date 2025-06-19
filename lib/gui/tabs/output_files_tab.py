@@ -25,7 +25,7 @@ class OFilesTab(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self._parent = parent
-        self.gui = self._parent.parent
+        self.gui = self._parent.gui
         self._create_widgets()
 
     def _create_widgets(self):

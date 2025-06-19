@@ -18,6 +18,7 @@ from lib.gui.windows.about_window import AboutWindow
 from lib.gui.windows.diagram_window import DiagramWindow
 from lib.gui.windows.message_window import MessageWindow
 from lib.gui.windows.options_window import OptionsWindow
+from lib.help.help_window.help_window import HelpWindow
 from lib.utils import *
 
 ROOT_TITLE = f"Posac Program-v{os.environ.get('VERSION')}"
@@ -55,7 +56,7 @@ class GUI():
         # init common gui
         self.center_window()
         #
-        Helpable.init(self.root)
+        Helpable.init(self.root, fallback_help=self.show_help_window)
         self.init_window()
         self.navigator = Navigator(self, controller)
         self.view_results = None
@@ -132,11 +133,17 @@ class GUI():
     def show_about_window(self, section=None):
         self.help_window = AboutWindow()
 
+    def show_help_window(self, section=None):
+        self.help_window = HelpWindow(self.root)
+
     def show_options_window(self):
         self.technical_options = OptionsWindow(self)
 
     def set_options(self, **options):
         OptionsWindow.set(**options)
+
+    def set_posac_axes_out_dir(self, path):
+        OptionsWindow.set_posac_axes_out_dir(path)
 
     def get_technical_options(self, *args):
         if not args:

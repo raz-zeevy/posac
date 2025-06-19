@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import Label, Frame
 from abc import ABC
 from tkinter import ttk
+from typing import Callable
 import ttkbootstrap as ttkb
 
 from lib.utils import real_size, rreal_size
@@ -31,14 +32,15 @@ class Helpable(ABC):
     root = None
 
     @classmethod
-    def init(cls, root):
+    def init(cls, root, fallback_help : Callable=None):
         cls.root = root
         cls.style = ttkb.Style()
         cls.style.configure('Shadow.TFrame',
                             background=cls.SHADOW_BG_COLOR)
+        cls.fallback_help = fallback_help
 
-    def __init__(self, help_title="Help Title",
-                 help_text="Help Text",
+    def __init__(self, help_title="",
+                 help_text="",
                  help : dict = None,
                  **kwargs):
         if not self.root:
@@ -52,7 +54,7 @@ class Helpable(ABC):
         self.help_frame = None
         self.shadow_frame = None
         super().__init__(**kwargs)
-        
+
         # Directly bind F1 to the widget/frame
         self.bind("<F1>", self._show_help)
 
@@ -68,6 +70,10 @@ class Helpable(ABC):
         self.TITLE_FONT = kwargs.get('title_font', self.TITLE_FONT)
 
     def _show_help(self, event=None):
+        if not self.help_title and not self.help_text:
+            print("no help title or text, using fallback help")
+            self.fallback_help()
+            return
         print(f"showing: {self.help_title}")
         if self.help_frame and self.help_frame.winfo_exists():
             self._destroy()
@@ -83,25 +89,28 @@ class Helpable(ABC):
             self.master.unbind_all("<Escape>")
 
     def _show_help_frame(self):
-        self.root.update_idletasks()
-        self.root.update()
+        # Get the toplevel window that contains this widget
+        toplevel = self.winfo_toplevel()
+
+        toplevel.update_idletasks()
+        toplevel.update()
         widget_x = absolute_x(self)
         widget_y = absolute_y(self)
         widget_width = self.winfo_width()
         widget_height = self.winfo_height()
-        
+
         # Fixed reasonable width with real_size adjustments
         available_width = rreal_size(300)
         max_height = rreal_size(300)  # Maximum height before adding scrollbar
         padding = real_size(4)
         shadow_offset = real_size(5)
-        
-        # Create main help frame
-        self.help_frame = ttk.Frame(self.root, border=1,
+
+        # Create main help frame on the correct toplevel window
+        self.help_frame = ttk.Frame(toplevel, border=1,
                                   relief="raised", padding=padding)
-        
+
         # Create a canvas with scrollbar for the content
-        canvas = tk.Canvas(self.help_frame, 
+        canvas = tk.Canvas(self.help_frame,
                          width=available_width-rreal_size(20),
                          highlightthickness=0)
         scrollbar = ttk.Scrollbar(self.help_frame, orient="vertical",
@@ -110,46 +119,46 @@ class Helpable(ABC):
 
         # Configure canvas
         canvas.configure(yscrollcommand=scrollbar.set)
-        
+
         # Add the title and text to the content frame
         title_label = ttkb.Label(content_frame, text=self.help_title,
                               anchor="w", font=self.TITLE_FONT,
                               bootstyle="primary")
-        title_label.pack(fill="x", padx=real_size(5), 
+        title_label.pack(fill="x", padx=real_size(5),
                         pady=(real_size(5), 0))
 
         text_label = ttk.Label(content_frame,
                              text=self.help_text,
                              wraplength=available_width - rreal_size(30),
                              justify="left")
-        text_label.pack(fill="x", padx=real_size(5), 
+        text_label.pack(fill="x", padx=real_size(5),
                        pady=real_size(5))
 
         # Create window for the content frame
         canvas.create_window((0, 0), window=content_frame, anchor="nw")
-        
+
         # Update geometry and add scrollbar if needed
         content_frame.update_idletasks()
         content_height = content_frame.winfo_reqheight()
         canvas_height = min(content_height, max_height)
-        
+
         canvas.configure(height=canvas_height)
         canvas.configure(scrollregion=canvas.bbox("all"))
-        
+
         # Pack the canvas and scrollbar if needed
         canvas.pack(side="left", fill="both", expand=True)
         needs_scrollbar = content_height > max_height
         if needs_scrollbar:
             scrollbar.pack(side="right", fill="y")
 
-        # Position the help frame
-        help_frame_x = min(widget_x, self.root.winfo_width() - available_width - rreal_size(10))
+        # Position the help frame - use toplevel dimensions
+        help_frame_x = min(widget_x, toplevel.winfo_width() - available_width - rreal_size(10))
         help_frame_y = widget_y + widget_height + shadow_offset
-        
+
         # Adjust y position if too close to bottom
-        if help_frame_y + canvas_height > self.root.winfo_height():
+        if help_frame_y + canvas_height > toplevel.winfo_height():
             help_frame_y = max(rreal_size(10), widget_y - canvas_height - shadow_offset)
-            
+
         self.help_frame.place(x=help_frame_x, y=help_frame_y)
 
         # Create shadow frame with adjusted width for non-scrollbar case
@@ -157,7 +166,8 @@ class Helpable(ABC):
         if not needs_scrollbar:
             shadow_width -= shadow_offset  # Reduce shadow width when no scrollbar
 
-        self.shadow_frame = ttk.Frame(self.root, style='Shadow.TFrame',
+        # Create shadow frame on the correct toplevel window
+        self.shadow_frame = ttk.Frame(toplevel, style='Shadow.TFrame',
                                     relief="flat")
         self.shadow_frame.place(x=help_frame_x + shadow_offset,
                               y=help_frame_y + shadow_offset,
@@ -171,14 +181,14 @@ class Helpable(ABC):
         def _on_mousewheel(event):
             delta = -1 * (event.delta / 120)
             canvas.yview_scroll(int(delta), "units")
-            
+
         # Add keyboard navigation
         def _on_key(event):
             if event.keysym == "Up":
                 canvas.yview_scroll(-1, "units")
             elif event.keysym == "Down":
                 canvas.yview_scroll(1, "units")
-                
+
         canvas.bind_all("<MouseWheel>", _on_mousewheel)
         canvas.bind_all("<Up>", _on_key)
         canvas.bind_all("<Down>", _on_key)

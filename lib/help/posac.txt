@@ -15,7 +15,8 @@ Internal variables
 External variables
 External variables ranges
 External Traits
-Posac-axes scoresGraphic characters
+Posac-axes scores
+Graphic characters
 Formfeed
 Balancing weights
 Iterations number
@@ -23,205 +24,335 @@ ASCII files
 
 
 # $ k  Welcome to the Posac program
-Welcome to the POSAC/LSA data analysis system. During this program you will
-be asked for information that POSAC/LSA needs in order to process your data.
-For details on POSAC/LSA, its purpose and operation, as well as for basic bibliography, please refer to What is 
-Posac on the first screen of the program.
+<p>Welcome to the POSAC/LSA data analysis system. During this program you will be asked for information that POSAC/LSA needs in order to process your data.</p>
+
+<p>For details on POSAC/LSA, its purpose and operation, as well as for basic bibliography, please refer to What is Posac on the first screen of the program.</p>
+
+<h2>Getting Started</h2>
+<p>To begin using POSAC, you'll need to configure several key settings:</p>
+<bullet><link target="name_of_the_job">Name of the job</link><bullet/><br/>
+<bullet><link target="input_data_file">Input data file</link><bullet/><br/>
+<bullet><link target="lines_per_case">Lines Per Case</link><bullet/><br/>
+<bullet><link target="number_of_internal_variables">Number of internal variables</link><bullet/><br/>
+<bullet><link target="number_of_external_variables">Number of external variables</link><bullet/>
 
 
 # $ k Name of the job
-You can enter any name you want to give for the particular run of
-POSAC/LSA. It is for your use. 
+<p>You can enter any name you want to give for the particular run of POSAC/LSA. It is for your use.</p>
+
+<h2>Related Topics</h2>
+<link target="welcome_to_the_posac_program">Welcome to POSAC</link><br/>
+<link target="input_data_file">Input data file</link>
 
 
 # $ k Input data file
-Here you must enter the name of the file that contains the data for the 
-Variables, as well as its path. It must exist in the computer or you�ll get an error message.
+<p>Here you must enter the name of the file that contains the data for the Variables, as well as its path. It must exist in the computer or you'll get an error message.</p>
+
+<h2>Important Notes</h2>
+<p>The data file must be properly formatted according to your variable definitions. See the following topics for more information:</p>
+
+<h2>Related Topics</h2>
+<link target="lines_per_case">Lines Per Case</link><br/>
+<link target="internal_variables">Internal variables</link><br/>
+<link target="external_variables">External variables</link><br/>
+<link target="data_subjects">Data Subjects</link>
 
 
 # $ k Lines Per Case
-The number of lines per case in the data file specified above. This
-Number can have a value from 1 to 10 and depends on how your data
-Is set up.
+<p>The number of lines per case in the data file specified above. This number can have a value from 1 to 10 and depends on how your data is set up.</p>
 
+<h2>Configuration Details</h2>
+<row left="Minimum Lines" right="1 line per case"/>
+<row left="Maximum Lines" right="10 lines per case"/>
+<row left="Depends On" right="Your data file structure"/>
+
+<h2>Related Topics</h2>
+<link target="input_data_file">Input data file</link><br/>
+<link target="internal_variables">Internal variables</link><br/>
+<link target="external_variables">External variables</link>
 
 
 # $ k Number of internal variables
-Internal variables are those used by POSAC/LSA to create the
-scalogram. You can have anywhere from 2 to 16 of them.
+<p>Internal variables are those used by POSAC/LSA to create the scalogram. You can have anywhere from 2 to 16 of them.</p>
 
+<h2>Constraints</h2>
+<row left="Minimum Variables" right="2 internal variables"/>
+<row left="Maximum Variables" right="16 internal variables"/>
+<row left="Purpose" right="Used to create the scalogram"/>
+
+<h2>Related Topics</h2>
+<link target="internal_variables">Internal variables (detailed)</link><br/>
+<link target="number_of_external_variables">Number of external variables</link><br/>
+<link target="item_diagrams">Item diagrams</link>
 
 
 # $ k Number of external variables
-External variables are those used to define subjects� external traits.
-Concentrations of subjects characterized by each trait may be depicted
-in the scalogram space, and relationships between space axes and trait
-occurrence are estimated.
+<p>External variables are those used to define subjects' external traits. Concentrations of subjects characterized by each trait may be depicted in the scalogram space, and relationships between space axes and trait occurrence are estimated.</p>
 
+<h2>Related Topics</h2>
+<link target="external_variables">External variables (detailed)</link><br/>
+<link target="external_diagrams">External diagrams</link><br/>
+<link target="external_traits">External Traits</link><br/>
+<link target="external_variables_ranges">External variables ranges</link>
 
 
 # $ k Item diagrams
-An ITEM DIAGRAM is a reproduction of the POSAC solution map, except
-that instead of the profile ID, the subject�s score in that item (=variable) is
-typed. If you answer �Y� then an item diagram will be provided for each 
-internal variable.
+<p>An ITEM DIAGRAM is a reproduction of the POSAC solution map, except that instead of the profile ID, the subject's score in that item (=variable) is typed. If you answer 'Y' then an item diagram will be provided for each internal variable.</p>
 
+<h2>Related Topics</h2>
+<link target="internal_variables">Internal variables</link><br/>
+<link target="external_diagrams">External diagrams</link><br/>
+<link target="viewing_results">Viewing Results</link>
 
 
 # $ k external diagrams
-An EXTERNAL TRAIT DIAGRAM is a reproduction of POSAC solution map,
-except that instead of the profile ID, the proportion of subjects (among those
-having that same profile) who share the defined external traits, is represented.
+<p>An EXTERNAL TRAIT DIAGRAM is a reproduction of POSAC solution map, except that instead of the profile ID, the proportion of subjects (among those having that same profile) who share the defined external traits, is represented.</p>
 
+<h2>Related Topics</h2>
+<link target="item_diagrams">Item diagrams</link><br/>
+<link target="external_traits">External Traits</link><br/>
+<link target="external_variables">External variables</link>
 
 
 # $ k Frequency
-If you want POSAC/LSA to ignore profiles whose frequencies are f or less, then 
-specify the value of f here. This is useful when data is too large. Note that POSAC/LSA
-can only process up to 1500 cases and 170 different profiles.
+<p>If you want POSAC/LSA to ignore profiles whose frequencies are f or less, then specify the value of f here. This is useful when data is too large. Note that POSAC/LSA can only process up to 1500 cases and 170 different profiles.</p>
 
+<h2>System Limits</h2>
+<row left="Maximum Cases" right="1500 cases"/>
+<row left="Maximum Profiles" right="170 different profiles"/>
+<row left="Purpose" right="Filter out low-frequency profiles"/>
+
+<h2>Related Topics</h2>
+<link target="data_subjects">Data Subjects</link><br/>
+<link target="structural_posac">Structural Posac</link>
 
 
 # $ k Structural Posac
-Structural POSAC/LSA [option S] assigns an equal weight to every profile to be processed.
-It is a more theory-oriented procedure than the alternative, distributional analysis and its
-coefficient of fit is usually lower. 
-Distributional POSAC/LSA [option D] assigns to every processed profile a weight that  corresponds to its 
-observed frequency. This has been the more traditional procedure.
-Profile analysis [option P] is useful if you wish to examine the list of profiles and obtain some profile for 
-information only, without running the entire program.
+<h2>Analysis Options</h2>
 
+<p><strong>Structural POSAC/LSA [option S]</strong> assigns an equal weight to every profile to be processed. It is a more theory-oriented procedure than the alternative, distributional analysis and its coefficient of fit is usually lower.</p>
+
+<p><strong>Distributional POSAC/LSA [option D]</strong> assigns to every processed profile a weight that corresponds to its observed frequency. This has been the more traditional procedure.</p>
+
+<p><strong>Profile analysis [option P]</strong> is useful if you wish to examine the list of profiles and obtain some profile for information only, without running the entire program.</p>
+
+<h2>Analysis Types</h2>
+<row left="Option S" right="Structural - Equal weights for all profiles"/>
+<row left="Option D" right="Distributional - Frequency-based weights"/>
+<row left="Option P" right="Profile analysis only"/>
+
+<h2>Related Topics</h2>
+<link target="frequency">Frequency</link><br/>
+<link target="balancing_weights">Balancing weights</link>
 
 
 # $ k Data Subjects
-Are data Subjects, Identified subjects or Profiles & frequencies. If Identified subjects or 
-Profiles and frequencies, you must fill in the starting and ending columns of field where the 
-subjects' Identifying label, or frequencies, appear. (If there is more than one record (line) 
-per case, this field must be in record No.1 (in the first line). If the default option �S� is 
-chosen, column entries are ignored by the program and you can continue.
+<p>Are data Subjects, Identified subjects or Profiles & frequencies. If Identified subjects or Profiles and frequencies, you must fill in the starting and ending columns of field where the subjects' Identifying label, or frequencies, appear. (If there is more than one record (line) per case, this field must be in record No.1 (in the first line). If the default option 'S' is chosen, column entries are ignored by the program and you can continue.</p>
+
+<h2>Data Types</h2>
+<row left="Subjects" right="Standard subject data"/>
+<row left="Identified Subjects" right="Subjects with ID labels"/>
+<row left="Profiles & Frequencies" right="Pre-computed profile frequencies"/>
+
+<h2>Important Notes</h2>
+<p>If using multiple lines per case, the identifying information must be in the first record (line).</p>
+
+<h2>Related Topics</h2>
+<link target="lines_per_case">Lines Per Case</link><br/>
+<link target="frequency">Frequency</link><br/>
+<link target="input_data_file">Input data file</link>
 
 
 # $ k Missing value
-If any of the internal or external variables have missing values that are other than zero,or if
-Zero itself is not a missing value, then you must choose �N� in answer to this question. Since
-POSAC/LSA rejects profiles with missing scores in any of the variables (external as well as internal), 
-fewer profiles would be rejected if you define all external-variable values as valid
- (non-missing).
+<p>If any of the internal or external variables have missing values that are other than zero, or if Zero itself is not a missing value, then you must choose 'N' in answer to this question. Since POSAC/LSA rejects profiles with missing scores in any of the variables (external as well as internal), fewer profiles would be rejected if you define all external-variable values as valid (non-missing).</p>
+
+<h2>Key Points</h2>
+<row left="Default Missing" right="Zero (0)"/>
+<row left="Custom Missing" right="Any other value"/>
+<row left="Impact" right="Profiles with missing values are rejected"/>
+
+<h2>Recommendation</h2>
+<p>Define all external-variable values as valid (non-missing) to reduce profile rejection.</p>
+
+<h2>Related Topics</h2>
+<link target="internal_variables">Internal variables</link><br/>
+<link target="external_variables">External variables</link>
 
 
 # $ k Next command
-To move forward in the program press Next command and you will pass sequentially through the program 
-screens.
+<p>To move forward in the program press Next command and you will pass sequentially through the program screens.</p>
 
+<h2>Related Topics</h2>
+<link target="back_command">Back command</link><br/>
+<link target="run_command">Run command</link>
 
 
 # $ k Back command
-To move backward in the program press Back command and you will pass backward through the 
-program screens.
+<p>To move backward in the program press Back command and you will pass backward through the program screens.</p>
 
+<h2>Related Topics</h2>
+<link target="next_command">Next command</link><br/>
+<link target="run_command">Run command</link>
 
 
 # $ k Run command
-With this command we process all the data and create result files.
+<p>With this command we process all the data and create result files.</p>
 
+<h2>What Happens</h2>
+<p>The Run command initiates the complete POSAC/LSA analysis based on all your current settings and generates the output files.</p>
+
+<h2>Related Topics</h2>
+<link target="output_files">Output Files</link><br/>
+<link target="viewing_results">Viewing Results</link><br/>
+<link target="ascii_output_files">ASCII output files</link>
 
 
 # $ k Internal variables
-INTERNAL VARIABLES are those used by POSAC/LSA to create the scalogram. On this screen you 
-must indicate for each INTERNAL VARIABLE, where it is located in the DATA file.
-REC NUM:          in which record (line) is the variable located
-WIDTH:               field width (number of columns) where the value of the variable is
-                      written (it can be 1 or 2)
-<b>START COL</b>:      The first column of the field where the variable is
-located
-LABEL:                 you can optionally give a label for the variable if you so desire
-VALID LO HI:       the valid min and max values of the variable; appears only if are non zero 
-                                missing values, or if for some variable zero is not a missing value.                          
-                               
+<p>INTERNAL VARIABLES are those used by POSAC/LSA to create the scalogram. On this screen you must indicate for each INTERNAL VARIABLE, where it is located in the DATA file.</p>
+
+<h2>Field Definitions</h2>
+<row left="REC NUM" right="in which record (line) is the variable located"/>
+<row left="WIDTH" right="field width (number of columns) where the value of the variable is written (it can be 1 or 2)"/>
+<row left="START COL" right="The first column of the field where the variable is located"/>
+<row left="LABEL" right="you can optionally give a label for the variable if you so desire"/>
+<row left="VALID LO HI" right="the valid min and max values of the variable; appears only if are non zero missing values"/>
+
+<h2>Related Topics</h2>
+<link target="external_variables">External Variables</link><br/>
+<link target="missing_value">Missing Value</link><br/>
+<link target="data_subjects">Data Subjects</link><br/>
+<link target="number_of_internal_variables">Number of internal variables</link>
 
 
 # $ k External variables
-External variables are those used to define subjects� external traits. Concentrations of 
-subjects characterized by each trait may be depicted in the scalogram space, and 
-relationships between POSAC space axes and trait occurrence are estimated. On this screen 
-you must indicate for each EXTERNAL VARIABLE, where it is located in the DATA file.
-REC NUM:          in which record (line) is the variable located
-WIDTH:               field width (number of columns) where the value of the variable is
-                      written (it can be 1 or 2)
-START COL:      The first column of the field where the variable is located
-LABEL:                 you can optionally give a label for the variable if you so desire
-VALID LO HI:       the valid min and max values of the variable; appears only if are non zero 
-                                missing values, or if for some variable zero is not a missing value.
+<p>External variables are those used to define subjects' external traits. Concentrations of subjects characterized by each trait may be depicted in the scalogram space, and relationships between POSAC space axes and trait occurrence are estimated. On this screen you must indicate for each EXTERNAL VARIABLE, where it is located in the DATA file.</p>
 
+<h2>Field Definitions</h2>
+<row left="REC NUM" right="in which record (line) is the variable located"/>
+<row left="WIDTH" right="field width (number of columns) where the value of the variable is written (it can be 1 or 2)"/>
+<row left="START COL" right="The first column of the field where the variable is located"/>
+<row left="LABEL" right="you can optionally give a label for the variable if you so desire"/>
+<row left="VALID LO HI" right="the valid min and max values of the variable; appears only if are non zero missing values, or if for some variable zero is not a missing value"/>
 
+<h2>Related Topics</h2>
+<link target="internal_variables">Internal variables</link><br/>
+<link target="external_variables_ranges">External variables ranges</link><br/>
+<link target="external_traits">External Traits</link><br/>
+<link target="number_of_external_variables">Number of external variables</link>
 
 
 # $ k External variables ranges
-Admissible values of an external variable may be a subset of its valid values. Admissible values are used 
-as a basis (=100%) for computing the occurrence of external traits among subjects with the same profile. 
-If, for all external variables, admissible values coincide with valid values, simply press �Next�. Signify the 
-admissible ranges for all the EXTERNAL VARIABLES. Each variable can have several ranges (up to 10 
-in fact). NUM OF RANGES can thus be from 1 to 10. Following entry of that number, you simply enter the 
-FROM and TO values that define the desired ranges.
+<p>Admissible values of an external variable may be a subset of its valid values. Admissible values are used as a basis (=100%) for computing the occurrence of external traits among subjects with the same profile. If, for all external variables, admissible values coincide with valid values, simply press 'Next'. Signify the admissible ranges for all the EXTERNAL VARIABLES. Each variable can have several ranges (up to 10 in fact). NUM OF RANGES can thus be from 1 to 10. Following entry of that number, you simply enter the FROM and TO values that define the desired ranges.</p>
 
+<h2>Configuration</h2>
+<row left="Purpose" right="Define subset of valid values for trait computation"/>
+<row left="Basis" right="Used as 100% for external trait occurrence"/>
+<row left="Max Ranges" right="Up to 10 ranges per variable"/>
+<row left="Range Definition" right="FROM and TO values"/>
+
+<h2>Related Topics</h2>
+<link target="external_variables">External variables</link><br/>
+<link target="external_traits">External Traits</link>
 
 
 # $ k External Traits
-EXTERNAL TRAITS are defined in terms of EXTERNAL (non-scalogram) VARIABLES, e.g. certain 
-values of �education� can define the trait �educated�; combined values of education, of age and of gender 
-can define �an educated young woman� etc.
-For each EXTERNAL TRAIT you will be asked to give a label (title) and then the external variable ranges 
-that define it. This will be done in a manner analogous to the entry of the admissible range values that 
-you just completed (number of ranges, from-to for each external var.). The trait-defining ranges are a 
-subset of the admissible ranges. If a particular variable doesn�t participate in defining an external trait, 
-leave the entire range of admissible values. To define a range of a single value, enter that value twice 
-(e.g. 2-2).
+<p>EXTERNAL TRAITS are defined in terms of EXTERNAL (non-scalogram) VARIABLES, e.g. certain values of 'education' can define the trait 'educated'; combined values of education, of age and of gender can define 'an educated young woman' etc.</p>
 
+<p>For each EXTERNAL TRAIT you will be asked to give a label (title) and then the external variable ranges that define it. This will be done in a manner analogous to the entry of the admissible range values that you just completed (number of ranges, from-to for each external var.). The trait-defining ranges are a subset of the admissible ranges. If a particular variable doesn't participate in defining an external trait, leave the entire range of admissible values. To define a range of a single value, enter that value twice (e.g. 2-2).</p>
+
+<h2>Definition Process</h2>
+<row left="Step 1" right="Provide a descriptive label for the trait"/>
+<row left="Step 2" right="Define variable ranges that constitute the trait"/>
+<row left="Ranges" right="Must be subset of admissible ranges"/>
+<row left="Single Value" right="Enter the same value twice (e.g., 2-2)"/>
+
+<h2>Examples</h2>
+<bullet> 'Education' values can define 'educated' trait</bullet><br/>
+<bullet> Combined 'education', 'age', and 'gender' can define 'educated young woman'</bullet>
+
+<h2>Related Topics</h2>
+<link target="external_variables">External variables</link><br/>
+<link target="external_variables_ranges">External variables ranges</link><br/>
+<link target="external_diagrams">External diagrams</link>
 
 
 # $ k Posac axes
-Saving POSAC/LSA � axes scores results in a new data file being created, with the same name as your 
-original data file but with the extension .PAX. This file will contain, in addition to the original data, a new 
-record (line) per case with the recoded X,Y,J,L scores assigned by POSAC�s solution to each of the 
-subjects.
+<p>Saving POSAC/LSA axes scores results in a new data file being created, with the same name as your original data file but with the extension .PAX. This file will contain, in addition to the original data, a new record (line) per case with the recoded X,Y,J,L scores assigned by POSAC's solution to each of the subjects.</p>
+
+<h2>Output Details</h2>
+<row left="File Extension" right=".PAX"/>
+<row left="Content" right="Original data + POSAC scores"/>
+<row left="New Record" right="X,Y,J,L scores for each subject"/>
+<row left="Location" right="Same directory as input file"/>
+
+<h2>Related Topics</h2>
+<link target="output_files">Output Files</link><br/>
+<link target="ascii_output_files">ASCII output files</link>
 
 
 # $ k Graphic characters
-If you want to change the characters used by the program to draw frames around diagrams in
-POSAC/LSA output, enter the characters here of your choosing in the following order:
-TOP, BOTTOM, LEFT, RIGHT, TOPLEFT,TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT.
-Otherwise leave blank.
+<p>If you want to change the characters used by the program to draw frames around diagrams in POSAC/LSA output, enter the characters here of your choosing in the following order: TOP, BOTTOM, LEFT, RIGHT, TOPLEFT,TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT. Otherwise leave blank.</p>
 
+<h2>Character Order</h2>
+<row left="1. TOP" right="Top border character"/>
+<row left="2. BOTTOM" right="Bottom border character"/>
+<row left="3. LEFT" right="Left border character"/>
+<row left="4. RIGHT" right="Right border character"/>
+<row left="5. TOPLEFT" right="Top-left corner character"/>
+<row left="6. TOPRIGHT" right="Top-right corner character"/>
+<row left="7. BOTTOMLEFT" right="Bottom-left corner character"/>
+<row left="8. BOTTOMRIGHT" right="Bottom-right corner character"/>
+
+<h2>Related Topics</h2>
+<link target="output_files">Output Files</link><br/>
+<link target="formfeed">Formfeed</link>
 
 
 # $ k formfeed
-In case your printer uses a form feed character that is different from chr(12), then you should
-Enter it in this field, otherwise leave it blank.
+<p>In case your printer uses a form feed character that is different from chr(12), then you should Enter it in this field, otherwise leave it blank.</p>
 
+<h2>Default Setting</h2>
+<row left="Standard" right="chr(12)"/>
+<row left="Custom" right="Enter your printer's form feed character"/>
+
+<h2>Related Topics</h2>
+<link target="graphic_characters">Graphic characters</link><br/>
+<link target="output_files">Output Files</link>
 
 
 # $ k Balancing weights
-You may change the weights assigned to incomparable and comparable profiles in the POSAC
-solution by specifying two alternative values here.
+<p>You may change the weights assigned to incomparable and comparable profiles in the POSAC solution by specifying two alternative values here.</p>
 
+<h2>Weight Types</h2>
+<row left="Incomparable Profiles" right="Weight for profiles that cannot be compared"/>
+<row left="Comparable Profiles" right="Weight for profiles that can be compared"/>
+
+<h2>Related Topics</h2>
+<link target="structural_posac">Structural Posac</link><br/>
+<link target="iterations_number">Iterations number</link>
 
 
 # $ k Iterations number
-This is the number times POSAC/LSA loops around in its search for a solution. The larger the
-number, the more time it takes, but the more optimal the solution.
+<p>This is the number times POSAC/LSA loops around in its search for a solution. The larger the number, the more time it takes, but the more optimal the solution.</p>
 
+<h2>Trade-off</h2>
+<row left="More Iterations" right="Better solution, longer processing time"/>
+<row left="Fewer Iterations" right="Faster processing, potentially less optimal"/>
+
+<h2>Related Topics</h2>
+<link target="balancing_weights">Balancing weights</link><br/>
+<link target="run_command">Run command</link>
 
 
 # $ k ASCII output files
-The ASCII output files technical option creates 3 trimmed files in fixed format with 
-the essentials of POSAC/LSA solution. 
+<p>The ASCII output files technical option creates 3 trimmed files in fixed format with the essentials of POSAC/LSA solution.</p>
 
+<h2>Generated Files</h2>
 
-1. File SOLUTION.PSC records:
+<h2>1. File SOLUTION.PSC</h2>
+<p>Records: Profile, profile-score, profile-frequency, profile-coordinates: X,Y,J,L.</p>
 
-Profile, profile-score, profile-frequency, profile-coordinates: X,Y,J,L.  
-
-Example:
+<txt>Example:
 
  2 2 2 2                           8    1 100.00  100.00    200.00  100.00
  2 2 2 1                           7    1  60.00   90.00    150.00   70.00
@@ -233,149 +364,197 @@ Example:
  1 1 2 1                           5    1  40.00   20.00     60.00  120.00
  2 1 1 1                           5    1  10.00   70.00     80.00   40.00
  1 2 1 1                           5    1  20.00   40.00     60.00   80.00
- 1 1 1 1                           4    1    .00     .00       .00  100.00
+ 1 1 1 1                           4    1    .00     .00       .00  100.00</txt>
 
+<h2>2. File MUMATRIX.PSC</h2>
+<p>Records the coefficients of monotonicity between the POSAC variables (the lower half of the matrix).</p>
 
-2. File MUMATRIX.PSC records the coefficients of monotonicity between the POSAC 
-variables (the lower half of the matrix). 
-
-Example: 
+<txt>Example:
 
  1.00
   .60 1.00
  -.14  .50 1.00
- -.38 -.14  .60 1.00
+ -.38 -.14  .60 1.00</txt>
 
+<h2>3. File ITEMFACT.PSC</h2>
+<p>Records for each variable its coefficient of monotonicity with J,L,X,Y,P,Q.</p>
 
-3. File ITEMFACT.PSC records for each variable its coefficient of monotonicity with 
-J,L,X,Y,P,Q.  
-
-Example:
+<txt>Example:
 
    .83  -.97   .00  1.00   .64   .92
    .90  -.54   .47   .92   .98   .67
    .90   .54   .92   .47   .98   .67
-   .83   .97  1.00   .00   .64   .92
+   .83   .97  1.00   .00   .64   .92</txt>
 
+<h2>Related Topics</h2>
+<link target="output_files">Output Files</link><br/>
+<link target="posac_axes">Posac axes</link><br/>
+<link target="viewing_results">Viewing Results</link>
 
 
 # $ k POSACSEP Option
-For each internal variable processed by POSAC, POSACSEP option creates four optimal 
-partitions of the item (variable) diagram separating the high from the low values of that 
-variable. The mathematical theory of Multiple Scaling by POSAC requires that such a 
-partition line to be a decreasing (or non-increasing) step curve. Hence, the four partitions 
-are of the following forms, each form representing a possible role that the variable may 
-have in structuring the POSAC measurement space.
-POLAR:  A straight line (0 bends), which can be X-Polar (vertical line) or Y-Polar 
-(horizontal line);
-ATOAC: An L-shaped or an Inverted L-shaped line (1 bend) representing an attenuating or 
-an accentuating variable, respectively.
-PROMO: A line with 2 bends, dissecting the X axis or the Y axis, representing an X-
-promoting or a Y-promoting variable, respectively.
-MODIF: A line with 3 bends, describable as modifying an attenuating or an accentuating 
-form, representing a T-modifying or a C-modifying variable, respectively.
-POASCSET.TAB file is produced reporting for each variable and each form, the total 
-deviations of profiles from their "correct" (low or high value) region. This table can be used 
-to determine the most likely role that should be assigned to each variable. The forms thus 
-selected by the researcher can be used to create a typology grid on the POSAC space and 
-measurement marks on the X and Y axes.
-   POSACSEP.OUT file provides the algebraic equations for the optimal partition  curves. 
-NOTE that POSACSEP.TAB file and the partitioned-space diagram files (e.g., POLAR01.SCR, 
-PROMO03.SCR) as well as POSACSEP.OUT are written into the POSAC program directory 
-and, unless their file names are changed, are erased after the next run of the program.
+<p>For each internal variable processed by POSAC, POSACSEP option creates four optimal partitions of the item (variable) diagram separating the high from the low values of that variable. The mathematical theory of Multiple Scaling by POSAC requires that such a partition line to be a decreasing (or non-increasing) step curve. Hence, the four partitions are of the following forms, each form representing a possible role that the variable may have in structuring the POSAC measurement space.</p>
+
+<h2>Partition Types</h2>
+
+<p><strong>POLAR:</strong> A straight line (0 bends), which can be X-Polar (vertical line) or Y-Polar (horizontal line);</p>
+
+<p><strong>ATOAC:</strong> An L-shaped or an Inverted L-shaped line (1 bend) representing an attenuating or an accentuating variable, respectively.</p>
+
+<p><strong>PROMO:</strong> A line with 2 bends, dissecting the X axis or the Y axis, representing an X-promoting or a Y-promoting variable, respectively.</p>
+
+<p><strong>MODIF:</strong> A line with 3 bends, describable as modifying an attenuating or an accentuating form, representing a T-modifying or a C-modifying variable, respectively.</p>
+
+<h2>Output Files</h2>
+<row left="POASCSET.TAB" right="Reports total deviations for each variable and form"/>
+<row left="POSACSEP.OUT" right="Provides algebraic equations for partition curves"/>
+<row left="Diagram Files" right="POLAR01.SCR, PROMO03.SCR, etc."/>
+
+<h2>Important Note</h2>
+<p>POSACSEP.TAB file and the partitioned-space diagram files as well as POSACSEP.OUT are written into the POSAC program directory and, unless their file names are changed, are erased after the next run of the program.</p>
+
+<h2>Related Topics</h2>
+<link target="posacsep_thresholds">POSACSEP thresholds</link><br/>
+<link target="internal_variables">Internal variables</link><br/>
+<link target="item_diagrams">Item diagrams</link>
 
 
 # $ k POSACSEP thresholds
-In order to run POSACSEP you must specify for each variable a threshold that 
-distinguished high from low values for that variable. In effect, the variable is dichotomized 
-by specifying the threshold to be the lowest value of the higher group of values. For 
-example, if a variable is originally a dichotomy (a binary variable), having only the values 
-{1, 2}, the threshold would be 2. If the variable has 3 values {1,2,3} and if you consider 
-1 & 2 as low and 3 as high, the threshold would be 3 (but if you consider 1 as low and 2 & 
-3 as high, the threshold is 2).
+<p>In order to run POSACSEP you must specify for each variable a threshold that distinguished high from low values for that variable. In effect, the variable is dichotomized by specifying the threshold to be the lowest value of the higher group of values. For example, if a variable is originally a dichotomy (a binary variable), having only the values {1, 2}, the threshold would be 2. If the variable has 3 values {1,2,3} and if you consider 1 & 2 as low and 3 as high, the threshold would be 3 (but if you consider 1 as low and 2 & 3 as high, the threshold is 2).</p>
+
+<h2>Examples</h2>
+<row left="Binary Variable {1,2}" right="Threshold = 2"/>
+<row left="Three Values {1,2,3}" right="Threshold = 3 (if 1,2 are low)"/>
+<row left="Three Values {1,2,3}" right="Threshold = 2 (if 1 is low)"/>
+
+<h2>Related Topics</h2>
+<link target="posacsep_option">POSACSEP Option</link><br/>
+<link target="internal_variables">Internal variables</link>
 
 
 # $ k Viewing Results
-     Use the VIEW menu to see results
-     When on a screen diagram:
-*	Press enter to switch between POSAC/LSA diagrams;
-*	Press enter to switch between posacsep diagrams of an item;
-*	Enter Q to return to program.
+<h2>Using the VIEW Menu</h2>
+<p>Use the VIEW menu to see results</p>
+
+<h2>When on a Screen Diagram</h2>
+<row left="Enter" right="Switch between POSAC/LSA diagrams"/>
+<row left="Enter" right="Switch between posacsep diagrams of an item"/>
+<row left="Q" right="Return to program"/>
+
+<h2>Related Topics</h2>
+<link target="handling_result_files">Handling Result Files</link><br/>
+<link target="output_files">Output Files</link><br/>
+<link target="item_diagrams">Item diagrams</link><br/>
+<link target="external_diagrams">External diagrams</link>
 
 
 # $ k Handling Result Files
-POSAC, LSA1 and LSA2 outputs are written into the files specified in the output files menu. 
-POSACSEP.TAB is located in the posac program directory. These files may be viewed by 
-Microsoft EDIT,  NOTEPAD or WORD programs. In case WORD is used for opening one of 
-these files, select the MS-DOS (or the US-ASCII) encoding in WORD File Conversion 
-window. For conveniently viewing POSAC, LSA1 and LSA2 outputs, mark the entire 
-document (Ctrl-a) and choose font  Courier New   size 6.
-POSAC, LSA1 and LSA2 screen diagrams are written into files POSAC.SCR, LSA1.SCR and 
-LSA2.SCR respectively, in the directory where POSAC program is located. They can be read 
-by WORD, using the MS-DOS (or the US-ASCII) encoding in the WORD File Conversion 
-window.
-POSACSEP screen diagrams are written into files POLARxx.SCR, ATOACxx.SCR, 
-PROMOxx.SCR and MODIFxx.SCR, where xx stands for the serial number of the variable 
-considered: 01, 02, 03,� . They are written in the directory where POSAC program is 
-located.
-When shown on the screen, a screen diagram may be sent to a laser printer by entering L 
-or to a .PCX file by entering F. A PCX file may be read, for example, by Free Image Editor or 
-it may be converted to other types of graphical files using appropriate converter software.
+<p>POSAC, LSA1 and LSA2 outputs are written into the files specified in the output files menu. POSACSEP.TAB is located in the posac program directory. These files may be viewed by Microsoft EDIT, NOTEPAD or WORD programs. In case WORD is used for opening one of these files, select the MS-DOS (or the US-ASCII) encoding in WORD File Conversion window. For conveniently viewing POSAC, LSA1 and LSA2 outputs, mark the entire document (Ctrl-a) and choose font Courier New size 6.</p>
+<h2>File Locations</h2>
+<row left="POSAC/LSA1/LSA2" right="Specified in output files menu"/>
+<row left="POSACSEP.TAB" right="POSAC program directory"/>
+<h2>Viewing Software</h2>
+<row left="Microsoft EDIT" right="Simple text editor"/>
+<row left="NOTEPAD" right="Windows text editor"/>
+<row left="Microsoft WORD" right="Use MS-DOS/US-ASCII encoding"/>
 
+<h2>WORD Formatting Tip</h2>
+<p>For convenient viewing: Ctrl-A (select all) → Font: Courier New, Size: 6</p>
+
+<h2>Screen Diagrams</h2>
+<p>POSAC, LSA1 and LSA2 screen diagrams are written into files POSAC.SCR, LSA1.SCR and LSA2.SCR respectively, in the directory where POSAC program is located. They can be read by WORD, using the MS-DOS (or the US-ASCII) encoding in the WORD File Conversion window.</p>
+
+<p>POSACSEP screen diagrams are written into files POLARxx.SCR, ATOACxx.SCR, PROMOxx.SCR and MODIFxx.SCR, where xx stands for the serial number of the variable considered: 01, 02, 03,… . They are written in the directory where POSAC program is located.</p>
+
+<h2>Print Options</h2>
+<row left="L" right="Send diagram to laser printer"/>
+<row left="F" right="Save diagram to .PCX file"/>
+
+<p>A PCX file may be read, for example, by Free Image Editor or it may be converted to other types of graphical files using appropriate converter software.</p>
+
+<h2>Related Topics</h2>
+<link target="output_files">Output Files</link><br/>
+<link target="viewing_results">Viewing Results</link><br/>
+<link target="posacsep_option">POSACSEP Option</link>
 
 
 # $ k Output Files
-By default, the three full result files for POSAC, LSA1 and LSA2 are written into three 
-separate files having the same name as the input data file, except that their extension (file 
-type) is changed to .POS , .LS1 , and  .LS2,  respectively. By default, these three result files 
-are written into the same directory from which the data file was taken. 
-The path and file names may be changed. However, it is recommended not to change file 
-name extensions.
- Changing the name of the POSAC result file, automatically changes the names of the LSA1 
-and LSA2 result files into a similar name. Changing the name of the LSA1 or the LSA2 result 
-file does not affect the names of the other files.
+<p>By default, the three full result files for POSAC, LSA1 and LSA2 are written into three separate files having the same name as the input data file, except that their extension (file type) is changed to .POS , .LS1 , and .LS2, respectively. By default, these three result files are written into the same directory from which the data file was taken.</p>
+
+<h2>Default File Extensions</h2>
+<row left="POSAC Results" right=".POS"/>
+<row left="LSA1 Results" right=".LS1"/>
+<row left="LSA2 Results" right=".LS2"/>
+
+<h2>File Naming Rules</h2>
+<p>The path and file names may be changed. However, it is recommended not to change file name extensions.</p>
+
+<p>Changing the name of the POSAC result file, automatically changes the names of the LSA1 and LSA2 result files into a similar name. Changing the name of the LSA1 or the LSA2 result file does not affect the names of the other files.</p>
+
+<h2>Related Topics</h2>
+<link target="ascii_output_files">ASCII output files</link><br/>
+<link target="posac_axes">Posac axes</link><br/>
+<link target="handling_result_files">Handling Result Files</link><br/>
+<link target="input_data_file">Input data file</link>
 
 
 # $ k Recode Function
-The Recode function allows you to modify the numerical values of a variable or a set of variables according to your specifications. Below are examples illustrating how this function can be used:
-Example 1: Grouping Values
-If a variable is defined with values 1, 2, 3, 4, and 5, you may want to group these values into new categories. For instance:
-•	Change 1 and 2 to the new value 1
-•	Change 3 to 2
-•	Change 4 and 5 to 3
-This type of recoding can be useful, for example, to reduce the number of distinct values, which is often advisable when running analyses like POSAC.
-Example 2: Reversing Values
-If a variable is defined with values 1, 2, 3, 4, and 5, you might want to reverse the order of these values. Thus:
-•	Change 1 to 5
-•	Change 2 to 4
-•	Keep 3 as 3
-•	Change 4 to 2
-•	Change 5 to 1
-Reversing values may be needed ensure that all processed variables have a Common Meaning Range (See Shye & Elizur, 1994), which aligns with the principles of Facet Theory.
-Example 3: Grouping and Reversing Values
-If a variable is defined with values 1, 2, 3, 4, 5, and 6, you might want to both group and reverse these values. For example:
-•	Group 1 and 2 into 3
-•	Change 3 to 2
-•	Group 4, 5, and 6 into 1
-Steps to Recode a Variable
-To recode a variable or a set of variables, follow these steps:
-1.	Specify the variable(s): Identify the variable(s) you wish to recode.
-2.	List recoding operations: Define the current ("old") values and the new values to which they should be changed.
-For instance, based on Example 3, the recoding operations would look like this:
-Old Value(s)		New Value
-1, 2	→	3
-3	→	2
-4–6	→	1
-By following this process, you can efficiently recode variables to meet the specific requirements of your analysis.
-If you only need to reverse the valid values of a variable (or a set of variables), you can use the Reverse Values shortcut function.
-However, keep in mind that this function only reverses the values that actually appear in the input data file. For example, if a variable is defined to include the values 1, 2, 3, 4, 5, and 6, but only the values 3, 4, 5, and 6 are present in the data file, the Reverse Values function will perform the following changes:
-•	3 becomes 6
-•	4 becomes 5
-•	5 becomes 4
-•	6 becomes 3
-Unused values (e.g., 1 and 2 in this example) will not be considered or reversed.
-Reference
-Shye, S. & Elizur. D. (1994). Introduction to Facet Theory: Content design and intrinsic data analysis in behavioral research. Thousand Oaks, CA: Sage.
+<p>The Recode function allows you to modify the numerical values of a variable or a set of variables according to your specifications. Below are examples illustrating how this function can be used:</p>
+
+<h2>Example 1: Grouping Values</h2>
+<p>If a variable is defined with values 1, 2, 3, 4, and 5, you may want to group these values into new categories. For instance:</p>
+<row left="Change 1 and 2" right="to the new value 1"/>
+<row left="Change 3" right="to 2"/>
+<row left="Change 4 and 5" right="to 3"/>
+
+<p>This type of recoding can be useful, for example, to reduce the number of distinct values, which is often advisable when running analyses like POSAC.</p>
+
+<h2>Example 2: Reversing Values</h2>
+<p>If a variable is defined with values 1, 2, 3, 4, and 5, you might want to reverse the order of these values. Thus:</p>
+<row left="Change 1" right="to 5"/>
+<row left="Change 2" right="to 4"/>
+<row left="Keep 3" right="as 3"/>
+<row left="Change 4" right="to 2"/>
+<row left="Change 5" right="to 1"/>
+
+<p>Reversing values may be needed ensure that all processed variables have a Common Meaning Range (See Shye & Elizur, 1994), which aligns with the principles of Facet Theory.</p>
+
+<h2>Example 3: Grouping and Reversing Values</h2>
+<p>If a variable is defined with values 1, 2, 3, 4, 5, and 6, you might want to both group and reverse these values. For example:</p>
+<row left="Group 1 and 2" right="into 3"/>
+<row left="Change 3" right="to 2"/>
+<row left="Group 4, 5, and 6" right="into 1"/>
+
+<h2>Steps to Recode a Variable</h2>
+<p>To recode a variable or a set of variables, follow these steps:</p>
+<row left="1. Specify variables" right="Identify the variable(s) you wish to recode"/>
+<row left="2. List operations" right="Define old values and new values"/>
+
+<p>For instance, based on Example 3, the recoding operations would look like this:</p>
+<row left="Old Value(s)" right="New Value"/>
+<row left="1, 2" right="→ 3"/>
+<row left="3" right="→ 2"/>
+<row left="4–6" right="→ 1"/>
+
+<h2>Reverse Values Shortcut</h2>
+<p>If you only need to reverse the valid values of a variable (or a set of variables), you can use the Reverse Values shortcut function.</p>
+
+<p>However, keep in mind that this function only reverses the values that actually appear in the input data file. For example, if a variable is defined to include the values 1, 2, 3, 4, 5, and 6, but only the values 3, 4, 5, and 6 are present in the data file, the Reverse Values function will perform the following changes:</p>
+
+<row left="3" right="becomes 6"/>
+<row left="4" right="becomes 5"/>
+<row left="5" right="becomes 4"/>
+<row left="6" right="becomes 3"/>
+
+<p>Unused values (e.g., 1 and 2 in this example) will not be considered or reversed.</p>
+
+<h2>Reference</h2>
+<p>Shye, S. & Elizur. D. (1994). Introduction to Facet Theory: Content design and intrinsic data analysis in behavioral research. Thousand Oaks, CA: Sage.</p>
+
+<h2>Related Topics</h2>
+<link target="internal_variables">Internal variables</link><br/>
+<link target="external_variables">External variables</link><br/>
+<link target="missing_value">Missing value</link>
 
 
 

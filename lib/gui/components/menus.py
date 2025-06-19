@@ -51,8 +51,9 @@ class Menu(tk.Menu):
         self.add_command(label="Options")
         # Help Menu
         self.help_menu = tk.Menu(self)
-        self.help_menu.add_command(label="Report Error")
+        self.help_menu.add_command(label="Help Contents", accelerator="Alt+F1")
         self.help_menu.add_command(label="About Posac")
+        self.help_menu.add_command(label="Report Error")
         self.add_cascade(label="Help", menu=self.help_menu)
 
     def add_posacsep_items(self, items_num):

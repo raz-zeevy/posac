@@ -69,7 +69,7 @@
     "posac_axes": "No",
     "set_selection": "A",
     "record_length": 80,
-    "posac_axes_out": ""
+    "posac_axes_out": "C:/Program Files/POSAC/job.pax"
   },
   "controller": {
     "save_path": ""

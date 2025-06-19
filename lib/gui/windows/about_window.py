@@ -17,7 +17,7 @@ class AboutWindow(Window):
     def create_widgets(self):
         self.create_title()
         self.create_content()
-        self.create_credit()
+        # self.create_credit()
         self.create_version()
         self.create_developer_info()
 
@@ -28,20 +28,32 @@ class AboutWindow(Window):
         self.title_label.pack(pady=(rreal_size(20), rreal_size(10)))
 
     def create_content(self):
-        description = (
-            "POSAC (Partial Order Scalogram Analysis with Base Coordinates) "
-            "is a mathematical scaling procedure that analyzes multivariate "
-            "data by representing profiles as points in a geometric space "
-            "while preserving their partial order relationships."
+        main_description = (
+            """POSAC/LSA Program was developed in Fortran by Samuel Shye, the Hebrew University of Jerusalem, as part of a research project supported in part by the U.S. Army Research Institute for the Behavioral and Social Sciences through its European Research Office."""
         )
 
-        self.content_label = ttk.Label(
+        self.main_content_label = ttk.Label(
             self,
-            text=description,
-            wraplength=rreal_size(300),  # Wrap text at 300 pixels
+            text=main_description,
+            wraplength=rreal_size(300),
             justify="center",
         )
-        self.content_label.pack(padx=rreal_size(20), pady=rreal_size(10))
+        self.main_content_label.pack(padx=rreal_size(20), pady=(rreal_size(10), rreal_size(5)))
+
+        references_description = (
+            """Basic References:
+Shye, S. (1985). Multiple Scaling: The Theory and Application of Partial Order Scalogram Analysis. Amsterdam: North-Holland. [The mathematical foundation of POSAC and its relationship to SSA of the variables]
+Shye, S. & Amar, R. (1985). Partial Order Scalogram Analysis by Base Coordinates and Lattice Mapping of the Items by Their Scalogram Roles. In D. Canter (ed.) Facet Theory: Approaches to Social Research. New York: Springer-Verlag. [An article describing POSAC/LSA procedures and computer program.]"""
+        )
+
+        self.references_label = ttk.Label(
+            self,
+            text=references_description,
+            wraplength=rreal_size(300),
+            justify="left",
+            anchor="w"
+        )
+        self.references_label.pack(padx=rreal_size(20), pady=(rreal_size(5), rreal_size(10)))
 
     def create_credit(self):
         credit_frame = ttk.Frame(self)
@@ -70,8 +82,14 @@ class AboutWindow(Window):
 
         dev_label = ttk.Label(
             dev_frame,
-            text="Developed by Raz Zeevy\nraz3zeevy@gmail.com",
+            text="Program Interface Developed by Raz Zeevy\nraz3zeevy@gmail.com",
             font=("Helvetica", rreal_size(9)),
             justify="center"
         )
         dev_label.pack()
+
+if __name__ == "__main__":
+    import tkinter as tk
+    root = tk.Tk()
+    about_window = AboutWindow(root)
+    root.mainloop()

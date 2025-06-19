@@ -16,7 +16,7 @@ class EVariablesTab(tk.Frame):
                                    'If no external variables are used, '
                                    'press next.')
         label.pack(side='top', fill='both', padx=0, pady=(2, 0))
-        
+
         # Variables Table Frame
         self.vars_table_frame = tk.Frame(self)
         self.vars_table = VariablesTable(
@@ -27,7 +27,7 @@ class EVariablesTab(tk.Frame):
             help=Help.EXTERNAL_VARS
         )
         self.vars_table_frame.pack(fill='both', expand=True, padx=10, pady=(0, 0))
-        
+
         # Create buttons frame
         self._create_data_buttons()
 
@@ -47,22 +47,22 @@ class EVariablesTab(tk.Frame):
     def get_all_variables_values(self): return self.vars_table.get_all_variables_values()
     def get_vars_num(self): return len(self.vars_table)
     def get_selected_variables(self): return self.vars_table.get_selected_variables()
-    
+
     def add_variable(self, values_=None, check=True):
         self.vars_table.add_variable(values_, check)
-    
+
     def remove_variable(self):
         self.vars_table.remove_variable()
-    
+
     def clear_variables(self):
         self.vars_table.clear_variables()
-    
+
     def show_low_high(self):
         self.vars_table.show_low_high()
-    
+
     def hide_low_high(self):
         self.vars_table.hide_low_high()
-    
+
     def set_default(self):
         self.vars_table.clear_variables()
         self.hide_low_high()

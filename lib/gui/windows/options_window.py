@@ -1,4 +1,5 @@
 import copy
+import os
 import tkinter as tk
 
 import ttkbootstrap as ttk
@@ -14,6 +15,7 @@ from lib.gui.components.form import (
 from lib.gui.components.help_bar import HelpBar
 from lib.gui.components.helpables import Helpable
 from lib.gui.windows.window import Window
+from lib.help.posac_help import Help
 from lib.utils import real_size, rreal_size
 
 t_POSAC_AXES = "Do you want to save Posac-Axes scores obtained for subjects?"
@@ -67,6 +69,7 @@ thru 200=10."""
             self.checkbox_frame,
             values=POSAC_AXES_OPTIONS,
             textvariable=self.save_axes_var,
+            help = Help.POSAC_AXES
         )
         self.save_axes_menu.state(["readonly"])
         self.save_axes_menu.pack(padx=real_size(10), pady=real_size(0))
@@ -151,7 +154,7 @@ thru 200=10."""
         right_frame = ttk.Frame(file_frame)
         right_frame.pack(side="right", padx=(0, ENTRIES_PAD_RIGHT))
 
-        self.file_entry = Entry(right_frame, width=rreal_size(40))
+        self.file_entry = Entry(right_frame, width=rreal_size(40),)
         self.file_entry.pack(side="left", padx=(0, real_size(10)))
 
         self.browse_button = BrowseButton(right_frame, command=self._browse_file)
@@ -184,7 +187,7 @@ class OptionsWindow(Window):
         posac_axes=POSAC_AXES_DEFAULT,
         set_selection="A",
         record_length=80,
-        posac_axes_out="",
+        posac_axes_out="C:/Program Files/POSAC/job.pax",
     )
     RESET_VALUES = copy.deepcopy(DEFAULT_VALUES)
 
@@ -239,6 +242,7 @@ class OptionsWindow(Window):
             self.theme_tab,
             values=ASCII_OUTPUT_OPTIONS,
             textvariable=self.ascii_output_var,
+            help = Help.ASCII_OUTPUT_FILES
         )
         ascii_output_menu.state(["readonly"])
         ascii_output_menu.pack(padx=10, pady=10)
@@ -248,10 +252,12 @@ class OptionsWindow(Window):
         self.notebook.add(self.technical_tab, text="Technical Options")
 
         self.special_graphic_char_entry = self._create_label_entry(
-            self.technical_tab, t_SPECIAL_GRAPHIC_CHAR, default=""
+            self.technical_tab, t_SPECIAL_GRAPHIC_CHAR, default="",
+            help = Help.GRAPHIC_CHARS
         )
         self.form_feed_entry = self._create_label_entry(
-            self.technical_tab, t_FORM_FEED, default=""
+            self.technical_tab, t_FORM_FEED, default="",
+            help = Help.FORMFEED
         )
         self.create_power_weights_entries()
         self.max_iterations = self._create_label_entry(
@@ -259,6 +265,7 @@ class OptionsWindow(Window):
             t_MAX_ITERATION,
             default=str(MAX_ITERATIONS),
             width=rreal_size(5),
+            help = Help.ITERATIONS_NUMBER
         )
 
     def create_power_weights_entries(self):
@@ -273,11 +280,11 @@ class OptionsWindow(Window):
         label_power_weights = Label(power_frame, text=t_POWER_WEIGHTS)
         label_power_weights.pack(side="left")
 
-        self.power_weights_low_entry = Entry(power_frame, width=w_entry)
+        self.power_weights_low_entry = Entry(power_frame, width=w_entry, help = Help.BALANCING_WEIGHTS)
         self.power_weights_low_entry.insert(0, str(POWER_WEIGHTS_LOW))
         self.power_weights_low_entry.pack(side="right", padx=real_size((10, 0)))
 
-        self.power_weights_high_entry = Entry(power_frame, width=w_entry)
+        self.power_weights_high_entry = Entry(power_frame, width=w_entry, help = Help.BALANCING_WEIGHTS)
         self.power_weights_high_entry.insert(0, str(POWER_WEIGHTS_HIGH))
         self.power_weights_high_entry.pack(side="right", padx=real_size((10, 0)))
 
@@ -413,6 +420,9 @@ class OptionsWindow(Window):
     def reset_default():
         OptionsWindow.set(**OptionsWindow.RESET_VALUES)
 
+    @staticmethod
+    def set_posac_axes_out_dir(path):
+        OptionsWindow.set(posac_axes_out=os.path.join(path, "job.pax"))
 
 # Example of how to use the window and set default values:
 if __name__ == "__main__":

@@ -232,7 +232,7 @@ def load_other_formats(
     if failed_rows:
         logger.warning(f"Warning: Failed to load rows at indices: {failed_rows}")
 
-    has_appendix_fields = appendix_fields != (0, 0)
+    has_appendix_fields = appendix_fields and appendix_fields != (0, 0)
     if has_appendix_fields:
         # get for each line the values from col appendix_fields[0] to appendix_fields[1] [single value per line]
         appendix_data = []
@@ -241,7 +241,7 @@ def load_other_formats(
             lines = [filter_non_ascii(line) for line in lines]
             for line in lines:
                 appendix_data.append(
-                    int(line[appendix_fields[0] - 1 : appendix_fields[1]].strip())
+                    line[appendix_fields[0] - 1 : appendix_fields[1]]
                 )
 
     return np.array(data, dtype=int), (

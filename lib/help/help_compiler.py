@@ -2,7 +2,7 @@ import logging
 import pickle
 import re
 from pathlib import Path
-from posac_help import BIN_PATH
+from lib.help.posac_help import BIN_PATH
 POSAC_HELP_FILE = Path(BIN_PATH).parent / "posac.txt"
 
 #INIT LOGGER

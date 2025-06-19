@@ -15,7 +15,7 @@ class IVariablesTab(tk.Frame):
         label = BoldLabel(self, text='Specify where in the data file the '
                                    'INTERNAL variables are located')
         label.pack(side='top', fill='both', padx=0, pady=(2, 0))
-        
+
         # Variables Table Frame
         self.vars_table_frame = tk.Frame(self)
         self.vars_table = VariablesTable(
@@ -25,7 +25,7 @@ class IVariablesTab(tk.Frame):
             help=Help.INTERNAL_VARS
         )
         self.vars_table_frame.pack(fill='both', expand=True, padx=10, pady=(0, 0))
-        
+
         # Create buttons frame
         self._create_data_buttons()
 
@@ -46,7 +46,7 @@ class IVariablesTab(tk.Frame):
     def get_selected_variables(self): return self.vars_table.get_selected_variables()
     def get_selected_variables_nums(self): return self.vars_table.get_selected_variables_nums()
     def get_vars_num(self): return len(self.vars_table)
-    
+
     def add_variable(self, values_=None, check=True):
         """
         values_ (list[4]) : [line number, width, start column, variable label]
@@ -54,19 +54,19 @@ class IVariablesTab(tk.Frame):
         if values_ and int(values_[1]) not in [1,2]:
             raise ValueError("width must be 1 or 2")
         self.vars_table.add_variable(values_, check)
-    
+
     def remove_variable(self):
         self.vars_table.remove_variable()
-    
+
     def clear_variables(self):
         self.vars_table.clear_variables()
-    
+
     def show_low_high(self):
         self.vars_table.show_low_high()
-    
+
     def hide_low_high(self):
         self.vars_table.hide_low_high()
-    
+
     def set_default(self):
         self.vars_table.clear_variables()
         self.hide_low_high()

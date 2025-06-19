@@ -37,6 +37,8 @@ class Validator:
         to_val = int(controller.notebook.general_tab.id_location_to_entry.get())
         if from_val > to_val:
             raise ValueError("'From' value cannot be greater than 'To' value")
+        if (from_val or to_val) and not from_val:
+            raise ValueError("'From' value must not be zero")
 
     @staticmethod
     @mode_dependent
@@ -49,9 +51,9 @@ class Validator:
 
     @staticmethod
     @mode_dependent
-    def validate_integer(value, col_index, row_values):
+    def validate_integer(values_dict : dict, col_index : int, row_values : list):
         try:
-            int(value)
+            int(list(values_dict.values())[0])
             return True
         except ValueError:
             return False

@@ -6,7 +6,8 @@ from tkinter import ttk
 import pytest
 
 from lib.controller.controller import Controller
-from lib.utils import RUN_FILES_DIR, SET_MODE_DEV
+from lib.posac.recoding import RecodingError
+from lib.utils import RUN_FILES_DIR, SET_MODE_DEV, SET_MODE_PROD
 
 
 class TestScenarios:
@@ -467,6 +468,8 @@ class TestScenarios:
 
     def run_appendix_data_cases_id(self):
         SET_MODE_DEV()
+        test_dir = os.path.abspath(r"tests\case_id")
+        output_dir = os.path.abspath(r"tests\case_id\output")
         self.controller.load_session(
             r"C:\Users\raz3z\Projects\Shmuel\posac\tests\case_id\dj_all-testposIdSub.mmp"
         )
@@ -477,7 +480,17 @@ class TestScenarios:
             "dj_all-testposIdSub",
         )
         self.controller.run_posac()
-        output_dir = os.path.abspath(r"tests\case_id\output")
+        # Long id
+        self.controller.load_session(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\case_id\dj_all-testposIdSubLongId.mmp"
+        )
+        long_data_file = os.path.join(test_dir, "dj_all-testpos_long_id.prn")
+        self.notebook.general_tab.set_data_file(long_data_file)
+        output_tab.set_all_from_dir(
+            r"C:\Users\raz3z\Projects\Shmuel\posac\tests\case_id\output",
+            "dj_all-testposIdSubLongId",
+        )
+        self.controller.run_posac()
         return {
             "posac_drv": None,
             "job_pos": os.path.join(output_dir, "dj_all-testposIdSub.pos"),
@@ -524,19 +537,46 @@ class TestScenarios:
             "posac_axes_out": None,
         }
 
+    def run_mult_recording_scenario_with_bad_integer(self):
+        test_dir = os.path.abspath(r"tests\mult_recodings")
+        self.controller.load_session(os.path.join(test_dir, "dj_all-testposDBLREC.mmp"))
+        self.controller.gui.navigator.set_page(0)
+        self.notebook.general_tab.set_data_file(os.path.join(test_dir, "dj_all-testpos.prn"))
+        self.notebook.general_tab.set_job_name("dj_all-testposDBLREC")
+        data_file = os.path.join(test_dir, "dj_all-testpos.prn")
+        self.notebook.general_tab.set_data_file(data_file)
+        output_tab = self.controller.gui.notebook.output_files_tab
+        output_tab.set_all_from_dir(
+            os.path.join(test_dir, "output"),
+            "dj_all-testposDBLREC",
+        )
+        self.controller.run_posac()
+
     ##############
     # test cases #
     ##############
+
+    def test_appendix_data_cases_id(self, visual_mode):
+        results = self.run_appendix_data_cases_id()
+        if visual_mode:
+            self._setup_visual_test()
+
+    def test_mult_recording_scenario(self, visual_mode):
+        """Test that recoding operation fails when non-integer values are provided"""
+        with pytest.raises(RecodingError) as exc_info:
+            self.run_mult_recording_scenario_with_bad_integer()
+
+        expected_error = 'recoding error: Error applying recoding operation number 2: recoding error: Found non-integer value in recoding pair: 3.4 not a valid integer'
+        assert str(exc_info.value) == expected_error
+
+        if visual_mode:
+            self._setup_visual_test()
 
     def test_missing_values_not_zero(self, visual_mode):
         results = self.run_missing_values_not_zero()
         if visual_mode:
             self._setup_visual_test()
 
-    def test_appendix_data_cases_id(self, visual_mode):
-        results = self.run_appendix_data_cases_id()
-        if visual_mode:
-            self._setup_visual_test()
 
     def test_w250_recoding_scenario(self, visual_mode):
         """Test the W250 recoding scenario with optional visual validation"""

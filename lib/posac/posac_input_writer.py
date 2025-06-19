@@ -173,7 +173,7 @@ class PosacInputWriter:
         input_format = "("
         if subject_type in ["P", "I"]:
             last_var_index = variables_details[-1]["index"]
-            input_format += f"T{int(last_var_index) * 2 + 1},A2,"
+            input_format += f"T{int(last_var_index) * 2 + 1},A{case_id_location[1] - case_id_location[0] + 1},"
         input_format += ",".join(
             [f"T{(int(var['index']) - 1) * 2 + 1},I2" for var in variables_details]
         )

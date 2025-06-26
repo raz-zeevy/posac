@@ -250,8 +250,8 @@ class GUI():
     # Menus #
     #########
 
-    def enable_view_results(self, posac_axes=False):
-        self.menu.enable_view_results(posac_axes)
+    def enable_view_results(self, posac_axes=False, recoded_data=False):
+        self.menu.enable_view_results(posac_axes=posac_axes, recoded_data=recoded_data)
         self.view_results = True
 
     def disable_view_results(self):

@@ -1,4 +1,6 @@
 import logging
+import os
+import shutil
 import subprocess
 import warnings
 from pathlib import Path
@@ -8,7 +10,9 @@ from lib.controller.session import Session
 from lib.controller.sessions_history import SessionsHistory
 from lib.controller.validator import Validator
 from lib.gui.gui import GUI
+from lib.posac.posac_axes import PosacAxes
 from lib.posac.posac_module import PosacModule
+from lib.posac.posac_output_parser import OutputParser
 from lib.utils import (
     IS_PROD,
     P_POSACSEP_TABLE_PATH,
@@ -79,6 +83,10 @@ class Controller:
             file_getter=self.notebook.general_tab.get_data_file,
             excel=True,
         )
+        # Recoded data file
+        self.gui.menu.recoded_data_menu.entryconfig(
+            "Save as..", command=self.show_save_recoded_data_dialogue
+        )
         # Undo
         self.gui.icon_menu.m_button_undo.configure(command=self.gui.notebook.undo)
         # Redo
@@ -95,6 +103,7 @@ class Controller:
         )
         # bind Ctrl+F1 for the same
         self.gui.root.bind("<Alt-F1>", lambda e: self.gui.show_help_window())
+        self.gui.root.bind("<Alt-O>", lambda e: self.gui.show_options_window())
         self.gui.menu.help_menu.entryconfig(
             "Report Error", command=self.report_manual_error
         )
@@ -162,7 +171,17 @@ class Controller:
     def save_session(self, path):
         session = Session(self)
         self.history.add(str(path))
-        session.save(path)
+        try:
+            session.save(path)
+        except Exception as e:
+            if IS_PROD():
+                self.gui.show_warning("Error", f"Failed to save session: {e}")
+            else:
+                raise e
+        self.gui.show_msg(
+            f"Session saved to {path}",
+            title="Session Saved",
+        )
 
     def load_session(self, path):
         self.history.add(path)
@@ -256,6 +275,40 @@ class Controller:
             no_command=callback,
         )
 
+    def show_save_recoded_data_dialogue(self):
+        save_file = self.gui.save_file_diaglogue(
+            file_types=[("*.dat", "*.dat"), ("*.txt", "*.txt"), ("*.prn", "*.prn")],
+            default_extension="dat",
+            initial_file_name=Path(self.gui.notebook.general_tab.get_data_file()).stem,
+            title="Save Recoded Data",
+            allow_overwrite=True,
+        )
+        if save_file:
+            self.save_recoded_data(save_file)
+
+    def save_recoded_data(self, path : str):
+        # copy the recoded data file to the path
+        recoded_data_path = PosacModule.get_recoded_data_path()
+        if not os.path.exists(recoded_data_path):
+            raise FileNotFoundError(f"The recoded data file {recoded_data_path} does not exist")
+        # check if parent folder exists
+        parent_folder = os.path.dirname(path)
+        # make sure the parent folder exists
+        if not os.path.exists(parent_folder):
+            os.makedirs(parent_folder)
+        # copy the recoded data file to the path
+        try:
+            shutil.copy(recoded_data_path, path)
+            self.gui.show_msg(
+                f"Recoded data file saved to {path}",
+                title="Recoded Data File",
+            )
+        except Exception as e:
+            if IS_PROD():
+                self.gui.show_warning("Error", f"Failed to save recoded data file: {e}")
+            else:
+                raise e
+
     def show_open_session(self):
         session_file = self.gui.open_session_dialogue()
         if session_file:
@@ -321,6 +374,7 @@ class Controller:
 
     def enable_view_output(self):
         self.bind_submenu(self.gui.menu.posac_output_menu, file=self.pos_out)
+        self.bind_submenu(self.gui.menu.recoded_data_open_menu, file=PosacModule.get_recoded_data_path())
         self.bind_submenu(self.gui.menu.lsa1_output_menu, file=self.ls1_out)
         self.bind_submenu(self.gui.menu.lsa2_output_menu, file=self.ls2_out)
         self.bind_submenu(
@@ -328,6 +382,7 @@ class Controller:
         )
         self.bind_submenu(self.gui.menu.posac_axes_menu, file=self.posac_axes_out)
         posac_axes = self.gui.get_technical_options("posac_axes") == "Yes"
+        recoded_data = bool(self.recoding_operations)
         if posac_axes:
             self.bind_submenu(self.gui.menu.posacsep_table_menu, file=POSAC_SEP_PATH)
         self.gui.menu.add_posacsep_items(self.int_vars_num)
@@ -336,7 +391,7 @@ class Controller:
                 f"Item {i}",
                 command=lambda i=i: self.show_posacsep_diagram_window(i),
             )
-        self.gui.enable_view_results(posac_axes)
+        self.gui.enable_view_results(posac_axes=posac_axes, recoded_data=recoded_data)
 
     ###################
     # POSAC execution #
@@ -392,7 +447,7 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         self.iboxstrng = 0
         self.iff = 0
         self.form_feed = None
-        self.itrm = self.gui.get_technical_options("max_iterations")
+        self.itrm : int = int(self.gui.get_technical_options("max_iterations"))
         self.iwrtfls = 0
         self.ifshmr = self.gui.get_technical_options("posac_axes") == "Yes"
         self.shemor_directives_key = self.gui.get_technical_options("set_selection")
@@ -502,29 +557,36 @@ C                         BY THE USER  (SEE LINE I. BELOW)
             else:
                 raise e
         try:
-            technical_options = self.gui.get_technical_options()
-            if technical_options["posac_axes"] == "Yes":
-                # The .pax file path is passed as the last parameter
-                posac_axes_out = technical_options["posac_axes_out"]
-                # ... run SSHEMOR with posac_axes_out as %6
-            else:
-                posac_axes_out = ""
             posac.run(
                 self.pos_out,
                 self.ls1_out,
                 self.ls2_out,
                 self.posacsep,
-                posac_axes_out=posac_axes_out,
-            )
-            self.gui.show_msg(
-                "POSAC analysis completed successfully!\n Press View in menu to see results",
-                title="POSAC",
             )
         except Exception as e:
             self.gui.show_msg(
                 f"An error occurred during POSAC analysis: {e}", title="Error"
             )
             return
+        OutputParser.reset_instance()
+        technical_options = self.gui.get_technical_options()
+        run_posac_axes = technical_options["posac_axes"] == "Yes"
+        if run_posac_axes:
+            try:
+                posac_axes = PosacAxes()
+                posac_axes.run(active_data_matrix = posac.get_data_matrix(),
+                               internal_variables_num = self.int_vars_num,
+                               failed_rows = posac.get_failed_rows(),
+                input_data_file = self.data_file,
+                posac_output_path = self.pos_out,
+                set_b = False,
+                output_path = self.posac_axes_out)
+            except Exception as e:
+                raise e
+        self.gui.show_msg(
+            "POSAC analysis completed successfully!\n Press View in menu to see results",
+            title="POSAC",
+        )
         self.enable_view_output()
 
     def report_manual_error(self):

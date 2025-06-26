@@ -78,6 +78,9 @@ class PosacHelp:
         res = MarkupParser().strip_markup(content)
         # remove everything after "related topics" including it
         res = res.split("Related Topics")[0].replace("\n", " ")
+        res = res.replace("<f1_br>", "\n")
+        if "<f1_ignore>" in res:
+            res = res.split("<f1_ignore>")[0]
         return res
 
 

@@ -12,3 +12,4 @@ typing_extensions==4.7.1
 tkinter-tooltip==3.1.2
 pyautogui==0.9.54
 jsonpickle==3.0.1
+loguru==0.7.2

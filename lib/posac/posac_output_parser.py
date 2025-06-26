@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import inspect
 import json
 import warnings
@@ -15,9 +16,13 @@ BUFFER = "."
 class ParsingError(Exception): pass
 
 class OutputParser:
-    def __init__(self, file):
+
+    _instance = None
+
+    def __init__(self, file_path : str):
         self.index = 0
-        self.rows = file.readlines()
+        with open(file_path, 'r', encoding='latin-1') as file:
+            self.rows = file.readlines()
         self.current_row = self.rows[0]
         #
         self.metadata = None
@@ -221,15 +226,21 @@ class OutputParser:
         with open(output_path, 'w', encoding='latin-1') as file:
             file.writelines(output_lines)
 
-def parse_output(file_path):
-    with open(file_path, 'r', encoding='latin-1') as file:
-        output_parser = OutputParser(file)
-    return output_parser.get_output()
 
+    @staticmethod
+    def reset_instance():
+        OutputParser._instance = None
+
+    @staticmethod
+    def parse_output(file_path : str, reset : bool = False):
+        if reset or OutputParser._instance is None:
+            OutputParser._instance = OutputParser(file_path)
+        return OutputParser._instance.get_output()
 
 if __name__ == '__main__':
     output_path = r"C:\Users\raz3z\Projects\Shmuel\posac\tests\jneeds\output\job1.pos"
-    # print(json.dumps(parse_output(output_path),
-                    #  sort_keys=True, indent=4))
-    # print("done")
-    OutputParser.replace_input_data(output_path, r"C:\Users\raz3z\Projects\Shmuel\posac\tests\jneeds\input\job1.prn")
+    print(json.dumps(OutputParser.parse_output(output_path),
+                     sort_keys=True, indent=4))
+    print("done")
+    # OutputParser.replace_input_data(output_path, r"C:\Users\raz3z\Projects\Shmuel\posac\tests\jneeds\input\job1.prn")
+

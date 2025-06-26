@@ -291,8 +291,11 @@ ASCII files
 
 
 # $ k Graphic characters
-<p>If you want to change the characters used by the program to draw frames around diagrams in POSAC/LSA output, enter the characters here of your choosing in the following order: TOP, BOTTOM, LEFT, RIGHT, TOPLEFT,TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT. Otherwise leave blank.</p>
-
+<p>If you want to change the characters used by the program to draw frames around diagrams in POSAC/LSA output, enter the characters here of your choosing in the following order:</p>
+<f1_br><p>TOP, BOTTOM, LEFT, RIGHT,</p><f1_br>
+<p>TOPLEFT,TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT.</p><f1_br>
+<p>Otherwise leave blank.</p><f1_br>
+<f1_ignore>
 <h2>Character Order</h2>
 <row left="1. TOP" right="Top border character"/>
 <row left="2. BOTTOM" right="Bottom border character"/>

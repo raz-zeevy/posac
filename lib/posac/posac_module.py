@@ -16,7 +16,7 @@ logger = getLogger(__name__)
 
 FALSE_ERROR = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP POSAC Completed\nSTOP LSA1 Completed\nSTOP LSA2 Completed\nNote: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP  \n"
 FALSE_ERROR_SHORT = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 2\n"
-
+FALSE_ERROR_INVALID_FLAG = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP POSAC Completed\nNote: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG\nSTOP LSA1 Completed\nSTOP LSA2 Completed\nNote: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP  \n"
 @contextmanager
 def cwd(path):
     oldpwd = os.getcwd()
@@ -35,6 +35,8 @@ class PosacModule:
         self.posacsep = [2] * 8  # Example list, replace with actual values
         # self.posacsep = []
         self.origin_data_file = None
+        self.data_matrix = None
+        self.failed_rows : List[int] = None
 
     def prepare_data_file(
         self,
@@ -64,14 +66,15 @@ class PosacModule:
         """
         try:
             # First load the data
-            data_matrix, appendix_data = load_data_manual(
+            data_matrix, appendix_data, failed_rows = load_data_manual(
                 data_file,
                 lines_per_var=lines_per_var,
                 manual_format=manual_format,
                 safe_mode=False,
                 appendix_fields=appendix_fields,
             )
-
+            self.data_matrix = data_matrix
+            self.failed_rows = failed_rows
             # If we have recoding operations, save both original and recoded data
             if recoding_operations:
                 try:
@@ -82,6 +85,7 @@ class PosacModule:
                     raise PosacDataError(
                         f"Failed to apply recoding or save files: {str(e)}"
                     )
+                self.data_matrix = recoded_matrix
             else:
                 try:
                     # Just save the original data
@@ -186,6 +190,7 @@ class PosacModule:
             subject_type=subject_type,
         )
 
+
     def run(self, posac_out: str,
             lsa1_out : str,
             lsa2_out : str,
@@ -231,6 +236,12 @@ class PosacModule:
 
         # Run the command
         posac_dir = get_script_dir_path()
+
+        # write full command to the posac_cmd file
+        with open(p_POSAC_CMD, "w") as file:
+            cmd_command = ["cd ", posac_dir, "&&", " ".join(full_command)]
+            file.write(" ".join(cmd_command))
+
         with cwd(posac_dir):
             print("################")
             print("Run Command: " + " ".join(full_command))
@@ -252,18 +263,25 @@ class PosacModule:
             self.process_results(process, stdout, stderr)
             OutputParser.replace_input_data(posac_out, self.origin_data_file)
 
+
     def process_results(self, process, stdout, stderr):
         if process.returncode != 0:
             raise Exception(f"POSAC script failed : {process.stderr}")
         if "Cannot write to file opened for READ" in stderr:
             raise Exception(
-                "Permission denied in writing to output file. "
-                "Make sure the file is not open in another program, or the "
+                "Permission denied in writing to output file. You may change the output file name to a different one,"
+                " or alternatively make sure the file is not open in another program, or the "
                 "path is valid and accessible."
             )
-        elif stderr and stderr not in [FALSE_ERROR]:
+        elif stderr and stderr not in [FALSE_ERROR, FALSE_ERROR_INVALID_FLAG]:
             print("Error:\n**************\n", stderr)
             raise Exception("See the output file for more details")
+
+    def get_data_matrix(self):
+        return self.data_matrix
+
+    def get_failed_rows(self):
+        return self.failed_rows
 
     @staticmethod
     def open_running_files_dir():
@@ -272,6 +290,10 @@ class PosacModule:
             os.startfile(run_dir)
         else:
             print(f"Run directory {run_dir} does not exist")
+
+    @staticmethod
+    def get_recoded_data_path():
+        return p_DATA_FILE_ORG
 
 if __name__ == '__main__':
     """

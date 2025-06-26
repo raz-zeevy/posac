@@ -15,10 +15,10 @@ def generate_posacsep_graphs(controller, item : int):
                     legend: list of legends
                     geoms: list of shapes
         """
-    from lib.posac.posac_output_parser import parse_output
+    from lib.posac.posac_output_parser import OutputParser
     from lib.posac.posacsep_parser import parse_output as p_posacsep
     graph_data_list = []
-    output = parse_output(controller.pos_out)
+    output = OutputParser.parse_output(controller.pos_out)
     posacsep = p_posacsep(P_POSACSEP_DIR)
     out_coords = output["out_coords"]
     n = len(out_coords['x'])
@@ -55,9 +55,9 @@ def generate_graphs(controller):
                 geoms: list of shapes
     """
     from lib.posac.lsa_parser import parse_output as parse_lsa
-    from lib.posac.posac_output_parser import parse_output
+    from lib.posac.posac_output_parser import OutputParser
     graph_data_list = []
-    output = parse_output(controller.pos_out)
+    output = OutputParser.parse_output(controller.pos_out)
     out_coords = output["out_coords"]
     n = len(out_coords['x'])
     graph_data_list.append(dict(

@@ -552,9 +552,32 @@ class TestScenarios:
         )
         self.controller.run_posac()
 
+
+    def run_posac_axes(self):
+        test_dir = os.path.abspath(r"tests\posac_axes")
+        self.controller.load_session(os.path.join(test_dir,"posac_axes.mmp"))
+        self.controller.gui.navigator.set_page(0)
+        self.notebook.general_tab.set_data_file(os.path.join(test_dir, "dj_all.prn"))
+        self.notebook.general_tab.set_job_name("dj_all_testpos_posac_axes")
+        # set in options the posac_axes_out to the output/dj_all_testpos.pax
+        self.controller.gui.set_options(posac_axes_out=os.path.join(test_dir, "output", "dj_all_testpos.pax"))
+        self.controller.run_posac()
+        self.controller.enable_view_output()
+        return {
+            "posac_drv": None,
+            "job_pos": os.path.join(test_dir, "output", "dj_all-testpos.pos"),
+            "expected_pos": None,
+            "posac_axes_out": None,
+        }
+
     ##############
     # test cases #
     ##############
+
+    def test_posac_axes(self, visual_mode):
+        results = self.run_posac_axes()
+        if visual_mode:
+            self._setup_visual_test()
 
     def test_appendix_data_cases_id(self, visual_mode):
         results = self.run_appendix_data_cases_id()

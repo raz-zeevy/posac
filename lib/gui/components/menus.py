@@ -34,6 +34,12 @@ class Menu(tk.Menu):
         self.data_file_menu = self.add_submenus(
             self.view_menu, label="Input Data File", excel=True
         )
+        # Recoded Data File
+        self.recoded_data_menu = tk.Menu(self.view_menu, tearoff=0)
+        self.recoded_data_open_menu = self.add_submenus(self.recoded_data_menu, label="Open")
+        self.recoded_data_menu.add_command(label="Save as..")
+        self.view_menu.add_cascade(label="Recoded Data File", menu=self.recoded_data_menu)
+        #
         self.posac_output_menu = self.add_submenus(self.view_menu, label=m_POSAC_OUTPUT)
         self.lsa1_output_menu = self.add_submenus(self.view_menu, label="LSA1 Output")
         self.lsa2_output_menu = self.add_submenus(self.view_menu, label="LSA2 Output")
@@ -73,7 +79,7 @@ class Menu(tk.Menu):
         parent_menu.add_cascade(label=label, menu=submenu)
         return submenu
 
-    def enable_view_results(self, posac_axes=False):
+    def enable_view_results(self, posac_axes=False, recoded_data=False):
         self.view_menu.entryconfig(m_POSAC_OUTPUT, state="normal")
         self.view_menu.entryconfig("LSA1 Output", state="normal")
         self.view_menu.entryconfig("LSA2 Output", state="normal")
@@ -82,6 +88,8 @@ class Menu(tk.Menu):
         self.view_menu.entryconfig(m_POSACSEP_DIAG, state="normal")
         if posac_axes:
             self.view_menu.entryconfig(m_POSAC_AXES_FILE, state="normal")
+        if recoded_data:
+            self.view_menu.entryconfig("Recoded Data File", state="normal")
 
     def disable_view_results(self):
         self.view_menu.entryconfig(m_POSAC_OUTPUT, state="disable")
@@ -91,6 +99,7 @@ class Menu(tk.Menu):
         self.view_menu.entryconfig(m_POSACSEP_TABLE, state="disable")
         self.view_menu.entryconfig(m_POSACSEP_DIAG, state="disable")
         self.view_menu.entryconfig(m_POSAC_AXES_FILE, state="disable")
+        self.view_menu.entryconfig("Recoded Data File", state="disable")
 
     def update_history_menu(self, paths, max_length=30):
         """

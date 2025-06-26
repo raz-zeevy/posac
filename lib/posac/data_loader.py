@@ -6,9 +6,7 @@ from typing import List, Optional, Tuple, Union
 import numpy as np
 
 from lib.utils import IS_PROD
-
-logger = logging.getLogger(__name__)
-
+from loguru import logger
 
 class DataLoadingException(Exception):
     """Custom exception for data loading errors."""
@@ -170,6 +168,8 @@ def load_other_formats(
 
     Returns:
         np.ndarray: Data matrix
+        np.ndarray: Appendix data
+        list[int]: Failed rows in [1-based index]
     """
     data = []
     failed_rows = []
@@ -240,13 +240,13 @@ def load_other_formats(
             lines = file.readlines()
             lines = [filter_non_ascii(line) for line in lines]
             for line in lines:
-                appendix_data.append(
-                    line[appendix_fields[0] - 1 : appendix_fields[1]]
-                )
+                if line.strip():
+                    value_str = line[appendix_fields[0] - 1 : appendix_fields[1]].strip()
+                    appendix_data.append(value_str)
 
-    return np.array(data, dtype=int), (
-        np.array(appendix_data, dtype=int) if has_appendix_fields else None
-    )
+    return np.array(data, dtype=np.int64), (
+        np.array(appendix_data, dtype='U18') if has_appendix_fields else None
+    ), (failed_rows if failed_rows else None)
 
 
 def create_posac_data_file(data_matrix: np.ndarray, output_path: str) -> None:
@@ -292,11 +292,17 @@ def add_apendix_data(
         raise FileNotFoundError(f"File {data_path} does not exist")
 
     appendix_data = appendix_data.reshape(-1, 1)
-    data = np.genfromtxt(data_path, delimiter=2, dtype=int)
+    data = np.genfromtxt(data_path, delimiter=2, dtype=np.int64)
     data = np.concatenate((data, appendix_data), axis=1)
 
-    # save the data to the data_path
-    np.savetxt(data_path, data, fmt="%2d", delimiter="")
+    # save the data to the data_path - need to handle mixed dtypes
+    with open(data_path, 'w') as f:
+        for row in data:
+            line = ""
+            for i, item in enumerate(row[:-1]):  # all but last (appendix) column
+                line += f"{int(item):2d}"
+            line += str(row[-1])  # appendix data as string
+            f.write(line + "\n")
 
 
 if __name__ == '__main__':

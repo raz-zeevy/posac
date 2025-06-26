@@ -42,13 +42,12 @@ ENTRIES_PAD_Y = 15
 
 
 class PosacAxesFrame(ttk.Frame):
-    SET_A_TEXT = """SET A: For X,Y recode 0 thru 25=1, 26 thru 50=2,51 thru 75=3,76 thru 100=4;For
-J,L recode 0 thru 50=1, 51 thru 100=2,101 thru 150=3,151 thru 200=4."""
+    SET_A_TEXT = """For X,Y recode 0 thru 25=1, 26 thru 50=2,51 thru 75=3,76 thru 100=4;
+For J,L recode 0 thru 50=1, 51 thru 100=2,101 thru 150=3,151 thru 200=4."""
 
-    SET_B_TEXT = """SET B: For X,Y recode 0 thru 10=1, 11 thru 20=2,21 thru 30=3, 31 thru 40=4,41
-thru 50=5, 51 thru 60=6,61 thru 70=7, 71 thru 80=8,81 thru 90=9, 91 thru
-100=10, 101 thru 120=12,121 thru 140=7, 141 thru 160=8,161 thru 180=9, 181
-thru 200=10."""
+    SET_B_TEXT = """For X,Y recode 0 thru 10=1, 11 thru 20=2,21 thru 30=3, 31 thru 40=4,41 thru 50=5,
+51 thru 60=6,61 thru 70=7, 71 thru 80=8,81 thru 90=9, 91 thru 100=10.
+For J,L recode 0 thru 20=1, 21 thru 40=2,41 thru 60=3,61 thru 80=4, 81 thru 100=5, 101 thru 120=6,121 thru 140=7, 141 thru 160=8,161 thru 180=9, 181 thru 200=10."""
 
     def __init__(self, parent, gui=None):
         super().__init__(parent)
@@ -95,8 +94,7 @@ thru 200=10."""
         set_a_frame.pack(fill="x", padx=real_size(10), pady=real_size(2))
         set_a_label = ttk.Label(
             set_a_frame,
-            text="For X,Y recode 0 thru 25=1, 26 thru 50=2,51 thru 75=3,76 thru 100=4;\n"
-            "For J,L recode 0 thru 50=1, 51 thru 100=2,101 thru 150=3,151 thru 200=4.",
+            text=self.SET_A_TEXT,
             wraplength=rreal_size(425),
         )
         set_a_label.pack(padx=real_size(10), pady=real_size(3))
@@ -106,9 +104,7 @@ thru 200=10."""
         set_b_frame.pack(fill="x", padx=real_size(10), pady=real_size(2))
         set_b_label = ttk.Label(
             set_b_frame,
-            text="For X,Y recode 0 thru 10=1, 11 thru 20=2,21 thru 30=3, 31 thru 40=4,41 "
-            "thru 50=5, 51 thru 60=6,61 thru 70=7, 71 thru 80=8,81 thru 90=9, 91 thru "
-            "100=10, 101 thru 120=12,121 thru 140=7, 141 thru 160=8,161 thru 180=9, 181 thru 200=10.",
+            text=self.SET_B_TEXT,
             wraplength=rreal_size(425),
         )
         set_b_label.pack(padx=real_size(10), pady=real_size(3))
@@ -135,7 +131,7 @@ thru 200=10."""
 
         # Record Length
         length_frame = ttk.Frame(controls_frame)
-        length_frame.pack(fill="x", pady=real_size(3))
+        # length_frame.pack(fill="x", pady=real_size(3))
         length_label = Label(length_frame, text="Datafile record length")
         length_label.pack(side="left", padx=(ENTRIES_PAD_LEFT, 0))
 
@@ -192,7 +188,7 @@ class OptionsWindow(Window):
     RESET_VALUES = copy.deepcopy(DEFAULT_VALUES)
 
     def __init__(self, gui, **kwargs):
-        width, height = rreal_size(625), rreal_size(475)
+        width, height = rreal_size(625), rreal_size(470)
         self.gui = gui
         super().__init__(**kwargs, geometry=f"{width}x{height}")
 
@@ -346,7 +342,7 @@ class OptionsWindow(Window):
             "form_feed": self.form_feed_entry.get(),
             "power_weights_low": self.power_weights_low_entry.get(),
             "power_weights_high": self.power_weights_high_entry.get(),
-            "max_iterations": self.max_iterations.get(),
+            "max_iterations": int(self.max_iterations.get()),
             # Always include posac axes settings regardless of Yes/No selection
             "set_selection": self.posac_axes_frame.set_selection_var.get(),
             "record_length": self.posac_axes_frame.record_length.get(),

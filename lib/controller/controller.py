@@ -10,6 +10,7 @@ from lib.controller.session import Session
 from lib.controller.sessions_history import SessionsHistory
 from lib.controller.validator import Validator
 from lib.gui.gui import GUI
+from lib.posac.posac_ascii import PosacAscii
 from lib.posac.posac_axes import PosacAxes
 from lib.posac.posac_module import PosacModule
 from lib.posac.posac_output_parser import OutputParser
@@ -581,6 +582,13 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                 posac_output_path = self.pos_out,
                 set_b = False,
                 output_path = self.posac_axes_out)
+            except Exception as e:
+                raise e
+        run_ascii_output = technical_options["ascii_output"] == "Yes"
+        if run_ascii_output:
+            try:
+                ascii_output = PosacAscii(self.pos_out)
+                ascii_output.run()
             except Exception as e:
                 raise e
         self.gui.show_msg(

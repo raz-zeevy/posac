@@ -13,6 +13,7 @@ __pycache__
 /dist
 # Tests
 tests/output
+**/output
 # Scripts
 scripts/email/config/
 # POSAC FILES

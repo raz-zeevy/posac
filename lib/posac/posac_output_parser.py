@@ -2,6 +2,8 @@ from dataclasses import dataclass
 import inspect
 import json
 import warnings
+import re
+from typing import List
 
 from lib.utils import *
 
@@ -28,6 +30,10 @@ class OutputParser:
         self.metadata = None
         self.dim_data = {}
         self.models = []
+        # pre-extract textual sections (independent of cursor)
+        self.psc_solution_text = self._extract_psc_solution_text()
+        self.psc_mumatrix_text = self._extract_mumatrix_text()
+        self.psc_item_fact_text = self._extract_item_factor_text()
         self.extract_data()
 
     def next_row(self, called_function=None):
@@ -207,9 +213,88 @@ class OutputParser:
             self.next_row()
         return data
 
+    def _extract_psc_solution_text(self) -> str:
+        """Extract the POSAC solution table rows (numbers only, no headers)."""
+        try:
+            header_index = next(i for i, r in enumerate(self.rows) if COORDS_ROW in r)
+        except StopIteration:
+            return ""
+        # Data starts two lines after the header row
+        i = header_index + 2
+        lines: List[str] = []
+        while i < len(self.rows) and self.rows[i] != "\n":
+            # replace '*' with space to keep only numbers and spaces
+            sanitized = self.rows[i].replace("*", " ").rstrip("\n")
+            lines.append(sanitized)
+            i += 1
+        return "\n".join(lines)
+
+    def _extract_mumatrix_text(self) -> str:
+        """Extract the item-by-item weak monotonicity coefficient matrix as numeric-only lines."""
+        # Find the section header
+        try:
+            start = next(i for i, r in enumerate(self.rows) if "COEFFICIENTS OF WEAK MONOTONICITY" in r and "ITEMS" in self.rows[i+1])
+        except StopIteration:
+            return ""
+        i = start
+        lines: List[str] = []
+        border_chars = ["║", "º", "|", "│", "¦"]
+        # Scan forward to collect numeric lines after a border
+        while i < len(self.rows):
+            row = self.rows[i]
+            payload = None
+            for bc in border_chars:
+                if bc in row:
+                    payload = row.split(bc, 1)[-1].rstrip("\n")
+                    break
+            if payload is not None:
+                # capture only lines that contain numeric content
+                if re.search(r"\d", payload):
+                    candidate = payload.strip()
+                    if candidate and all(ch.isdigit() or ch.isspace() or ch in ".+-" for ch in candidate):
+                        lines.append(payload.rstrip())
+            # Heuristic stop: once we've collected at least one line and hit a blank
+            if lines and row == "\n":
+                break
+            i += 1
+        return "\n".join(lines)
+
+    def _extract_item_factor_text(self) -> str:
+        """Extract the per-item coefficients J,L,X,Y,P,Q as numeric-only lines (omit item index)."""
+        # Find the section header
+        try:
+            start = next(i for i, r in enumerate(self.rows) if "COEFFICIENT OF WEAK MONOTONICITY BETWEEN EACH OBSERVED ITEM AND THE FACTORS" in r)
+        except StopIteration:
+            return ""
+        # Skip down past column headers (there are a few fixed lines)
+        i = start + 1
+        # advance until we reach the line that starts the table header 'ITEM'
+        while i < len(self.rows) and "ITEM" not in self.rows[i]:
+            i += 1
+        # skip the two header lines ('ITEM...' and '----...')
+        i += 2
+        lines: List[str] = []
+        pattern = re.compile(r"^\s*\d+\s+(.*\S)\s*$")
+        while i < len(self.rows):
+            row = self.rows[i]
+            if row.strip() == "":
+                break
+            m = pattern.match(row)
+            if m:
+                payload = m.group(1)
+                # keep only lines that look numeric-only with signs, dots and spaces
+                candidate = payload.strip()
+                if candidate and all(ch.isdigit() or ch.isspace() or ch in ".+-" for ch in candidate):
+                    lines.append(payload.rstrip())
+            i += 1
+        return "\n".join(lines)
+
     def get_output(self):
         return {
             "out_coords": self.out_graph_coords,
+            "psc_solution": self.psc_solution_text,
+            "psc_mumatrix": self.psc_mumatrix_text,
+            "psc_item_fact": self.psc_item_fact_text,
         }
 
     @staticmethod
@@ -239,8 +324,9 @@ class OutputParser:
 
 if __name__ == '__main__':
     output_path = r"C:\Users\raz3z\Projects\Shmuel\posac\tests\jneeds\output\job1.pos"
-    print(json.dumps(OutputParser.parse_output(output_path),
-                     sort_keys=True, indent=4))
+    parsed = OutputParser.parse_output(output_path)
+    print(json.dumps(parsed, sort_keys=True, indent=4))
+    print(parsed['psc_item_fact'])
     print("done")
     # OutputParser.replace_input_data(output_path, r"C:\Users\raz3z\Projects\Shmuel\posac\tests\jneeds\input\job1.prn")
 

@@ -67,10 +67,13 @@ class TestDataLoader:
                 lines_per_var=1,
                 manual_format=simple_format
             )
+            # Unpack the tuple: (data_array, appendix_data, failed_rows)
+            data_array, appendix_data, failed_rows = result
+
             expected = np.array([[1, 2, 3],
                                [4, 5, 6],
                                [7, 8, 9]], dtype=int)
-            assert np.array_equal(result, expected), "Loaded data should match input format"
+            assert np.array_equal(data_array, expected), "Loaded data should match input format"
         finally:
             os.remove("test_temp.dat")
 
@@ -92,9 +95,12 @@ class TestDataLoader:
                 lines_per_var=2,
                 manual_format=format_spec
             )
+            # Unpack the tuple: (data_array, appendix_data, failed_rows)
+            data_array, appendix_data, failed_rows = result
+
             expected = np.array([[12, 45, 3],
                                [67, 90, 8]], dtype=int)
-            assert np.array_equal(result, expected), "Multi-line data should be correctly assembled"
+            assert np.array_equal(data_array, expected), "Multi-line data should be correctly assembled"
         finally:
             os.remove("test_temp.dat")
 
@@ -111,10 +117,13 @@ class TestDataLoader:
             manual_format=format_spec
         )
 
+        # Unpack the tuple: (data_array, appendix_data, failed_rows)
+        data_array, appendix_data, failed_rows = result
+
         # Verify data properties
-        assert isinstance(result, np.ndarray), "Result should be numpy array"
-        assert result.shape[1] == 2, "Should have 2 variables"
-        assert all(val in [1, 2] for val in result.flatten()), "Values should be 1 or 2"
+        assert isinstance(data_array, np.ndarray), "Result should be numpy array"
+        assert data_array.shape[1] == 2, "Should have 2 variables"
+        assert all(val in [1, 2] for val in data_array.flatten()), "Values should be 1 or 2"
 
     def test_format_validation(self):
         """Test validation of format specifications

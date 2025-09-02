@@ -12,9 +12,8 @@ def real_size(args, _round=False):
     # get the dpi_ratio from the enviroment
     dpi_ratio = float(os.environ.get('DPI_RATIO', 0))
     if not dpi_ratio:
-        if _round:
-            return round(args)
-        return args
+        dpi_ratio = 1
+
     elif isinstance(args, tuple):
         if _round:
             return tuple([round(arg * dpi_ratio) for arg in args])

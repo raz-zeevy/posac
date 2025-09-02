@@ -10,8 +10,9 @@ from lib.posac.recoding import RecodingError
 from lib.utils import RUN_FILES_DIR, SET_MODE_DEV, SET_MODE_PROD
 
 
+@pytest.mark.scenario
 class TestScenarios:
-    """Test class for running full POSAC scenarios"""
+    """Test class for running full POSAC scenarios - these are slow end-to-end tests"""
 
     @classmethod
     def setup_class(cls):

@@ -45,12 +45,103 @@
         "9"
       ]
     ],
-    "external_variables": [],
+    "external_variables": [
+      [
+        "1",
+        "1",
+        "1",
+        "extvar1",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "2",
+        "extvar2",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "3",
+        "extvar3",
+        "0",
+        "9"
+      ]
+    ],
     "external_variables_ranges": {
-      "ranges": [],
-      "traits_num": 0
+      "ranges": [
+        [
+          "1-9"
+        ],
+        [
+          "1-9"
+        ],
+        [
+          "1-9"
+        ]
+      ],
+      "traits_num": 3
     },
-    "traits": [],
+    "traits": [
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait1",
+        "data": [
+          {
+            "py/tuple": [
+              "1",
+              "1-9"
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-9"
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-9"
+            ]
+          }
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait2",
+        "data": [
+          [
+            "1",
+            "1-9"
+          ],
+          {
+            "py/id": 22
+          },
+          {
+            "py/id": 22
+          }
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait3",
+        "data": [
+          {
+            "py/id": 22
+          },
+          {
+            "py/id": 22
+          },
+          {
+            "py/id": 22
+          }
+        ]
+      }
+    ],
     "internal_recoding": [],
     "posacsep": {
       "posacsep": true,
@@ -66,7 +157,7 @@
       "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\escape51_dat\\output\\escape51.ls2"
     }
   },
-  "navigator": 7,
+  "navigator": 5,
   "view_results": true,
   "options": {
     "ascii_output": "No",

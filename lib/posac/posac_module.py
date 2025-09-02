@@ -293,7 +293,7 @@ class PosacModule:
 
     @staticmethod
     def get_recoded_data_path():
-        return p_DATA_FILE_ORG
+        return p_DATA_FILE
 
 if __name__ == '__main__':
     """

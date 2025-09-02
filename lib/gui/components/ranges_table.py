@@ -49,21 +49,24 @@ class RangesTable(TableView):
         values = self.get_new_row(values_)
         self.set_row(i, values)
 
-    def validate(self, value, col_index, row_values):
+    def validate(self, value: dict, col_index: int, row_values: list):
         """
         Validates table cell input with specific error messages for each case
-        :param value: The value being entered
+        :param value dict: The value being entered
         :param col_index: 1 -> n
         :param row_values: Current row values
         :return: bool
         """
-        if not value: 
+        if not value:
             return True
+
+        # Extract the actual value from the dict
+        actual_value = list(value.values())[0]
 
         # Validate Ranges column (col_index 1)
         if col_index == 1:
             try:
-                num = int(value)
+                num = int(actual_value)
             except ValueError:
                 messagebox.showwarning(
                     "Invalid Input",
@@ -81,9 +84,9 @@ class RangesTable(TableView):
             return True
 
         # For range columns (col_index > 1)
-        if value.strip():
+        if actual_value.strip():
             # First check if we're allowed to have a range in this position
-            num_ranges = int(row_values[0]) if row_values[0].strip() else 0
+            num_ranges = int(row_values[self.COLS['ranges']]) if row_values[self.COLS['ranges']].strip() else 0
             if col_index - 1 > num_ranges:
                 messagebox.showwarning(
                     "Invalid Range Position",
@@ -92,7 +95,7 @@ class RangesTable(TableView):
                 )
                 return False
 
-            # Then validate the range format
+            # Then validate the range format - pass the original dict to maintain consistency
             res = Validator.validate_range_string(value, col_index - 1, row_values)
             if not res:
                 range_num = col_index - 1

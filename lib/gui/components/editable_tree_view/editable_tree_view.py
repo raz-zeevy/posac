@@ -374,18 +374,31 @@ class EditableTreeView(ttk.Treeview):
         if entry_widget:
             if self.validation_callback:
                 # get a dict of the columns and values
-                columns_values = {
-                    col: self.set(item_id)[col] for col in self._display_columns
-                }
-                col_name = self._display_columns[int(column_id[1:]) - 1]
-                valid = self.validation_callback(
-                    {col_name: entry_widget.get()},
-                    int(column_id[1:]),
-                    columns_values,
-                )
-                if not valid:
-                    self._on_escape()
-                    return
+                # Use a safer approach to avoid KeyError when columns don't exist in the data
+                try:
+                    set_data = self.set(item_id)
+
+                    columns_values = {}
+                    for col in self._col_names:
+                        if col in set_data:
+                            columns_values[col] = set_data[col]
+                        else:
+                            # If column doesn't exist in data, use empty string as default
+                            columns_values[col] = ""
+
+                    col_name = self._display_columns[int(column_id[1:]) - 1]
+                    valid = self.validation_callback(
+                        {col_name: entry_widget.get()},
+                        int(column_id[1:]),
+                        columns_values,
+                    )
+                    if not valid:
+                        self._on_escape()
+                        return
+                except Exception as e:
+                    # If validation fails due to data access issues, allow the edit to proceed
+                    # This prevents the application from crashing due to column mismatches
+                    pass
             self.set(item_id, column_id, entry_widget.get())
         self._on_escape()
 

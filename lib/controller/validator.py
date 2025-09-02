@@ -102,11 +102,12 @@ class Validator:
 
     @staticmethod
     @mode_dependent
-    def validate_range_string(value, col_index, row_values):
+    def validate_range_string(value : dict, col_index : int, row_values : dict):
         if not value:
             return True
-
-        values = [item for item in row_values[1:] if item]
+        value = list(value.values())[0]
+        values = [item for item in list(row_values.values())[1:] if item]
+        row_values = list(row_values.values())
         if not row_values[col_index] and len(values) >= int(row_values[0]):
             return False
 

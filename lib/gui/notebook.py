@@ -272,6 +272,7 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.internal_recoding_tab.reset_default()
 
     def get_state(self):
+        self.traits_tab._update_traits_from_table()
         return {
             "general": self.general_tab.get_all(),
             "zero_option": self.zero_option_tab.get_all(),

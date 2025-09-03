@@ -108,10 +108,12 @@
         "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
         "label": "trait1",
         "data": [
-          [
-            1,
-            "6-6"
-          ]
+          {
+            "py/tuple": [
+              "1",
+              "6-6"
+            ]
+          }
         ]
       },
       {

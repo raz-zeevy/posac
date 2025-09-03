@@ -143,10 +143,11 @@ class TraitsTab(tk.Frame):
         the data is the ranges for traits without the first two columns
         (external variable index and number of ranges)
         """
+        self._update_traits_from_table()
         traits = []
         for trait in self._traits:
             trait_value = {}
-            trait_value["data"] = [var[1:] for var in trait.data]
+            trait_value["data"] = [rng for rng in trait.data[0][1:] if rng]
             trait_value['label'] = trait.label
             traits.append(trait_value)
         return traits

@@ -231,9 +231,10 @@ class PosacInputWriter:
             traits_str += f"{trait['label']}\n"
             for i, ext_var in enumerate(trait['data']):
                 traits_str += f"{i+self.ex_var_first_i:4}"
-                traits_str += f"{len(trait['data']):4}"
-                l, h = parse_range_string(ext_var)
-                traits_str += f"{l:4}{h:4}"
+                traits_str += f"{len(ext_var):4}"
+                for v_range in ext_var:
+                    l, h = parse_range_string(v_range)
+                    traits_str += f"{l:4}{h:4}"
                 traits_str += "\n"
         f.write(traits_str)
 

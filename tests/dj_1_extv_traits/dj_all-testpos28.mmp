@@ -2,7 +2,7 @@
   "notebook": {
     "general": {
       "job_name": "tst28a",
-      "data_file": "D:/CEE/kedar/dj_all-testpos.prn",
+      "data_file": "C:/Users/raz3z/Downloads/dj_all-testpos (1).prn",
       "lines_per_case": 1,
       "plot_item_diagram": true,
       "plot_external_diagram": true,
@@ -96,12 +96,12 @@
       ]
     },
     "output_files": {
-      "posac": "D:\\CEE\\kedar\\dj_all-testpos4v1x.pos",
-      "lsa1": "D:\\CEE\\kedar\\dj_all-testpos4v1x.ls1",
-      "lsa2": "D:\\CEE\\kedar\\dj_all-testpos4v1x.ls2"
+      "posac": "C:\\Users\\raz3z\\Downloads\\dj_all-testpos (1).pos",
+      "lsa1": "C:\\Users\\raz3z\\Downloads\\dj_all-testpos (1).ls1",
+      "lsa2": "C:\\Users\\raz3z\\Downloads\\dj_all-testpos (1).ls2"
     }
   },
-  "navigator": 4,
+  "navigator": 0,
   "view_results": true,
   "options": {
     "ascii_output": "No",
@@ -113,9 +113,9 @@
     "posac_axes": "No",
     "set_selection": "A",
     "record_length": 80,
-    "posac_axes_out": ""
+    "posac_axes_out": "C:\\Users\\raz3z\\Downloads\\job.pax"
   },
   "controller": {
-    "save_path": "C:/Users/Shye/Desktop/dj_all-testpos28.mmp"
+    "save_path": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj_1_extv_traits\\dj_all-testpos28.mmp"
   }
 }

@@ -234,13 +234,18 @@ class PosacModule:
         # Combine the command and arguments into a single list
         full_command = [command] + arguments
 
+        # if dir doesnt exist, create it
+        posac_out_dir = os.path.dirname(posac_out)
+        if not os.path.exists(posac_out_dir):
+            os.makedirs(posac_out_dir)
+
         # Run the command
         posac_dir = get_script_dir_path()
-
         # write full command to the posac_cmd file
         with open(p_POSAC_CMD, "w") as file:
             cmd_command = ["cd ", posac_dir, "&&", " ".join(full_command)]
             file.write(" ".join(cmd_command))
+
 
         with cwd(posac_dir):
             print("################")

@@ -93,6 +93,20 @@ class TestScenarios:
 
         return output_dir
 
+    def compare_drv_files(self, res_drv_file, out_drv_file):
+        if not os.path.exists(res_drv_file):
+            raise FileNotFoundError(f"File not found: {res_drv_file}")
+        if not os.path.exists(out_drv_file):
+            raise FileNotFoundError(f"File not found: {out_drv_file}")
+        with open(res_drv_file, "r") as f:
+            res_lines = f.readlines()
+        with open(out_drv_file, "r") as f:
+            out_lines = f.readlines()
+        for i, _ in enumerate(res_lines):
+            assert res_lines[i].strip() == out_lines[i].strip(), (
+                f"Line {i} in the DRV file is not equal to the res/posac.drv file"
+            )
+
     def run_simple_scenario(self):
         """Run the simple scenario and return results"""
         self._setup_base_scenario(
@@ -571,9 +585,36 @@ class TestScenarios:
             "posac_axes_out": None,
         }
 
+    def run_w250_multiple_traits(self):
+        test_dir = os.path.abspath(r"tests\multiple_traits")
+        self.controller.load_session(os.path.join(test_dir,"W250 sep21 to raz.mmp"	))
+        self.controller.gui.navigator.set_page(0)
+        self.notebook.general_tab.set_data_file(os.path.join(test_dir, "W250.DAT"))
+        self.notebook.general_tab.set_job_name("W250 sep21 multiple traits")
+        self.notebook.output_files_tab.set_all_from_dir(
+            os.path.join(test_dir, "output"),
+            "W250 sep21 multiple traits",
+        )
+        self.controller.run_posac()
+        # compare the drv file to the res/posac.drv file
+        res_drv_file = os.path.join(test_dir, "res", "POSACINP.DRV")
+        out_drv_file = os.path.join(RUN_FILES_DIR, "POSACINP.DRV")
+        self.compare_drv_files(res_drv_file, out_drv_file)
+        return {
+            "posac_drv": out_drv_file,
+            "job_pos": os.path.join(test_dir, "output", "W250 sep21 multiple traits.pos"),
+            "expected_pos": None,
+            "posac_axes_out": None,
+        }
+
     ##############
     # test cases #
     ##############
+
+    def test_w250_multiple_traits(self, visual_mode):
+        results = self.run_w250_multiple_traits()
+        if visual_mode:
+            self._setup_visual_test()
 
     def test_posac_axes(self, visual_mode):
         results = self.run_posac_axes()

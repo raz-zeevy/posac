@@ -205,9 +205,9 @@
       ]
     },
     "output_files": {
-      "posac": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.pos",
-      "lsa1": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.ls1",
-      "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.ls2"
+      "posac": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.pos",
+      "lsa1": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.ls1",
+      "lsa2": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\job1.ls2"
     }
   },
   "navigator": 3,
@@ -222,7 +222,7 @@
     "posac_axes": "Yes",
     "set_selection": "A",
     "record_length": 80,
-    "posac_axes_out": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\test.pax"
+    "posac_axes_out": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\w250\\output\\test.pax"
   },
   "controller": {
     "save_path": ""

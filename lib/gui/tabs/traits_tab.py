@@ -147,7 +147,7 @@ class TraitsTab(tk.Frame):
         traits = []
         for trait in self._traits:
             trait_value = {}
-            trait_value["data"] = [rng for rng in trait.data[0][1:] if rng]
+            trait_value["data"] = [[rng for rng in rngs[1:] if rng] for rngs in trait.data if rngs]
             trait_value['label'] = trait.label
             traits.append(trait_value)
         return traits

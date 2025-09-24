@@ -1,0 +1,319 @@
+{
+  "notebook": {
+    "general": {
+      "job_name": "W250 sep21 multiple traits",
+      "data_file": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\W250.DAT",
+      "lines_per_case": 2,
+      "plot_item_diagram": true,
+      "plot_external_diagram": true,
+      "only_freq": 0,
+      "posac_type": "D",
+      "subject_type": "S",
+      "id_location": {
+        "py/tuple": [
+          0,
+          0
+        ]
+      }
+    },
+    "zero_option": {
+      "zero_option": true
+    },
+    "internal_variables": [
+      [
+        "1",
+        "1",
+        "105",
+        "var1",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "106",
+        "var2",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "107",
+        "var3",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "108",
+        "var4",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "109",
+        "var5",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "110",
+        "var6",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "111",
+        "var7",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables": [
+      [
+        "2",
+        "1",
+        "48",
+        "suff inc",
+        "0",
+        "9"
+      ],
+      [
+        "2",
+        "1",
+        "49",
+        "combat",
+        "0",
+        "9"
+      ],
+      [
+        "2",
+        "1",
+        "60",
+        "education",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables_ranges": {
+      "ranges": [
+        [
+          "1-4"
+        ],
+        [
+          "1-5"
+        ],
+        [
+          "1-8"
+        ]
+      ],
+      "traits_num": 3
+    },
+    "traits": [
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "1 or2 on 120",
+        "data": [
+          {
+            "py/tuple": [
+              "2",
+              "1-2",
+              "2-3",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-9",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-9",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait2",
+        "data": [
+          [
+            "1",
+            "1-9"
+          ],
+          [
+            "1",
+            "1-9",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "1",
+            "1-9",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "inc+comb+ed",
+        "data": [
+          {
+            "py/tuple": [
+              "1",
+              "1-2",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "4-4",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "7-8",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        ]
+      }
+    ],
+    "internal_recoding": [
+      {
+        "selected_variables": "1-7",
+        "recoding_pairs": [
+          {
+            "py/tuple": [
+              "1-2",
+              "2"
+            ]
+          },
+          {
+            "py/tuple": [
+              "3-6",
+              "1"
+            ]
+          }
+        ],
+        "invert": false
+      }
+    ],
+    "posacsep": {
+      "posacsep": true,
+      "values": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    "output_files": {
+      "posac": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.pos",
+      "lsa1": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.ls1",
+      "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.ls2"
+    }
+  },
+  "navigator": 6,
+  "view_results": true,
+  "options": {
+    "ascii_output": "No",
+    "special_graphic_char": "",
+    "form_feed": "",
+    "power_weights_low": "4",
+    "power_weights_high": "4",
+    "max_iterations": 15,
+    "posac_axes": true,
+    "set_selection": "A",
+    "record_length": "80",
+    "posac_axes_out": "d:\\cee\\ftwin-tests\\seqer250-7vars.pax"
+  },
+  "controller": {
+    "save_path": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\W250 sep21 to raz.mmp"
+  }
+}

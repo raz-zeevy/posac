@@ -217,9 +217,9 @@
       ]
     },
     "output_files": {
-      "posac": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.pos",
-      "lsa1": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.ls1",
-      "lsa2": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.ls2"
+      "posac": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.pos",
+      "lsa1": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.ls1",
+      "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\simple_test\\output\\job1.ls2"
     }
   },
   "navigator": 7,
@@ -231,7 +231,7 @@
     "power_weights_low": 4,
     "power_weights_high": 4,
     "max_iterations": 15,
-    "posac_axes": "No",
+    "posac_axes": false,
     "set_selection": "A",
     "record_length": 80,
     "posac_axes_out": "C:/Program Files/POSAC/job.pax"

@@ -139,6 +139,10 @@ class PosacNotebook(tkinter.ttk.Notebook):
         self.external_variables_ranges_tab.traits_num_spinbox.config(
             command=self.on_traits_num_change
         )
+        # External variable range changes
+        self.external_variables_ranges_tab.on_range_change = (
+            self.on_external_var_range_change
+        )
         # missing values
         self.zero_option_tab._on_change = lambda: self.toggle_zero_option(
             self.zero_option_tab._zero_option_combo.get() == "Yes"
@@ -211,7 +215,10 @@ class PosacNotebook(tkinter.ttk.Notebook):
     def _add_external_variable(self, values_: list = [], check=True):
         self.external_variables_tab.add_variable(values_, check)
         self.external_variables_ranges_tab.add_range()
-        self.traits_tab.add_external_variable()
+        # Get the newly added external variable range
+        all_ranges = self.external_variables_ranges_tab.get_all_ranges_values()
+        new_ext_var_range = all_ranges[-1] if all_ranges else None
+        self.traits_tab.add_external_variable(new_ext_var_range)
 
     @undoable
     def remove_external_variable(self):
@@ -233,12 +240,24 @@ class PosacNotebook(tkinter.ttk.Notebook):
     # External Traits
     def on_traits_num_change(self):
         traits_num = self.external_variables_ranges_tab.get_external_traits_num()
+        # Get external variable ranges to initialize traits correctly
+        ext_var_ranges = self.external_variables_ranges_tab.get_all_ranges_values()
         self.traits_tab.update_traits_num(
-            traits_num, self.external_variables_tab.get_vars_num()
+            traits_num, self.external_variables_tab.get_vars_num(), ext_var_ranges
         )
 
     def get_external_traits_num(self):
         return self.traits_tab.get_traits_num()
+
+    def on_external_var_range_change(self, ext_var_index: int, new_ranges: list):
+        """
+        Called when an external variable's ranges are changed.
+        Propagates the change to traits tab to update trait ranges.
+
+        :param ext_var_index: Index of the external variable (0-based)
+        :param new_ranges: List of new range strings (e.g., ['1-2', '4-6'])
+        """
+        self.traits_tab.update_external_variable_ranges(ext_var_index, new_ranges)
 
     def update_posacsep_vars(self):
         """

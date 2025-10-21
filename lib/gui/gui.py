@@ -147,9 +147,9 @@ class GUI():
 
     def get_technical_options(self, *args):
         if not args:
-            return OptionsWindow.DEFAULT_VALUES
+            return OptionsWindow.get_settings_static()
         else:
-            return OptionsWindow.DEFAULT_VALUES[args[0]]
+            return OptionsWindow.get_settings_static()[args[0]]
 
     def show_error(self, title, msg):
         # Handle the error if your data contains non-ASCII characters

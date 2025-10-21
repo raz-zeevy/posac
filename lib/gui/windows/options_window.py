@@ -20,7 +20,7 @@ from lib.utils import real_size, rreal_size
 
 t_POSAC_AXES = "Do you want to save Posac-Axes scores obtained for subjects?"
 POSAC_AXES_OPTIONS = ["Yes", "No"]
-POSAC_AXES_DEFAULT = "No"
+POSAC_AXES_DEFAULT = False
 
 t_ASCII_OUTPUT = "Do you want the 3 ASCII output files to be written?"
 ASCII_OUTPUT_OPTIONS = ["Yes", "No"]
@@ -349,6 +349,21 @@ class OptionsWindow(Window):
             "posac_axes_out": self.posac_axes_frame.file_entry.get(),
         }
         return settings
+
+    @staticmethod
+    def get_settings_static():
+        return {
+            "posac_axes": OptionsWindow.DEFAULT_VALUES["posac_axes"] == "Yes",
+            "ascii_output": OptionsWindow.DEFAULT_VALUES["ascii_output"],
+            "special_graphic_char": OptionsWindow.DEFAULT_VALUES["special_graphic_char"],
+            "form_feed": OptionsWindow.DEFAULT_VALUES["form_feed"],
+            "power_weights_low": OptionsWindow.DEFAULT_VALUES["power_weights_low"],
+            "power_weights_high": OptionsWindow.DEFAULT_VALUES["power_weights_high"],
+            "max_iterations": OptionsWindow.DEFAULT_VALUES["max_iterations"],
+            "set_selection": OptionsWindow.DEFAULT_VALUES["set_selection"],
+            "record_length": OptionsWindow.DEFAULT_VALUES["record_length"],
+            "posac_axes_out": OptionsWindow.DEFAULT_VALUES["posac_axes_out"],
+        }
 
     def set_settings(self, **settings):
         known_settings = set(self.DEFAULT_VALUES.keys())

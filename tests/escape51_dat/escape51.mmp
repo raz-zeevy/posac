@@ -161,9 +161,9 @@
       ]
     },
     "output_files": {
-      "posac": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\escape51_dat\\output\\escape51.pos",
-      "lsa1": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\escape51_dat\\output\\escape51.ls1",
-      "lsa2": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\escape51_dat\\output\\escape51.ls2"
+      "posac": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\escape51_dat\\output\\escape51.pos",
+      "lsa1": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\escape51_dat\\output\\escape51.ls1",
+      "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\escape51_dat\\output\\escape51.ls2"
     }
   },
   "navigator": 5,

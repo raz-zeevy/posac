@@ -92,6 +92,7 @@ class PosacAxes:
         Args:
             profiles_coordinates : dict
             input_data : np.ndarray
+            lines_per_case : int
             internal_variables_num : int
             failed_rows : list[int] in [1-based index]
         Returns:
@@ -120,6 +121,7 @@ class PosacAxes:
 
     def _create_posac_axes_file(self, input_data_file : str,
                                  posac_axes_list : List[str],
+                                 lines_per_case : int,
                                  output_path : str) -> None:
         """
         creates a file with the posac axes list.
@@ -135,7 +137,7 @@ class PosacAxes:
         """
         with open(input_data_file, 'r') as file:
             input_data_lines = file.readlines()
-        if len(input_data_lines) != len(posac_axes_list):
+        if len(input_data_lines) / lines_per_case != len(posac_axes_list):
             raise PosacAxesError(f"Input data file and posac axes list have different lengths: {len(input_data_lines)} != {len(posac_axes_list)}")
         with open(output_path, 'w') as file:
             for i, row in enumerate(posac_axes_list):
@@ -150,6 +152,7 @@ class PosacAxes:
 
     def run(self,
             active_data_matrix : np.ndarray,
+            lines_per_case : int,
             internal_variables_num : int,
             failed_rows : List[int],
             input_data_file : str,
@@ -160,6 +163,8 @@ class PosacAxes:
             output : dict = OutputParser.parse_output(posac_output_path)
         except Exception as e:
             raise PosacAxesError(f"Error parsing posac output: {e}")
+        if not output_path:
+            raise PosacAxesError("Output path is required")
 
         profiles_coordinates : dict = self._create_profiles_bins_dict(
             output['out_coords']['x'],
@@ -173,7 +178,7 @@ class PosacAxes:
             internal_variables_num=internal_variables_num,
             failed_rows=failed_rows
         )
-        self._create_posac_axes_file(input_data_file, posac_axes_lines, output_path)
+        self._create_posac_axes_file(input_data_file, posac_axes_lines, lines_per_case, output_path)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,297 @@
+{
+  "notebook": {
+    "general": {
+      "job_name": "seqer 250 7 sqol vars w ext vars Sep27",
+      "data_file": "D:/CEE/FTWIN-TESTS/W250.DAT",
+      "lines_per_case": 2,
+      "plot_item_diagram": true,
+      "plot_external_diagram": true,
+      "only_freq": 0,
+      "posac_type": "D",
+      "subject_type": "S",
+      "id_location": {
+        "py/tuple": [
+          0,
+          0
+        ]
+      }
+    },
+    "zero_option": {
+      "zero_option": true
+    },
+    "internal_variables": [
+      [
+        "1",
+        "1",
+        "105",
+        "var1",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "106",
+        "var2",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "107",
+        "var3",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "108",
+        "var4",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "109",
+        "var5",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "110",
+        "var6",
+        "0",
+        "9"
+      ],
+      [
+        "1",
+        "1",
+        "111",
+        "var7",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables": [
+      [
+        "2",
+        "1",
+        "48",
+        "suff income",
+        "0",
+        "9"
+      ],
+      [
+        "2",
+        "1",
+        "49",
+        "army service",
+        "0",
+        "9"
+      ],
+      [
+        "2",
+        "1",
+        "69",
+        "education",
+        "0",
+        "9"
+      ]
+    ],
+    "external_variables_ranges": {
+      "ranges": [
+        [
+          "1-4"
+        ],
+        [
+          "1-5"
+        ],
+        [
+          "1-8"
+        ]
+      ],
+      "traits_num": 3
+    },
+    "traits": [
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "su",
+        "data": [
+          {
+            "py/tuple": [
+              "1",
+              "1-2",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-9",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-9",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "trait2",
+        "data": [
+          [
+            "1",
+            "1-9"
+          ],
+          {
+            "py/id": 26
+          },
+          {
+            "py/id": 26
+          }
+        ]
+      },
+      {
+        "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
+        "label": "suff inc+combat+educ'd",
+        "data": [
+          {
+            "py/tuple": [
+              "1",
+              "1-2",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "4-4",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "7-8",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        ]
+      }
+    ],
+    "internal_recoding": [
+      {
+        "selected_variables": "1-7",
+        "recoding_pairs": [
+          {
+            "py/tuple": [
+              "1-2",
+              "2"
+            ]
+          },
+          {
+            "py/tuple": [
+              "3-6",
+              "1"
+            ]
+          }
+        ],
+        "invert": false
+      }
+    ],
+    "posacsep": {
+      "posacsep": true,
+      "values": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    "output_files": {
+      "posac": "d:/cee/ftwin-tests/seqer250qol-3Traits-Sep27.pos",
+      "lsa1": "d:\\cee\\ftwin-tests\\seqer250qol-3Traits-Sep27.ls1",
+      "lsa2": "d:\\cee\\ftwin-tests\\seqer250qol-3Traits-Sep27.ls2"
+    }
+  },
+  "navigator": 8,
+  "view_results": true,
+  "options": {
+    "ascii_output": "No",
+    "special_graphic_char": "",
+    "form_feed": "",
+    "power_weights_low": "4",
+    "power_weights_high": "4",
+    "max_iterations": 15,
+    "posac_axes": true,
+    "set_selection": "A",
+    "record_length": "80",
+    "posac_axes_out": "d:\\cee\\ftwin-tests\\seqer250-7vars.pax"
+  },
+  "controller": {
+    "save_path": "D:/CEE/FTWIN-TESTS/W250September8.mmp"
+  }
+}

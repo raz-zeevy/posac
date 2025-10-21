@@ -382,7 +382,7 @@ class Controller:
             self.gui.menu.posacsep_table_menu, file=self.posacsep_table_path
         )
         self.bind_submenu(self.gui.menu.posac_axes_menu, file=self.posac_axes_out)
-        posac_axes = self.gui.get_technical_options("posac_axes") == "Yes"
+        posac_axes = self.gui.get_technical_options("posac_axes")
         recoded_data = bool(self.recoding_operations)
         if posac_axes:
             self.bind_submenu(self.gui.menu.posacsep_table_menu, file=POSAC_SEP_PATH)
@@ -480,7 +480,7 @@ C                         BY THE USER  (SEE LINE I. BELOW)
         self.nd2 = self.gui.get_technical_options("power_weights_high")
         # External Variables Ranges
         self.ext_var_ranges = (
-            self.notebook.external_variables_ranges_tab.get_all_ranges_values()
+            self.notebook.external_variables_ranges_tab.get_all_ranges()
         )
         # Traits
         self.traits = self.notebook.traits_tab.get_traits_values()
@@ -571,11 +571,12 @@ C                         BY THE USER  (SEE LINE I. BELOW)
             return
         OutputParser.reset_instance()
         technical_options = self.gui.get_technical_options()
-        run_posac_axes = technical_options["posac_axes"] == "Yes"
+        run_posac_axes = technical_options["posac_axes"]
         if run_posac_axes:
             try:
                 posac_axes = PosacAxes()
                 posac_axes.run(active_data_matrix = posac.get_data_matrix(),
+                               lines_per_case = self.lines_per_case,
                                internal_variables_num = self.int_vars_num,
                                failed_rows = posac.get_failed_rows(),
                 input_data_file = self.data_file,

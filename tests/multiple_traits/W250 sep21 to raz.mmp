@@ -2,7 +2,7 @@
   "notebook": {
     "general": {
       "job_name": "W250 sep21 multiple traits",
-      "data_file": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\W250.DAT",
+      "data_file": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\W250.DAT",
       "lines_per_case": 2,
       "plot_item_diagram": true,
       "plot_external_diagram": true,
@@ -294,12 +294,12 @@
       ]
     },
     "output_files": {
-      "posac": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.pos",
-      "lsa1": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.ls1",
-      "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.ls2"
+      "posac": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.pos",
+      "lsa1": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.ls1",
+      "lsa2": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.ls2"
     }
   },
-  "navigator": 6,
+  "navigator": 8,
   "view_results": true,
   "options": {
     "ascii_output": "No",
@@ -311,9 +311,9 @@
     "posac_axes": true,
     "set_selection": "A",
     "record_length": "80",
-    "posac_axes_out": "d:\\cee\\ftwin-tests\\seqer250-7vars.pax"
+    "posac_axes_out": "C:/Users/raz3z/Projects/Shmuel/posac/tests/multiple_traits/output/W250 sep21 multiple traits"
   },
   "controller": {
-    "save_path": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\W250 sep21 to raz.mmp"
+    "save_path": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\W250 sep21 to raz.mmp"
   }
 }

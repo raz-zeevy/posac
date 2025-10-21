@@ -116,9 +116,9 @@
       ]
     },
     "output_files": {
-      "posac": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj\\output\\dj_all-testpos.pos",
-      "lsa1": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj\\output\\dj_all-testpos.ls1",
-      "lsa2": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj\\output\\dj_all-testpos.ls2"
+      "posac": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj\\output\\dj_all-testpos.pos",
+      "lsa1": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj\\output\\dj_all-testpos.ls1",
+      "lsa2": "c:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj\\output\\dj_all-testpos.ls2"
     }
   },
   "navigator": 8,
@@ -133,7 +133,7 @@
     "posac_axes": "No",
     "set_selection": "A",
     "record_length": 80,
-    "posac_axes_out": ""
+    "posac_axes_out": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\posac_axes\\job.pax"
   },
   "controller": {
     "save_path": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\dj\\dj_all-testpos.mmp"

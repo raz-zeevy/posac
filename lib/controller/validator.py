@@ -133,6 +133,61 @@ class Validator:
 
     @staticmethod
     @mode_dependent
+    def validate_trait_range_against_external(trait_range_str: str, external_ranges_list: list) -> bool:
+        """
+        Validate that a trait range is within the admissible external variable ranges.
+
+        :param trait_range_str: A trait range string like "3-5"
+        :param external_ranges_list: List of valid external range strings like ["1-2", "4-6"]
+        :return: True if valid, False otherwise
+        """
+        if not trait_range_str or not trait_range_str.strip():
+            return True  # Empty is valid
+
+        # Parse the trait range
+        if "-" not in trait_range_str:
+            return False
+
+        try:
+            trait_from_str, trait_to_str = trait_range_str.split("-")
+            if not trait_from_str.isdigit() or not trait_to_str.isdigit():
+                return False
+
+            trait_from = int(trait_from_str)
+            trait_to = int(trait_to_str)
+
+            if trait_from > trait_to:
+                return False
+
+            # Check if the trait range overlaps with any valid external range
+            for ext_range_str in external_ranges_list:
+                if not ext_range_str or "-" not in ext_range_str:
+                    continue
+
+                try:
+                    ext_from_str, ext_to_str = ext_range_str.split("-")
+                    if not ext_from_str.isdigit() or not ext_to_str.isdigit():
+                        continue
+
+                    ext_from = int(ext_from_str)
+                    ext_to = int(ext_to_str)
+
+                    # Check if any part of trait range falls within this external range
+                    if not (trait_to < ext_from or trait_from > ext_to):
+                        # There's an overlap - check if trait range is fully within external range
+                        if trait_from >= ext_from and trait_to <= ext_to:
+                            return True
+                except (ValueError, AttributeError):
+                    continue
+
+            # No valid external range contains this trait range
+            return False
+
+        except (ValueError, AttributeError):
+            return False
+
+    @staticmethod
+    @mode_dependent
     def validate_for_run(controller):
         """Validates all required fields before running POSAC analysis"""
         errors = []

@@ -41,6 +41,7 @@ class EVRangesTab(tk.Frame):
         # Ranges Table
         self.ranges_table_frame = tk.Frame(self.main_frame)
         self.ranges_table = RangesTable(self.ranges_table_frame,
+                                        on_value_changed=self._on_range_value_changed,
                                         help=Help.EXTERNAL_VARS_RANGES)
         self.ranges_table_frame.pack(fill='both', expand=True, padx=10,
                                      pady=(0, 0))
@@ -73,11 +74,13 @@ class EVRangesTab(tk.Frame):
     def get_all_ranges(self):
         res = []
         for row in self.ranges_table.get_all_values():
-            res.append([item for item in row if item])
+            res.append([item for item in row[1:] if item])
         return res
 
     def get_all_ranges_values(self):
-        return [i[1:] for i in self.get_all_ranges()]
+        # Note: get_all_values() already excludes the index (tree) column
+        # So we don't need to skip the first element - it's already the "Ranges" column
+        return self.get_all_ranges()
 
     def add_range(self, values_: list = [], check=True):
         """
@@ -128,9 +131,27 @@ class EVRangesTab(tk.Frame):
     #  API  #
     #########
 
+    def _on_range_value_changed(self, var_index: int, new_ranges: list):
+        """
+        Internal callback triggered when a range value is changed in the table.
+        Propagates the change to the notebook via on_range_change callback.
+        """
+        if hasattr(self, 'on_range_change') and callable(self.on_range_change):
+            self.on_range_change(var_index, new_ranges)
+
     def on_change_traits_num(self):
         """This is a callback function that is called when the user changes the
         number of external traits and is implemented in Notebook
+        """
+        raise Exception("This method should be implemented in Notebook.")
+
+    def on_range_change(self, var_index: int, new_ranges: list):
+        """
+        Callback function that is called when external variable ranges change.
+        Should be implemented in Notebook.
+
+        :param var_index: Index of the external variable (0-based)
+        :param new_ranges: List of new range strings (e.g., ['1-2', '4-6'])
         """
         raise Exception("This method should be implemented in Notebook.")
 

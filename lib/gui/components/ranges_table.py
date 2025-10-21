@@ -13,8 +13,11 @@ class RangesTable(TableView):
     DEFAULT_VALUE = ['1', '1-9']
     NUM_RANGES = 10
 
-    def __init__(self, master, **kw):
+    def __init__(self, master, on_value_changed=None, **kw):
         self.master = master
+        self.on_value_changed = on_value_changed
+        self.custom_validation = None  # Can be set externally for additional validation
+        self._current_editing_item = None  # Track which item is being edited
         columns = list(self.COLS.values()) + [f"{i} {self.FROM_TO}" for i in
                                               range(1, self.NUM_RANGES + 1)]
         super().__init__(master, columns=columns, disable_sub_menu=True,
@@ -30,13 +33,22 @@ class RangesTable(TableView):
 
     @staticmethod
     def get_new_row(values_=None):
+        # Total columns: 1 for "Ranges" (num_ranges) + NUM_RANGES for actual ranges
+        # So we need NUM_RANGES + 1 total values
         if not values_:
+            # Default: ['1', '1-9', '', '', '', '', '', '', '', '', '']
+            # That's 1 + 10 = 11 values total
             values = RangesTable.DEFAULT_VALUE.copy()
-            [values.append('') for _ in range(RangesTable.NUM_RANGES)]
+            # DEFAULT_VALUE has 2 elements, need to add 9 more to reach 11 total
+            while len(values) < (RangesTable.NUM_RANGES + 1):
+                values.append('')
         else:
-            values = values_.copy()
+            values = [str(len(values_))] + values_.copy()
+            # values_ already contains [num_ranges, range1, range2, ...]
+            # Just pad with empty strings to fill remaining slots
             if len(values) <= (RangesTable.NUM_RANGES + 1):
-                values = [len(values)] + values +  [''] * ((RangesTable.NUM_RANGES) - len(values))
+                while len(values) < (RangesTable.NUM_RANGES + 1):
+                    values.append('')
             else:
                 raise ValueError(f"Too many ranges for variables")
         return values
@@ -49,6 +61,101 @@ class RangesTable(TableView):
         values = self.get_new_row(values_)
         self.set_row(i, values)
 
+    def get_ranges_for_variable(self, var_index: int) -> list:
+        """
+        Get the range values for a specific external variable.
+
+        :param var_index: Index of the variable (0-based)
+        :return: List of range strings (e.g., ['1-2', '4-6'])
+        """
+        if var_index >= len(self):
+            return []
+
+        # Get the item ID for this row index
+        children = self.get_children()
+        if var_index >= len(children):
+            return []
+
+        item_id = children[var_index]
+        # Use parent's set() to avoid triggering our override
+        # This returns a dict of column_name: value
+        row_values = super(RangesTable, self).set(item_id)
+        # Skip first column (number of ranges) and collect range strings
+        ranges = [r for r in list(row_values.values())[1:] if r and r.strip()]
+        return ranges
+
+    def set_ranges_for_variable(self, var_index: int, ranges: list):
+        """
+        Set the range values for a specific external variable.
+
+        :param var_index: Index of the variable (0-based)
+        :param ranges: List of range strings (e.g., ['1-2', '4-6'])
+        """
+        if var_index >= len(self):
+            return
+
+        # Build the full row data
+        num_ranges = str(len(ranges))
+        row_data = [num_ranges] + ranges
+        # Pad with empty strings
+        while len(row_data) < self.NUM_RANGES + 1:
+            row_data.append('')
+
+        self.set_range(var_index, row_data)
+
+    def _enter_edit_mode(self, item_id, column_id):
+        """Override to track which item is being edited."""
+        self._current_editing_item = item_id
+        super()._enter_edit_mode(item_id, column_id)
+
+    def set(self, item, column=None, value=None):
+        """
+        Override set method to trigger callback when values change.
+
+        Note: Treeview's set() has two modes:
+        - set(item) with no column/value: Returns dict of all column values (read mode)
+        - set(item, column, value): Sets a specific cell value (write mode)
+        """
+        # Call parent's set method first
+        result = super().set(item, column, value)
+
+        # Track if we should trigger callback (only once per edit session)
+        should_trigger_callback = False
+
+        # If the "Ranges" column was changed, truncate excessive ranges
+        if column is not None and value is not None and value != '':
+            col_name = self._display_columns[int(column[1:]) - 1] if column.startswith('#') else column
+            if col_name == self.COLS['ranges']:
+                try:
+                    num_ranges = int(value)
+                    # Clear any ranges beyond the specified number (without triggering callbacks)
+                    for i in range(num_ranges + 1, self.NUM_RANGES + 1):
+                        range_col = f"{i} {self.FROM_TO}"
+                        super().set(item, range_col, '')
+                    # Now trigger callback once after all clearing is done
+                    should_trigger_callback = True
+                except (ValueError, AttributeError):
+                    pass
+
+        # Only trigger callback when WRITING a non-empty value
+        # Don't trigger for clearing operations (value == '') to avoid cascading updates
+        if self.on_value_changed and column is not None and value is not None and value != '' and not should_trigger_callback:
+            should_trigger_callback = True
+
+        # Trigger callback once with the final state
+        if should_trigger_callback and self.on_value_changed:
+            try:
+                children = self.get_children()
+                row_index = children.index(item)
+                # Get the updated ranges for this variable
+                new_ranges = self.get_ranges_for_variable(row_index)
+                # Call the callback with row index and new ranges
+                self.on_value_changed(row_index, new_ranges)
+            except (ValueError, IndexError, AttributeError):
+                pass  # Ignore if we can't determine the row
+
+        return result
+
     def validate(self, value: dict, col_index: int, row_values: list):
         """
         Validates table cell input with specific error messages for each case
@@ -57,6 +164,11 @@ class RangesTable(TableView):
         :param row_values: Current row values
         :return: bool
         """
+        # If custom validation is set, use it instead
+        if self.custom_validation:
+            return self.custom_validation(value, col_index, row_values)
+
+        # Otherwise, use default validation
         if not value:
             return True
 

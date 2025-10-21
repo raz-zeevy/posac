@@ -6,7 +6,10 @@ class NotIntegerError(ValueError):
     pass
 
 def parse_range_string(value: str) -> Tuple[int, int]:
-    from_, to_ = value.split('-')
+    try:
+        from_, to_ = value.split('-')
+    except ValueError:
+        raise ValueError(f"Invalid range string: {value}")
     return int(from_), int(to_)
 
 

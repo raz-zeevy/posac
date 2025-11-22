@@ -1,4 +1,5 @@
 import pickle
+import re
 from typing import Dict
 
 from lib.help.help_window.markup_parser import MarkupParser
@@ -81,6 +82,8 @@ class PosacHelp:
         res = res.replace("<f1_br>", "\n")
         if "<f1_ignore>" in res:
             res = res.split("<f1_ignore>")[0]
+        # reaplce all spaces longer then 3 with spaces of length 2
+        res = re.sub(r' {3,}', '  ', res)
         return res
 
 

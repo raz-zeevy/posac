@@ -348,46 +348,46 @@ ASCII files
 
 
 # $ k ASCII output files
-<p>The ASCII output files technical option creates 3 trimmed files in fixed format with the essentials of POSAC/LSA solution.</p>
 
-<h2>Generated Files</h2>
+<p>The ASCII output files technical option creates 3 trimmed files in fixed format with the essentials of POSAC/LSA solution.</p><f1_br>
+<h2>Generated Files</h2><f1_br>
 
 <h2>1. File SOLUTION.PSC</h2>
-<p>Records: Profile, profile-score, profile-frequency, profile-coordinates: X,Y,J,L.</p>
+<p>Records: Profile, profile-score, profile-frequency, profile-coordinates: X,Y,J,L.</p><f1_br>
 
-<txt>Example:
+<txt>Example:<f1_br>
 
- 2 2 2 2                           8    1 100.00  100.00    200.00  100.00
- 2 2 2 1                           7    1  60.00   90.00    150.00   70.00
- 1 2 2 2                           7    1  90.00   60.00    150.00  130.00
- 2 2 1 1                           6    1  30.00   80.00    110.00   50.00
- 1 2 2 1                           6    1  50.00   50.00    100.00  100.00
- 1 1 2 2                           6    1  80.00   30.00    110.00  150.00
- 1 1 1 2                           5    1  70.00   10.00     80.00  160.00
- 1 1 2 1                           5    1  40.00   20.00     60.00  120.00
- 2 1 1 1                           5    1  10.00   70.00     80.00   40.00
- 1 2 1 1                           5    1  20.00   40.00     60.00   80.00
- 1 1 1 1                           4    1    .00     .00       .00  100.00</txt>
+ 2 2 2 2                           8    1 100.00  100.00    200.00  100.00<f1_br>
+ 2 2 2 1                           7    1  60.00   90.00    150.00   70.00<f1_br>
+ 1 2 2 2                           7    1  90.00   60.00    150.00  130.00<f1_br>
+ 2 2 1 1                           6    1  30.00   80.00    110.00   50.00<f1_br>
+ 1 2 2 1                           6    1  50.00   50.00    100.00  100.00<f1_br>
+ 1 1 2 2                           6    1  80.00   30.00    110.00  150.00<f1_br>
+ 1 1 1 2                           5    1  70.00   10.00     80.00  160.00<f1_br>
+ 1 1 2 1                           5    1  40.00   20.00     60.00  120.00<f1_br>
+ 2 1 1 1                           5    1  10.00   70.00     80.00   40.00<f1_br>
+ 1 2 1 1                           5    1  20.00   40.00     60.00   80.00<f1_br>
+ 1 1 1 1                           4    1    .00     .00       .00  100.00</txt><f1_br>
 
 <h2>2. File MUMATRIX.PSC</h2>
-<p>Records the coefficients of monotonicity between the POSAC variables (the lower half of the matrix).</p>
+<p>Records the coefficients of monotonicity between the POSAC variables (the lower half of the matrix).</p><f1_br>
 
-<txt>Example:
+<txt>Example:<f1_br>
 
- 1.00
-  .60 1.00
- -.14  .50 1.00
- -.38 -.14  .60 1.00</txt>
+ 1.00<f1_br>
+  .60 1.00<f1_br>
+ -.14  .50 1.00<f1_br>
+ -.38 -.14  .60 1.00</txt><f1_br>
 
 <h2>3. File ITEMFACT.PSC</h2>
-<p>Records for each variable its coefficient of monotonicity with J,L,X,Y,P,Q.</p>
+<p>Records for each variable its coefficient of monotonicity with J,L,X,Y,P,Q.</p><f1_br>
 
-<txt>Example:
+<txt>Example:<f1_br>
 
-   .83  -.97   .00  1.00   .64   .92
-   .90  -.54   .47   .92   .98   .67
-   .90   .54   .92   .47   .98   .67
-   .83   .97  1.00   .00   .64   .92</txt>
+   .83  -.97   .00  1.00   .64   .92<f1_br>
+   .90  -.54   .47   .92   .98   .67<f1_br>
+   .90   .54   .92   .47   .98   .67<f1_br>
+   .83   .97  1.00   .00   .64   .92</txt><f1_br>
 
 <h2>Related Topics</h2>
 <link target="output_files">Output Files</link><br/>

@@ -1,10 +1,12 @@
 import tkinter as tk
+from tkinter import messagebox
 from typing import List, Tuple, Optional
 
 from lib.gui.components.form import BoldLabel, Entry, Label, SelectionBox
 from lib.gui.components.ranges_table import RangesTable
 from lib.help.posac_help import Help
 from lib.utils import real_size
+from lib.controller.validator import Validator
 
 px_TOP_INPUTS = 50
 py_TOP_INPUTS = 10
@@ -62,10 +64,6 @@ def clip_range_to_valid(trait_range_str: str, valid_ranges_list: List[str]) -> L
 
 
 class TraitsTab(tk.Frame):
-    class TabContext:
-        NO_TRAITS = 'no_traits'
-        TRAITS = 'traits'
-
     class TraitData:
         def __init__(self, label: str, data: List[List]):
             self.label : str = label
@@ -87,26 +85,26 @@ class TraitsTab(tk.Frame):
         self.main_frame = None
         self._current_trait = 1
         self._create_widgets()
-        self._context: str = ''
-        self._update_frames(self.TabContext.NO_TRAITS)
+        self._showing_traits = False
+        self._update_frames(False)
 
     def _create_widgets(self):
         self._create_table()
         self._create_no_traits_label()
 
-    def _update_frames(self, context):
+    def _update_frames(self, show_traits: bool):
         """
         this function updates the frames according to the context,
         it updates the frame content according to the number of traits
         and doesn't update the table itself (it's done by set_trait)
-        :param context:
+        :param show_traits: boolean
         :return:
         """
-        if context == self.TabContext.NO_TRAITS:
+        if not show_traits:
             self.main_frame.pack_forget()
             self.not_traits_frame.pack(fill='both', expand=True, padx=0,
                                        pady=0)
-        elif context == self.TabContext.TRAITS:
+        else:
             self.not_traits_frame.pack_forget()
             self.main_frame.pack(fill='both', expand=True, padx=0, pady=0)
             self.traits_num_box.config(
@@ -114,7 +112,7 @@ class TraitsTab(tk.Frame):
                              range(len(self._traits))])
             )
             self.select_trait(self._current_trait)
-        self._context = context
+        self._showing_traits = show_traits
 
     def _create_no_traits_label(self):
         self.not_traits_frame = tk.Frame(self)
@@ -175,96 +173,50 @@ class TraitsTab(tk.Frame):
         """
         Custom validation for trait ranges to ensure they're within external variable ranges.
         """
-        from lib.controller.validator import Validator
-        from tkinter import messagebox
-
         # First, do the standard range validation
+        if not self.traits_table.perform_standard_validation(value, col_index, row_values):
+            return False
+
         if not value:
             return True
 
         actual_value = list(value.values())[0]
 
-        # Validate Ranges column (col_index 1)
-        if col_index == 1:
-            try:
-                num = int(actual_value)
-            except ValueError:
-                messagebox.showwarning(
-                    "Invalid Input",
-                    "Please enter a valid number for ranges"
-                )
-                return False
-
-            if num > RangesTable.NUM_RANGES:
-                messagebox.showwarning(
-                    "Invalid Range Count",
-                    f"Number of ranges cannot exceed {RangesTable.NUM_RANGES}"
-                )
-                return False
-
-            return True
-
-        # For range columns (col_index > 1), validate format and against external vars
-        if actual_value.strip():
-            # First check if we're allowed to have a range in this position
-            num_ranges_col = list(row_values.keys())[0]  # First column is 'Ranges'
-            num_ranges = int(row_values[num_ranges_col]) if row_values[num_ranges_col].strip() else 0
-            if col_index - 1 > num_ranges:
-                messagebox.showwarning(
-                    "Invalid Range Position",
-                    f"Cannot add range #{col_index-1} when only {num_ranges} ranges are specified.\n"
-                    f"Please increase the number of ranges first."
-                )
-                return False
-
-            # Validate the range format
-            res = Validator.validate_range_string(value, col_index - 1, row_values)
-            if not res:
-                range_num = col_index - 1
-                messagebox.showwarning(
-                    "Invalid Range Format",
-                    f"Invalid format for range #{range_num}\n"
-                    "Range must be in format: number-number\n"
-                    "Examples: 1-5, 2-9, etc.\n"
-                    "First number must be less than or equal to second number."
-                )
-                return False
-
-            # Now validate against external variable ranges
+        # For range columns (col_index > 1), validate against external vars
+        if col_index > 1 and actual_value.strip():
+            # Validate against external variable ranges
             # Get the row index (which external variable this is)
-            try:
-                if hasattr(self.notebook, 'external_variables_ranges_tab'):
-                    all_ext_ranges = self.notebook.external_variables_ranges_tab.get_all_ranges_values()
+            if hasattr(self.notebook, 'external_variables_ranges_tab'):
+                all_ext_ranges = self.notebook.external_variables_ranges_tab.get_all_ranges_values()
 
-                    # Get the row index from the currently editing item
-                    if hasattr(self.traits_table, '_current_editing_item') and self.traits_table._current_editing_item:
+                # Get the row index from the currently editing item
+                # Note: Relying on _current_editing_item is fragile but maintaining existing behavior for now
+                if hasattr(self.traits_table, '_current_editing_item') and self.traits_table._current_editing_item:
+                    try:
                         children = self.traits_table.get_children()
-                        try:
-                            # Find the index of the item being edited
-                            ext_var_index = children.index(self.traits_table._current_editing_item)
-                            ext_var_num = ext_var_index + 1  # Convert to 1-based for display
+                        # Find the index of the item being edited
+                        ext_var_index = children.index(self.traits_table._current_editing_item)
+                        ext_var_num = ext_var_index + 1  # Convert to 1-based for display
 
-                            if 0 <= ext_var_index < len(all_ext_ranges):
-                                ext_var_ranges = all_ext_ranges[ext_var_index]
+                        if 0 <= ext_var_index < len(all_ext_ranges):
+                            ext_var_ranges = all_ext_ranges[ext_var_index]
 
-                                # Validate the trait range against external ranges
-                                if not Validator.validate_trait_range_against_external(actual_value, ext_var_ranges):
-                                    messagebox.showwarning(
-                                        "Invalid Trait Range",
-                                        f"Trait range '{actual_value}' is not within the admissible ranges for external variable {ext_var_num}.\n\n"
-                                        f"Admissible ranges: {', '.join(ext_var_ranges)}\n\n"
-                                        f"Trait ranges must be fully contained within one of the admissible ranges."
-                                    )
-                                    return False
-                        except (ValueError, IndexError):
-                            pass  # If we can't determine the index, skip external validation
-            except Exception:
-                pass  # If anything goes wrong, allow the edit (safer than blocking)
+                            # Validate the trait range against external ranges
+                            if not Validator.validate_trait_range_against_external(actual_value, ext_var_ranges):
+                                messagebox.showwarning(
+                                    "Invalid Trait Range",
+                                    f"Trait range '{actual_value}' is not within the admissible ranges for external variable {ext_var_num}.\n\n"
+                                    f"Admissible ranges: {', '.join(ext_var_ranges)}\n\n"
+                                    f"Trait ranges must be fully contained within one of the admissible ranges."
+                                )
+                                return False
+                    except (ValueError, IndexError):
+                        pass
 
         return True
 
     def _update_traits_from_table(self):
-        if self._context == self.TabContext.TRAITS:
+        if self._showing_traits:
             self._traits[
                 self._current_trait - 1].label = self.trait_entry.get()
             self._traits[self._current_trait - 1].data = self.traits_table. \
@@ -362,9 +314,9 @@ class TraitsTab(tk.Frame):
             self._traits.pop()
         self._current_trait = max(1, min(self._current_trait, len(self._traits)))
         if traits_num == 0:
-            self._update_frames(self.TabContext.NO_TRAITS)
+            self._update_frames(False)
         else:
-            self._update_frames(self.TabContext.TRAITS)
+            self._update_frames(True)
 
     def add_external_variable(self, ext_var_range=None):
         """
@@ -435,7 +387,6 @@ class TraitsTab(tk.Frame):
                 if not trait_var_data or len(trait_var_data) < 2:
                     continue
 
-                num_ranges_str = trait_var_data[0]
                 current_ranges = [r for r in trait_var_data[1:] if r and r.strip()]
 
                 # Clip each trait range to the new valid ranges
@@ -461,19 +412,5 @@ class TraitsTab(tk.Frame):
                 trait.data[ext_var_index] = new_trait_data
 
         # Refresh UI if we're viewing the current trait
-        if self._traits and self._context == self.TabContext.TRAITS:
+        if self._traits and self._showing_traits:
             self.select_trait(self._current_trait)
-
-    def _clip_ranges_to_valid(self, trait_ranges: List[str], valid_ranges: List[str]) -> List[str]:
-        """
-        Helper method to clip multiple trait ranges to valid ranges.
-
-        :param trait_ranges: List of trait range strings
-        :param valid_ranges: List of valid range strings
-        :return: List of clipped range strings
-        """
-        result = []
-        for trait_range in trait_ranges:
-            clipped = clip_range_to_valid(trait_range, valid_ranges)
-            result.extend(clipped)
-        return result

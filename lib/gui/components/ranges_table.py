@@ -168,6 +168,9 @@ class RangesTable(TableView):
         if self.custom_validation:
             return self.custom_validation(value, col_index, row_values)
 
+        return self.perform_standard_validation(value, col_index, row_values)
+
+    def perform_standard_validation(self, value: dict, col_index: int, row_values: list):
         # Otherwise, use default validation
         if not value:
             return True

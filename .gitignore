@@ -24,3 +24,7 @@ scripts/email/config/
 *.pax
 *.OUT
 *.TAB
+# Fortran output files
+FORT9
+FORT10
+FORT14

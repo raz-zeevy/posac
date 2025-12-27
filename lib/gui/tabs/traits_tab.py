@@ -325,6 +325,7 @@ class TraitsTab(tk.Frame):
         :param ext_var_range: The range data for the new external variable.
                              e.g., ['1', '1-9'] or ['2', '1-2', '4-6']
         """
+        self._update_traits_from_table()
         for trait in self._traits:
             if ext_var_range:
                 trait.data.append(list(ext_var_range))
@@ -334,6 +335,7 @@ class TraitsTab(tk.Frame):
             self.select_trait(self._current_trait)
 
     def remove_external_variable(self):
+        self._update_traits_from_table()
         for trait in self._traits:
             if trait:
                 trait.data.pop()
@@ -372,6 +374,8 @@ class TraitsTab(tk.Frame):
         """
         if not self._traits:
             return
+
+        self._update_traits_from_table()
 
         # Validate inputs
         if not isinstance(new_ranges, list):

@@ -203,6 +203,33 @@ class GuiTest(Controller):
         tt.reset_default()
         self.gui.notebook.clear_external_variables()
 
+    def test_traits_tab_data_persistence(self):
+        """Test that trait data persists when adding/removing external variables"""
+        self.notebook.select(5)
+        tt = self.notebook.traits_tab
+
+        # Setup: 1 trait, 1 external variable
+        self.notebook.external_variables_ranges_tab.set_traits_num(1)
+        self.add_external_variables(1)
+
+        # Edit the trait table UI directly (simulating user input)
+        # This updates the UI but not yet the internal model (self._traits)
+        tt.traits_table.set_range(0, ['1', '2-6'])
+
+        # Verify UI has it
+        assert tt.traits_table.get_ranges_for_variable(0) == ['2-6']
+
+        # Add external variable -> Should trigger sync before update
+        self.add_external_variables(1)
+
+        # Check if UI still has the old value for var 0
+        ranges_var_0 = tt.traits_table.get_ranges_for_variable(0)
+        assert ranges_var_0 == ['2-6'], f"Data lost! Expected ['2-6'], got {ranges_var_0}"
+
+        # Cleanup
+        self.notebook.clear_external_variables()
+        tt.reset_default()
+
     def test_posacsep_tab(self):
         var_num = 10
         self.notebook.select(6)
@@ -428,6 +455,7 @@ if __name__ == '__main__':
         a.test_external_variables_tab()
         a.test_external_variables_ranges_tab()
         a.test_traits_tab()
+        a.test_traits_tab_data_persistence()
         a.test_posacsep_tab()
         a.test_output_tab()
         a.test_navigation()

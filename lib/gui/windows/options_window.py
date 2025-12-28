@@ -74,7 +74,7 @@ For J,L recode 0 thru 20=1, 21 thru 40=2,41 thru 60=3,61 thru 80=4, 81 thru 100=
         self.save_axes_menu.pack(padx=real_size(10), pady=real_size(0))
 
         # Bind the selection change
-        self.save_axes_var.trace("w", self._on_checkbox_change)
+        self.save_axes_var.trace_add("write", self._on_checkbox_change)
 
     def _create_recoding_frame(self):
         self.recoding_frame = ttk.Frame(self)
@@ -352,8 +352,10 @@ class OptionsWindow(Window):
 
     @staticmethod
     def get_settings_static():
+        posac_axes_val = OptionsWindow.DEFAULT_VALUES["posac_axes"]
+        posac_axes_bool = posac_axes_val is True or posac_axes_val == "Yes"
         return {
-            "posac_axes": OptionsWindow.DEFAULT_VALUES["posac_axes"] == "Yes",
+            "posac_axes": posac_axes_bool,
             "ascii_output": OptionsWindow.DEFAULT_VALUES["ascii_output"],
             "special_graphic_char": OptionsWindow.DEFAULT_VALUES["special_graphic_char"],
             "form_feed": OptionsWindow.DEFAULT_VALUES["form_feed"],

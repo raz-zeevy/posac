@@ -17,6 +17,8 @@ tests/output
 # Scripts
 scripts/email/config/
 # POSAC FILES
+*.PSC
+*.ASC
 *.SCR
 *.pos
 *.ls1

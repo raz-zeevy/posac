@@ -160,6 +160,8 @@ class TestScenarios:
         # Setup output and run
         self.controller.gui.navigator.next_page()
         output_dir = self._setup_output_files("simple_test")
+        technical_options = self.controller.gui.get_technical_options()
+        assert not technical_options["posac_axes"]
         self.controller.run_posac()
         self.controller.enable_view_output()
         self.controller.save_session(Path(output_dir).parent / "simple_test.session")
@@ -494,6 +496,8 @@ class TestScenarios:
             r"C:\Users\raz3z\Projects\Shmuel\posac\tests\case_id\output",
             "dj_all-testposIdSub",
         )
+        # assert that the posac_axes from get_technical_options is False
+        assert not self.controller.gui.get_technical_options("posac_axes")
         self.controller.run_posac()
         # Long id
         self.controller.load_session(

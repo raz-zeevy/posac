@@ -305,7 +305,13 @@ class TraitsTab(tk.Frame):
         while len(self._traits) < traits_num:
             # Initialize trait ranges based on external variable ranges
             if ext_var_ranges:
-                ranges = [list(range_data) for range_data in ext_var_ranges]
+                ranges = []
+                for range_data in ext_var_ranges:
+                    # Prepend count and pad
+                    row = [str(len(range_data))] + list(range_data)
+                    while len(row) < (RangesTable.NUM_RANGES + 1):
+                        row.append('')
+                    ranges.append(row)
             else:
                 ranges = [RangesTable.DEFAULT_VALUE.copy() for _ in range(var_num)]
             label = f"trait{len(self._traits) + 1}"
@@ -328,7 +334,11 @@ class TraitsTab(tk.Frame):
         self._update_traits_from_table()
         for trait in self._traits:
             if ext_var_range:
-                trait.data.append(list(ext_var_range))
+                # Prepend count and pad
+                row = [str(len(ext_var_range))] + list(ext_var_range)
+                while len(row) < (RangesTable.NUM_RANGES + 1):
+                    row.append('')
+                trait.data.append(row)
             else:
                 trait.data.append(RangesTable.get_new_row())
         if self._traits:

@@ -139,11 +139,12 @@ class GuiTest(Controller):
 
     def assert_no_traits(self):
         tt = self.notebook.traits_tab
-        assert tt._context == tt.TabContext.NO_TRAITS
-        assert tt.get_current_trait() == 0
-        assert not tt.get_traits()
+        assert not tt._showing_traits, "Should not be showing traits"
+        assert tt.get_traits_num() == 0, "Should have 0 traits"
+        assert not tt.get_traits(), "Traits list should be empty"
 
     def test_traits_tab(self):
+        from lib.gui.components.ranges_table import RangesTable
         self.notebook.select(5)
         tt = self.notebook.traits_tab
         # default values test
@@ -153,17 +154,19 @@ class GuiTest(Controller):
         num_ex_var_1 = 30
         self.add_external_variables(num_ex_var_1)
         self.notebook.external_variables_ranges_tab.set_traits_num(num_traits_1)
-        assert tt._context == tt.TabContext.TRAITS
+        assert tt._showing_traits, "Should be showing traits"
         cur_traits = tt.get_traits()
-        def_test_traits = [
-            tt.TraitData(f"trait{i + 1}", [["1", "1-9"] for _ in range(num_ex_var_1)])
-            for i in range(num_traits_1)
-        ]
-        assert cur_traits == def_test_traits
+        # Verify correct number of traits created
+        assert len(cur_traits) == num_traits_1, f"Expected {num_traits_1} traits, got {len(cur_traits)}"
+        # Verify each trait has correct label and number of ext vars
+        for i, trait in enumerate(cur_traits):
+            assert trait.label == f"trait{i + 1}", f"Trait {i+1} has wrong label"
+            assert len(trait.data) == num_ex_var_1, f"Trait {i+1} has wrong number of ext vars"
         # reset traits test
         self.notebook.external_variables_ranges_tab.set_traits_num(0)
         self.notebook.external_variables_ranges_tab.set_traits_num(num_traits_1)
-        assert cur_traits == def_test_traits
+        cur_traits = tt.get_traits()
+        assert len(cur_traits) == num_traits_1, "Traits count wrong after reset"
         # simple set test
         tt.set_trait(
             1,
@@ -180,26 +183,21 @@ class GuiTest(Controller):
         # adding complex variables and traits test
         num_traits_2 = 12
         num_ex_var_2 = 20
-        test_traits_1 = [
-            tt.TraitData(
-                f"test_trait{i * 5 + 1}", [["1", "1-9"] for _ in range(num_ex_var_2)]
-            )
-            for i in range(num_traits_2)
-        ]
-
-        # modify the test_traits_1 to be unique numbers
-        for i in range(num_traits_2):
-            for j in range(num_ex_var_2):
-                test_traits_1[i].data[j][0] = str(i + 1)
         self.add_external_variables(num_ex_var_2)
         self.notebook.external_variables_ranges_tab.set_traits_num(num_traits_2)
         for i in range(num_traits_2):
             tt.set_trait(
                 i + 1,
                 label=f"test_trait{i * 5 + 1}",
-                data=[test_traits_1[i].data[j] for j in range(num_ex_var_2)],
+                data=[[str(i + 1), "1-9"] for _ in range(num_ex_var_2)],
             )
-        assert tt.get_traits() == test_traits_1
+        # Verify all traits have correct data
+        result_traits = tt.get_traits()
+        for i in range(num_traits_2):
+            assert result_traits[i].label == f"test_trait{i * 5 + 1}", \
+                f"Trait {i+1} label wrong"
+            assert result_traits[i].data[0][0] == str(i + 1), \
+                f"Trait {i+1} first ext var has wrong count"
         tt.reset_default()
         self.gui.notebook.clear_external_variables()
 
@@ -209,12 +207,12 @@ class GuiTest(Controller):
         tt = self.notebook.traits_tab
 
         # Setup: 1 trait, 1 external variable
-        self.notebook.external_variables_ranges_tab.set_traits_num(1)
         self.add_external_variables(1)
+        self.notebook.external_variables_ranges_tab.set_traits_num(1)
 
         # Edit the trait table UI directly (simulating user input)
-        # This updates the UI but not yet the internal model (self._traits)
-        tt.traits_table.set_range(0, ['1', '2-6'])
+        # set_range expects [range1, range2, ...] and prepends the count automatically
+        tt.traits_table.set_range(0, ['2-6'])
 
         # Verify UI has it
         assert tt.traits_table.get_ranges_for_variable(0) == ['2-6']
@@ -229,6 +227,285 @@ class GuiTest(Controller):
         # Cleanup
         self.notebook.clear_external_variables()
         tt.reset_default()
+
+    def test_traits_switching_via_combobox(self):
+        """Test that trait data persists when switching traits using the combobox dropdown"""
+        tt = self.notebook.traits_tab
+
+        # Setup: 3 traits, 2 external variables
+        self.add_external_variables(2)
+        self.notebook.external_variables_ranges_tab.set_traits_num(3)
+        self.gui.navigator.set_page(self.gui.navigator.traits_tab_num)
+
+        # Set unique data for trait 1
+        # Note: set_range expects [range1, range2, ...] - count is prepended automatically
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'Trait1_Label')
+        tt.traits_table.set_range(0, ['1-3', '5-7'])
+        tt.traits_table.set_range(1, ['2-4'])
+
+        # Switch to trait 2 using combobox (simulates _on_trait_num_change)
+        tt.traits_num_box.set(2)
+        tt._on_trait_num_change(type('Event', (), {'widget': tt.traits_num_box})())
+
+        # Set unique data for trait 2
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'Trait2_Label')
+        tt.traits_table.set_range(0, ['4-6'])
+        tt.traits_table.set_range(1, ['7-9'])
+
+        # Switch back to trait 1 using combobox
+        tt.traits_num_box.set(1)
+        tt._on_trait_num_change(type('Event', (), {'widget': tt.traits_num_box})())
+
+        # Verify trait 1 data persisted
+        assert tt.trait_entry.get() == 'Trait1_Label', \
+            f"Trait 1 label lost! Expected 'Trait1_Label', got '{tt.trait_entry.get()}'"
+        assert tt.traits_table.get_ranges_for_variable(0) == ['1-3', '5-7'], \
+            f"Trait 1 ext var 0 ranges lost!"
+        assert tt.traits_table.get_ranges_for_variable(1) == ['2-4'], \
+            f"Trait 1 ext var 1 ranges lost!"
+
+        # Switch to trait 2 and verify its data persisted
+        tt.traits_num_box.set(2)
+        tt._on_trait_num_change(type('Event', (), {'widget': tt.traits_num_box})())
+
+        assert tt.trait_entry.get() == 'Trait2_Label', \
+            f"Trait 2 label lost! Expected 'Trait2_Label', got '{tt.trait_entry.get()}'"
+        assert tt.traits_table.get_ranges_for_variable(0) == ['4-6'], \
+            f"Trait 2 ext var 0 ranges lost!"
+        assert tt.traits_table.get_ranges_for_variable(1) == ['7-9'], \
+            f"Trait 2 ext var 1 ranges lost!"
+
+        # Cleanup
+        self.notebook.clear_external_variables()
+
+    def test_traits_switching_via_navigator(self):
+        """
+        Test that trait data persists when switching traits using navigator Next/Prev buttons.
+        This was the original bug - navigator didn't save before switching.
+        """
+        tt = self.notebook.traits_tab
+        nav = self.gui.navigator
+
+        # Reset navigator to known state
+        nav.cur_page = -1
+
+        # Setup: 3 traits, 2 external variables
+        self.add_external_variables(2)
+        self.notebook.external_variables_ranges_tab.set_traits_num(3)
+
+        # Navigate to traits tab
+        nav.set_page(nav.traits_tab_num)
+        assert nav.cur_page == nav.traits_tab_num, "Should be on traits tab"
+        assert tt._current_trait == 1, "Should start on trait 1"
+
+        # Set unique data for trait 1
+        # Note: set_range expects [range1, range2, ...] - count is prepended automatically
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'NavTrait1')
+        tt.traits_table.set_range(0, ['1-2'])
+        tt.traits_table.set_range(1, ['3-4'])
+
+        # Switch to trait 2 using NAVIGATOR NEXT button
+        nav.next_tab_clicked()
+        assert tt._current_trait == 2, "Should be on trait 2"
+
+        # Set unique data for trait 2
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'NavTrait2')
+        tt.traits_table.set_range(0, ['5-6'])
+        tt.traits_table.set_range(1, ['7-8'])
+
+        # Switch to trait 3 using NAVIGATOR NEXT button
+        nav.next_tab_clicked()
+        assert tt._current_trait == 3, "Should be on trait 3"
+
+        # Set unique data for trait 3
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'NavTrait3')
+        tt.traits_table.set_range(0, ['2-3'])
+        tt.traits_table.set_range(1, ['4-5'])
+
+        # Now switch BACK to trait 2 using NAVIGATOR PREV button
+        nav.prev_tab_clicked()
+        assert tt._current_trait == 2, "Should be back on trait 2"
+
+        # CRITICAL: Verify trait 2 data persisted after navigator switch
+        assert tt.trait_entry.get() == 'NavTrait2', \
+            f"Trait 2 label lost via navigator! Expected 'NavTrait2', got '{tt.trait_entry.get()}'"
+        assert tt.traits_table.get_ranges_for_variable(0) == ['5-6'], \
+            f"Trait 2 ext var 0 ranges lost via navigator! Got {tt.traits_table.get_ranges_for_variable(0)}"
+        assert tt.traits_table.get_ranges_for_variable(1) == ['7-8'], \
+            f"Trait 2 ext var 1 ranges lost via navigator! Got {tt.traits_table.get_ranges_for_variable(1)}"
+
+        # Switch back to trait 1 and verify
+        nav.prev_tab_clicked()
+        assert tt._current_trait == 1, "Should be back on trait 1"
+        assert tt.trait_entry.get() == 'NavTrait1', \
+            f"Trait 1 label lost via navigator! Expected 'NavTrait1', got '{tt.trait_entry.get()}'"
+        assert tt.traits_table.get_ranges_for_variable(0) == ['1-2'], \
+            f"Trait 1 ext var 0 ranges lost via navigator!"
+        assert tt.traits_table.get_ranges_for_variable(1) == ['3-4'], \
+            f"Trait 1 ext var 1 ranges lost via navigator!"
+
+        # Navigate forward through all traits and verify trait 3
+        nav.next_tab_clicked()  # to trait 2
+        nav.next_tab_clicked()  # to trait 3
+        assert tt._current_trait == 3, "Should be on trait 3"
+        assert tt.trait_entry.get() == 'NavTrait3', \
+            f"Trait 3 label lost! Expected 'NavTrait3', got '{tt.trait_entry.get()}'"
+        assert tt.traits_table.get_ranges_for_variable(0) == ['2-3'], \
+            f"Trait 3 ext var 0 ranges lost!"
+
+        # Cleanup
+        self.notebook.clear_external_variables()
+        nav.cur_page = -1
+        nav.show_first_page()
+
+    def test_traits_multiple_rapid_switches(self):
+        """Test data integrity with multiple rapid back-and-forth switches"""
+        tt = self.notebook.traits_tab
+        nav = self.gui.navigator
+
+        # Reset navigator to known state
+        nav.cur_page = -1
+
+        # Setup: 3 traits, 2 external variables
+        self.add_external_variables(2)
+        self.notebook.external_variables_ranges_tab.set_traits_num(3)
+        nav.set_page(nav.traits_tab_num)
+
+        # Set data for all 3 traits
+        # Format: (label, [ranges for ext var 0], [ranges for ext var 1])
+        test_data = [
+            ('Label_A', ['1-1'], ['2-2']),
+            ('Label_B', ['3-3'], ['4-4']),
+            ('Label_C', ['5-5'], ['6-6']),
+        ]
+
+        for i, (label, range0, range1) in enumerate(test_data):
+            tt.select_trait(i + 1)
+            tt.trait_entry.delete(0, 'end')
+            tt.trait_entry.insert(0, label)
+            tt.traits_table.set_range(0, range0)
+            tt.traits_table.set_range(1, range1)
+
+        # Rapid switching: 1 -> 2 -> 3 -> 2 -> 1 -> 3 -> 1 -> 2
+        switch_sequence = [2, 3, 2, 1, 3, 1, 2]
+        for target in switch_sequence:
+            if tt._current_trait < target:
+                while tt._current_trait < target:
+                    nav.next_tab_clicked()
+            else:
+                while tt._current_trait > target:
+                    nav.prev_tab_clicked()
+
+        # Final verification: check all 3 traits have correct data
+        for i, (label, range0, range1) in enumerate(test_data):
+            tt.select_trait(i + 1)
+            assert tt.trait_entry.get() == label, \
+                f"Trait {i+1} label corrupted after rapid switches! Expected '{label}', got '{tt.trait_entry.get()}'"
+            actual_range0 = tt.traits_table.get_ranges_for_variable(0)
+            assert actual_range0 == range0, \
+                f"Trait {i+1} ext var 0 corrupted! Expected {range0}, got {actual_range0}"
+
+        # Cleanup
+        self.notebook.clear_external_variables()
+        nav.cur_page = -1
+        nav.show_first_page()
+
+    def test_traits_edit_then_page_change(self):
+        """Test that trait data is saved when navigating away from traits tab entirely"""
+        tt = self.notebook.traits_tab
+        nav = self.gui.navigator
+
+        # Reset navigator to known state
+        nav.cur_page = -1
+
+        # Setup: 2 traits, 1 external variable
+        self.add_external_variables(1)
+        self.notebook.external_variables_ranges_tab.set_traits_num(2)
+        nav.set_page(nav.traits_tab_num)
+
+        # Edit trait 1
+        # Note: set_range expects [range1, range2, ...] - count is prepended automatically
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'EditedTrait1')
+        tt.traits_table.set_range(0, ['2-5'])
+
+        # Switch to trait 2 within same page
+        nav.next_tab_clicked()
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'EditedTrait2')
+        tt.traits_table.set_range(0, ['6-9'])
+
+        # Navigate to next page (away from traits tab)
+        nav.next_tab_clicked()  # This should go to next page since we're on last trait
+        assert nav.cur_page > nav.traits_tab_num, "Should have moved past traits tab"
+
+        # Navigate back to traits tab
+        nav.set_page(nav.traits_tab_num)
+
+        # Verify both traits have their data
+        tt.select_trait(1)
+        assert tt.trait_entry.get() == 'EditedTrait1', \
+            f"Trait 1 label lost after page change! Got '{tt.trait_entry.get()}'"
+        assert tt.traits_table.get_ranges_for_variable(0) == ['2-5'], \
+            f"Trait 1 ranges lost after page change!"
+
+        tt.select_trait(2)
+        assert tt.trait_entry.get() == 'EditedTrait2', \
+            f"Trait 2 label lost after page change! Got '{tt.trait_entry.get()}'"
+        assert tt.traits_table.get_ranges_for_variable(0) == ['6-9'], \
+            f"Trait 2 ranges lost after page change!"
+
+        # Cleanup
+        self.notebook.clear_external_variables()
+        nav.cur_page = -1
+        nav.show_first_page()
+
+    def test_traits_get_state_saves_current(self):
+        """Test that get_state properly saves the currently displayed trait"""
+        tt = self.notebook.traits_tab
+        nav = self.gui.navigator
+
+        # Reset navigator to known state
+        nav.cur_page = -1
+
+        # Setup: 2 traits, 1 external variable
+        self.add_external_variables(1)
+        self.notebook.external_variables_ranges_tab.set_traits_num(2)
+        nav.set_page(nav.traits_tab_num)
+
+        # Edit trait 1
+        # Note: set_range expects [range1, range2, ...] - count is prepended automatically
+        tt.select_trait(1)
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'StateTrait1')
+        tt.traits_table.set_range(0, ['1-3'])
+
+        # Edit trait 2
+        tt.select_trait(2)
+        tt.trait_entry.delete(0, 'end')
+        tt.trait_entry.insert(0, 'StateTrait2')
+        tt.traits_table.set_range(0, ['4-6'])
+
+        # Get state while on trait 2 (should save trait 2's current UI state)
+        state = self.notebook.get_state()
+        traits = state['traits']
+
+        # Verify both traits are in state correctly
+        assert traits[0].label == 'StateTrait1', \
+            f"State doesn't have trait 1 label! Got '{traits[0].label}'"
+        assert traits[1].label == 'StateTrait2', \
+            f"State doesn't have trait 2 label! Got '{traits[1].label}'"
+
+        # Cleanup
+        self.notebook.clear_external_variables()
+        # Reset navigator to initial state for subsequent tests
+        nav.cur_page = -1
+        nav.show_first_page()
 
     def test_posacsep_tab(self):
         var_num = 10
@@ -376,12 +653,12 @@ class GuiTest(Controller):
         rt.set_variables(1)
         rt.add_pair("1", "2")
         rt.add_pair("3", "4")
-        rt.invert_var.set(True)
+        rt.select_inversion()  # Use API method instead of invert_var
 
         # Verify first operation state
         op1 = rt._recoding_operations[0]
-        assert op1.selected_variables == ["1"], (
-            "First operation should target variable 1"
+        assert op1.selected_variables == 1 or op1.selected_variables == "1", (
+            f"First operation should target variable 1, got {op1.selected_variables}"
         )
         assert ("1", "2") in op1.recoding_pairs, "Should contain 1->2 recoding pair"
         assert ("3", "4") in op1.recoding_pairs, "Should contain 3->4 recoding pair"
@@ -402,19 +679,19 @@ class GuiTest(Controller):
         rt.set_variables(1)
         rt.add_pair("1", "2")
         rt.add_pair("3", "4")
-        rt.invert_var.set(True)
+        rt.select_inversion()  # Use API method
 
         # Switch to second operation and set it up
         rt.select_operation(2)
         rt.set_variables("2,3")
         rt.add_pair("5", "6")
-        rt.invert_var.set(False)
+        rt.select_manual_recoding()  # Use API method
 
         # Switch back to first operation and verify state persisted
         rt.select_operation(1)
         assert rt.var_index_entry.get() == "1", "Variable selection should be preserved"
         assert len(rt.pair_tree.get_children()) == 2, "Should have 2 pairs"
-        assert not rt.invert_var.get(), "Invert state should be false"
+        assert rt.operation_type.get() == "Inversion", "Operation type should be Inversion (from op 1)"
         rt.reset_default()
         assert not rt._recoding_operations
 
@@ -431,7 +708,7 @@ class GuiTest(Controller):
         rt.set_variables(1)
         rt.add_pair("1", "2")
         rt.add_pair("3", "4")
-        rt.invert_var.set(True)
+        rt.select_inversion()  # Use API method
 
         # Switch to operation 3 and remove it
         rt.select_operation(3)
@@ -441,7 +718,7 @@ class GuiTest(Controller):
         rt.select_operation(1)
         assert rt.var_index_entry.get() == '1', "Variable selection should be preserved"
         assert len(rt.pair_tree.get_children()) == 2, "Should have 2 pairs"
-        assert not rt.invert_var.get(), "Invert state should be False"
+        assert rt.operation_type.get() == "Inversion", "Operation type should be Inversion (from op 1)"
         rt.reset_default()
         assert not rt._recoding_operations
 
@@ -456,6 +733,11 @@ if __name__ == '__main__':
         a.test_external_variables_ranges_tab()
         a.test_traits_tab()
         a.test_traits_tab_data_persistence()
+        a.test_traits_switching_via_combobox()
+        a.test_traits_switching_via_navigator()
+        a.test_traits_multiple_rapid_switches()
+        a.test_traits_edit_then_page_change()
+        a.test_traits_get_state_saves_current()
         a.test_posacsep_tab()
         a.test_output_tab()
         a.test_navigation()

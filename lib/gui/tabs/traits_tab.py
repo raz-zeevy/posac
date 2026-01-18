@@ -166,7 +166,7 @@ class TraitsTab(tk.Frame):
         self.bottom_label.pack(padx=real_size(px_TOP_INPUTS))
 
     def _on_trait_num_change(self, event):
-        self._update_traits_from_table()
+        # Note: select_trait now handles saving automatically before switching
         self.select_trait(int(event.widget.get()))
 
     def _validate_trait_range(self, value: dict, col_index: int, row_values: dict):
@@ -261,6 +261,10 @@ class TraitsTab(tk.Frame):
         :param i: 1..len(traits)
         :return:
         """
+        # Save current trait data before switching to prevent data loss
+        if self._showing_traits and self._current_trait != i:
+            self._update_traits_from_table()
+
         self.trait_entry.delete(0, tk.END)
         self.trait_entry.insert(0, self._traits[i - 1].label)
         self.traits_num_box.set(i)

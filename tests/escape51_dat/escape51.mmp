@@ -114,15 +114,23 @@
         "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
         "label": "trait2",
         "data": [
-          [
-            "1",
-            "1-9"
-          ],
           {
-            "py/id": 22
+            "py/tuple": [
+              "1",
+              "1-9"
+            ]
           },
           {
-            "py/id": 22
+            "py/tuple": [
+              "1",
+              "1-9"
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-9"
+            ]
           }
         ]
       },

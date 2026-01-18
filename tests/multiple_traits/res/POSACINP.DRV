@@ -1,7 +1,7 @@
 W250 sep21 multiple traits
   10   0   0   0   1   1  10   3   3   1   0   0   0   0  15   0   0   0
 (T1,I2,T3,I2,T5,I2,T7,I2,T9,I2,T11,I2,T13,I2,T15,I2,T17,I2,T19,I2)
-4   4   
+4   4
    1      var1
    2      var2
    3      var3
@@ -17,12 +17,12 @@ W250 sep21 multiple traits
   10   1   1   8
 1 or2 on 120
    8   2   1   2   2   3
-   9   1   1   9
-  10   1   1   9
-trait2
-   8   1   1   9
-   9   1   1   9
-  10   1   1   9
+   9   1   1   5
+  10   1   1   8
+not default 2
+   8   1   1   4
+   9   1   1   5
+  10   1   1   8
 inc+comb+ed
    8   1   1   2
    9   1   4   4

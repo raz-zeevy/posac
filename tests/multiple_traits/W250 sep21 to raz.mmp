@@ -140,8 +140,7 @@
           {
             "py/tuple": [
               "1",
-              "1-9",
-              "",
+              "1-5",
               "",
               "",
               "",
@@ -156,8 +155,7 @@
           {
             "py/tuple": [
               "1",
-              "1-9",
-              "",
+              "1-8",
               "",
               "",
               "",
@@ -173,40 +171,53 @@
       },
       {
         "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
-        "label": "trait2",
+        "label": "not default 2",
         "data": [
-          [
-            "1",
-            "1-9"
-          ],
-          [
-            "1",
-            "1-9",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-          ],
-          [
-            "1",
-            "1-9",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-          ]
+          {
+            "py/tuple": [
+              "1",
+              "1-4",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-5",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-8",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
         ]
       },
       {
@@ -299,7 +310,7 @@
       "lsa2": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\output\\W250 sep21 multiple traits.ls2"
     }
   },
-  "navigator": 8,
+  "navigator": 6,
   "view_results": true,
   "options": {
     "ascii_output": "No",
@@ -314,6 +325,6 @@
     "posac_axes_out": "C:/Users/raz3z/Projects/Shmuel/posac/tests/multiple_traits/output/W250 sep21 multiple traits"
   },
   "controller": {
-    "save_path": "C:\\Users\\raz3z\\Projects\\Shmuel\\posac\\tests\\multiple_traits\\W250 sep21 to raz.mmp"
+    "save_path": "C:/Users/raz3z/Projects/Shmuel/posac/tests/multiple_traits/W250 sep21 to raz.mmp"
   }
 }

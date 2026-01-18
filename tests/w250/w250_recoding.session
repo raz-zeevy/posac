@@ -87,14 +87,18 @@
         "py/object": "lib.gui.tabs.traits_tab.TraitsTab.TraitData",
         "label": "trait1 suff-income",
         "data": [
-          [
-            "1",
-            "1-2"
-          ],
-          [
-            "1",
-            "1-4"
-          ]
+          {
+            "py/tuple": [
+              "1",
+              "1-2"
+            ]
+          },
+          {
+            "py/tuple": [
+              "1",
+              "1-4"
+            ]
+          }
         ]
       },
       {

@@ -266,7 +266,7 @@ class PosacModule:
                 process.kill()
                 stdout, stderr = process.communicate()
             self.process_results(process, stdout, stderr)
-            OutputParser.replace_input_data(posac_out, self.origin_data_file)
+            OutputParser.post_process_output(posac_out, self.origin_data_file)
 
 
     def process_results(self, process, stdout, stderr):

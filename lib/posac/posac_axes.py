@@ -143,7 +143,8 @@ class PosacAxes:
             for i, row in enumerate(posac_axes_list):
                 if i != 0:
                     file.write("\n")
-                file.write(input_data_lines[i])
+                for line_idx in range(lines_per_case):
+                    file.write(input_data_lines[i * lines_per_case + line_idx])
                 file.write(f"{row[0]:3}{row[1]:3}{row[2]:3}{row[3]:3}")
 
     ##################

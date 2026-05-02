@@ -365,10 +365,17 @@ class InternalRecodingTab(tk.Frame):
             )
             self.select_operation(1)  # This will show the first operation's data
 
+    @staticmethod
+    def _is_empty_operation(operation: RecodingOperation) -> bool:
+        return (not operation.selected_variables
+                and not operation.recoding_pairs
+                and not operation.invert)
+
     def get_operations(self):
         """Similar to get_traits in TraitsTab but first update the _recoding_operations from gui"""
         self._update_current_operation()
-        return self._recoding_operations
+        return [op for op in self._recoding_operations
+                if not self._is_empty_operation(op)]
 
     def get_operations_values(self):
         """Similar to get_traits_values in TraitsTab"""

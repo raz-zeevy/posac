@@ -162,12 +162,23 @@ For J,L recode 0 thru 20=1, 21 thru 40=2,41 thru 60=3,61 thru 80=4, 81 thru 100=
         else:
             self.recoding_frame.pack_forget()
 
+    def _get_default_base_name(self):
+        """Get the default base name from data file, falling back to 'job'."""
+        try:
+            data_file = self.gui.notebook.general_tab.get_data_file()
+            if data_file and data_file.strip():
+                return os.path.splitext(os.path.basename(data_file))[0]
+        except (AttributeError, TypeError):
+            pass
+        return "job"
+
     def _browse_file(self):
+        default_name = f"{self._get_default_base_name()}.pax"
         file_path = self.gui.save_file_diaglogue(
             title="Save As",
             file_types=(("PAX files", "*.pax"), ("All files", "*.*")),
             default_extension=".pax",
-            initial_file_name="job.pax",
+            initial_file_name=default_name,
         )
         if file_path:
             self.file_entry.delete(0, tk.END)
@@ -437,8 +448,8 @@ class OptionsWindow(Window):
         OptionsWindow.set(**OptionsWindow.RESET_VALUES)
 
     @staticmethod
-    def set_posac_axes_out_dir(path):
-        OptionsWindow.set(posac_axes_out=os.path.join(path, "job.pax"))
+    def set_posac_axes_out_dir(path, name="job"):
+        OptionsWindow.set(posac_axes_out=os.path.join(path, f"{name}.pax"))
 
 # Example of how to use the window and set default values:
 if __name__ == "__main__":

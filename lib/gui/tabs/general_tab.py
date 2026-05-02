@@ -222,7 +222,7 @@ class GeneralTab(tk.Frame):
         self._notebook.output_files_tab.set_all_from_dir(
             data_file_path.parent, data_file_path.stem
         )
-        self._notebook.gui.set_posac_axes_out_dir(data_file_path.parent)
+        self._notebook.gui.set_posac_axes_out_dir(data_file_path.parent, data_file_path.stem)
 
     #############
     #  Getters  #

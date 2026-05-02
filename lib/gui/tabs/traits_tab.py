@@ -291,6 +291,8 @@ class TraitsTab(tk.Frame):
             self.set_trait(i+1, label=trait.label,
                            data=trait.data)
             self.select_trait(i + 1)
+        if self._traits:
+            self.select_trait(1)
 
     #######
     # API #

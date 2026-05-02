@@ -142,8 +142,8 @@ class GUI():
     def set_options(self, **options):
         OptionsWindow.set(**options)
 
-    def set_posac_axes_out_dir(self, path):
-        OptionsWindow.set_posac_axes_out_dir(path)
+    def set_posac_axes_out_dir(self, path, name="job"):
+        OptionsWindow.set_posac_axes_out_dir(path, name)
 
     def get_technical_options(self, *args):
         if not args:

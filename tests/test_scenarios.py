@@ -2,7 +2,9 @@ import os
 import shutil
 from pathlib import Path
 from tkinter import ttk
+from unittest.mock import MagicMock, patch
 
+import numpy as np
 import pytest
 
 from lib.controller.controller import Controller
@@ -624,6 +626,43 @@ class TestScenarios:
         results = self.run_posac_axes()
         if visual_mode:
             self._setup_visual_test()
+
+    @patch("lib.controller.controller.PosacAxes")
+    @patch("lib.controller.controller.PosacModule")
+    def test_posac_axes_set_b_passes_set_selection_to_runner(
+        self, mock_posac_module, mock_posac_axes_class, tmp_path
+    ):
+        """Set B in technical options must reach PosacAxes.run(set_b=True)."""
+        test_dir = os.path.abspath(os.path.join("tests", "posac_axes"))
+        output_dir = tmp_path / "output"
+        output_dir.mkdir()
+
+        self.controller.load_session(os.path.join(test_dir, "posac_axes.mmp"))
+        self.controller.gui.navigator.set_page(0)
+        self.notebook.general_tab.set_data_file(os.path.join(test_dir, "dj_all.prn"))
+        self.notebook.output_files_tab.set_all(
+            str(output_dir / "posac.pos"),
+            str(output_dir / "posac.ls1"),
+            str(output_dir / "posac.ls2"),
+        )
+        self.controller.gui.set_options(
+            posac_axes=True,
+            set_selection="B",
+            posac_axes_out=str(output_dir / "job.pax"),
+        )
+
+        mock_posac = mock_posac_module.return_value
+        mock_posac.get_data_matrix.return_value = np.array([["1"] * 6])
+        mock_posac.get_failed_rows.return_value = []
+
+        mock_axes = mock_posac_axes_class.return_value
+
+        with patch.object(self.controller.gui, "show_msg", MagicMock()):
+            self.controller.run_posac()
+
+        mock_axes.run.assert_called_once()
+        _, kwargs = mock_axes.run.call_args
+        assert kwargs["set_b"] is True
 
     def test_appendix_data_cases_id(self, visual_mode):
         results = self.run_appendix_data_cases_id()

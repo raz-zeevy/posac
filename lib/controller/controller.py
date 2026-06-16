@@ -581,7 +581,7 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                                failed_rows = posac.get_failed_rows(),
                 input_data_file = self.data_file,
                 posac_output_path = self.pos_out,
-                set_b = False,
+                set_b = technical_options.get("set_selection", "A") == "B",
                 output_path = self.posac_axes_out)
             except Exception as e:
                 raise e

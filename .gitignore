@@ -21,6 +21,7 @@ scripts/email/config/
 *.ASC
 *.SCR
 *.pos
+*.POS
 *.ls1
 *.ls2
 *.pax

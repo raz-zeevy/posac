@@ -299,7 +299,8 @@ class OutputParser:
 
     @staticmethod
     def post_process_output(output_path: str, new_input_data_path: str, timestamp: str = None) -> None:
-        """Post-process POSAC output: add creation timestamp and fix input file path.
+        """Post-process POSAC output: update the banner version, add creation
+        timestamp and fix input file path.
 
         Args:
             output_path: Path to the POSAC output file
@@ -314,12 +315,18 @@ class OutputParser:
         JOB_NAME_STRING = "NAME OF THE JOB "
         INPUT_STRING = "INPUT FILE .................."
         CREATED_AT_LINE = f" CREATED AT ..............{timestamp}\n"
+        # The banner version is hardcoded in the Fortran engine (TNWPOSAC.FOR,
+        # FORMAT 1041), so it can only be replaced after the run.
+        BANNER_VERSION_STRING = "Version 2.0 1988"
+        BANNER_VERSION_LINE = " " * 65 + "2026\n"
 
         output_lines: List[str] = []
         with open(output_path, 'r', encoding='latin-1') as file:
             for line in file:
                 if INPUT_STRING in line:
                     line = line.split(INPUT_STRING)[0] + INPUT_STRING + new_input_data_path + "\n"
+                elif BANNER_VERSION_STRING in line:
+                    line = BANNER_VERSION_LINE
                 output_lines.append(line)
                 if JOB_NAME_STRING in line:
                     output_lines.append(CREATED_AT_LINE)

@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from contextlib import contextmanager
 from logging import getLogger
@@ -37,6 +38,7 @@ class PosacModule:
         self.origin_data_file = None
         self.data_matrix = None
         self.failed_rows : List[int] = None
+        self.posacsep_table_path = None
 
     def prepare_data_file(
         self,
@@ -209,6 +211,12 @@ class PosacModule:
 
         posac_input_drv_file = p_POSAC_DRV
         data_file = p_DATA_FILE
+
+        # if dir doesnt exist, create it
+        posac_out_dir = os.path.dirname(posac_out)
+        if not os.path.exists(posac_out_dir):
+            os.makedirs(posac_out_dir)
+
         # Define the command and arguments
         arguments = [
             get_path(posac_input_drv_file),  # A file in a specific format (see
@@ -228,23 +236,22 @@ class PosacModule:
         ]
         if posac_axes_out:
             arguments.append(posac_axes_out)
+        arguments = [to_ansi_safe_path(argument) for argument in arguments]
         # command = r"C:\Users\Raz_Z\Desktop\shmuel-project\fssa-21\FASSA.BAT"
         command = "PXPOS.BAT"
 
         # Combine the command and arguments into a single list
         full_command = [command] + arguments
 
-        # if dir doesnt exist, create it
-        posac_out_dir = os.path.dirname(posac_out)
-        if not os.path.exists(posac_out_dir):
-            os.makedirs(posac_out_dir)
-
         # Run the command
         posac_dir = get_script_dir_path()
         # write full command to the posac_cmd file
-        with open(p_POSAC_CMD, "w") as file:
-            cmd_command = ["cd ", posac_dir, "&&", " ".join(full_command)]
-            file.write(" ".join(cmd_command))
+        try:
+            with open(p_POSAC_CMD, "w", encoding="utf-8") as file:
+                cmd_command = ["cd ", posac_dir, "&&", " ".join(full_command)]
+                file.write(" ".join(cmd_command))
+        except (OSError, UnicodeError) as e:
+            logger.warning(f"Could not write the command file {p_POSAC_CMD}: {e}")
 
 
         with cwd(posac_dir):
@@ -267,7 +274,26 @@ class PosacModule:
                 stdout, stderr = process.communicate()
             self.process_results(process, stdout, stderr)
             OutputParser.post_process_output(posac_out, self.origin_data_file)
+            self.posacsep_table_path = self.save_posacsep_table(posac_out)
 
+    @staticmethod
+    def save_posacsep_table(posac_out: str):
+        """Copy the POSACSEP table next to the other output files.
+
+        PXPOS.BAT writes it into the program directory under a fixed name, so
+        without this the next run overwrites it. Returns the saved path, or None
+        when POSACSEP produced no table.
+        """
+        if not os.path.exists(P_POSACSEP_TABLE_PATH):
+            logger.warning("POSACSEP produced no table file")
+            return None
+        destination = os.path.splitext(posac_out)[0] + ".tab"
+        try:
+            shutil.copyfile(P_POSACSEP_TABLE_PATH, destination)
+        except OSError as e:
+            logger.warning(f"Could not save the POSACSEP table to {destination}: {e}")
+            return None
+        return destination
 
     def process_results(self, process, stdout, stderr):
         if process.returncode != 0:

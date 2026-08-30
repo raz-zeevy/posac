@@ -17,7 +17,6 @@ from lib.posac.posac_output_parser import OutputParser
 from lib.utils import (
     IS_PROD,
     P_POSACSEP_TABLE_PATH,
-    POSAC_SEP_PATH,
     DataLoadingException,
 )
 
@@ -384,8 +383,6 @@ class Controller:
         self.bind_submenu(self.gui.menu.posac_axes_menu, file=self.posac_axes_out)
         posac_axes = self.gui.get_technical_options("posac_axes")
         recoded_data = bool(self.recoding_operations)
-        if posac_axes:
-            self.bind_submenu(self.gui.menu.posacsep_table_menu, file=POSAC_SEP_PATH)
         self.gui.menu.add_posacsep_items(self.int_vars_num)
         for i in range(1, self.int_vars_num + 1):
             self.gui.menu.posacsep.entryconfig(
@@ -569,6 +566,8 @@ C                         BY THE USER  (SEE LINE I. BELOW)
                 f"An error occurred during POSAC analysis: {e}", title="Error"
             )
             return
+        if posac.posacsep_table_path:
+            self.posacsep_table_path = posac.posacsep_table_path
         OutputParser.reset_instance()
         technical_options = self.gui.get_technical_options()
         run_posac_axes = technical_options["posac_axes"]

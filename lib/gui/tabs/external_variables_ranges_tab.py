@@ -56,7 +56,8 @@ class EVRangesTab(tk.Frame):
                                           width=5,
                                           from_=0, to=12,
                                           default=0,
-                                          command=None)
+                                          command=None,
+                                          help=Help.EXTERNAL_TRAITS)
         self.traits_num_spinbox.pack(side='right',
                                      padx=real_size((0, 120)))
         traits_num_frame.pack(side='bottom', fill='both', padx=0, pady=(20,

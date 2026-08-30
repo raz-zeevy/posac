@@ -1,3 +1,4 @@
+import ctypes
 import os
 
 from lib import config
@@ -76,6 +77,35 @@ def IS_DEV():
 
 def IS_NO_VALIDATE():
     return GET_MODE() == config.MODE_NO_VALIDATION
+
+def get_short_path(path: str):
+    """Return the 8.3 short form of an existing path, or None if unavailable."""
+    buffer = ctypes.create_unicode_buffer(32767)
+    length = ctypes.windll.kernel32.GetShortPathNameW(
+        str(path), buffer, len(buffer)
+    )
+    return buffer.value if length else None
+
+
+def to_ansi_safe_path(path: str) -> str:
+    """Make a path usable by the Fortran programs.
+
+    They open files through the ANSI API, so any character outside the system
+    code page reaches them as '?'. The 8.3 short form is always ASCII, so it is
+    used instead whenever the path is not. A file that does not exist yet has no
+    short form, hence the fallback to shortening only the directory.
+    """
+    if not path or path.isascii():
+        return path
+    short_path = get_short_path(path)
+    if short_path and short_path.isascii():
+        return short_path
+    directory, name = os.path.split(path)
+    short_dir = get_short_path(directory)
+    if short_dir and short_dir.isascii():
+        return os.path.join(short_dir, name)
+    return path
+
 
 def get_script_dir_path():
     try:

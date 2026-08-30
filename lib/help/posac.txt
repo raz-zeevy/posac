@@ -49,6 +49,7 @@ ASCII files
 <p>Here you must enter the name of the file that contains the data for the Variables, as well as its path. It must exist in the computer or you'll get an error message.</p>
 
 <h2>Important Notes</h2>
+<p>The data file must be a plain text (TXT) file in fixed format, that is, the value of each variable must appear in the same column positions in every record.</p>
 <p>The data file must be properly formatted according to your variable definitions. See the following topics for more information:</p>
 
 <h2>Related Topics</h2>

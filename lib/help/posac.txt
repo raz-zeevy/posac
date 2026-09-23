@@ -24,17 +24,69 @@ ASCII files
 
 
 # $ k  Welcome to the Posac program
-<p>Welcome to the POSAC/LSA data analysis system. During this program you will be asked for information that POSAC/LSA needs in order to process your data.</p>
-
-<p>For details on POSAC/LSA, its purpose and operation, as well as for basic bibliography, please refer to What is Posac on the first screen of the program.</p>
-
-<h2>Getting Started</h2>
-<p>To begin using POSAC, you'll need to configure several key settings:</p>
-<bullet><link target="name_of_the_job">Name of the job</link><bullet/><br/>
-<bullet><link target="input_data_file">Input data file</link><bullet/><br/>
-<bullet><link target="lines_per_case">Lines Per Case</link><bullet/><br/>
-<bullet><link target="number_of_internal_variables">Number of internal variables</link><bullet/><br/>
-<bullet><link target="number_of_external_variables">Number of external variables</link><bullet/>
+<h2>Partial Order Scalogram Analysis by Base Coordinates with Lattice Space Analysis (POSAC)</h2><f1_br>
+<p>A Theory-Based Measurement Procedure</p><f1_br>
+<p>Welcome to the POSAC program.</p><f1_br>
+<p>This program guides you through the information required to analyze your data using Partial Order Scalogram Analysis by Base Coordinates with Lattice Space Analysis (POSAC). A description of POSAC and its purpose is provided below.</p><f1_br>
+<p>To begin, please specify:</p><f1_br>
+<bullet>Job name – Any name of your choice (required).</bullet><f1_br>
+<bullet>Input data file – A numerical text file.</bullet><f1_br>
+<bullet>Lines per case – Number of rows representing each observed case (must be identical for all cases).</bullet><f1_br>
+<bullet>Number of internal variables – Between 3 and 16. To ensure a valid POSAC analysis, all internal variables must measure dimensions of the same core concept, with their ranges ordered monotonically (consistently high-to-low or low-to-high) relative to that concept (e.g., intelligence or positive attitude). Any relevant variables that lack proper ordering can be recoded directly within the program.</bullet><f1_br>
+<bullet>Number of external variables (optional).</bullet><f1_br>
+<bullet>Help: Press the ? symbol while on any input field (or press F1 or Fn+F1) to display a context-sensitive explanation of that field.</bullet><f1_br>
+<f1_br>
+<h2>The Purpose of POSAC</h2><f1_br>
+<p>POSAC is a multivariate measurement procedure designed for behavioral and social research in situations where summing or averaging variable scores is not theoretically justified.</p><f1_br>
+<p>Its objective is to represent observations described by n variables in a low-dimensional (typically two-dimensional) coordinate space while preserving two fundamental measurement relations between observed cases:</p><f1_br>
+<bullet>Comparability (dominance)</bullet><f1_br>
+<bullet>Incomparability</bullet><f1_br>
+<p>Developed within Facet Theory, POSAC gains stability, reproducibility, and theoretical interpretability through the defining principle of Facet Theory: a correspondence between subsets of a pre-defined Cartesian set derived from the mapping sentence (score patterns, in the case of POSAC) and regions of the geometric space of empirical observations (Shye, 1985; Shye, 2025).</p><f1_br>
+<p>Accordingly, each observed case (its score profile) is represented as a point in a two-dimensional coordinate system, (X, Y), so that the following measurement properties are preserved as accurately as possible.</p><f1_br>
+<f1_br>
+<h2>Condition 1. Preservation of Comparability (Dominance)</h2><f1_br>
+<p>Suppose one profile is greater than another (P₁ > P₂), meaning that every score in P₁ is greater than or equal to the corresponding score in P₂, and at least one score is strictly greater.</p><f1_br>
+<p>POSAC represents these profiles so that P₁ is not lower than P₂ on either coordinate, and is higher on at least one coordinate.</p><f1_br>
+<p>Formally</p><f1_br>
+<p>If P₁ > P₂  ,  then</p><f1_br>
+<p>x₁ ≥ x₂, y₁ ≥ y₂, and at least one of these inequalities is strict.</p><f1_br>
+<p>where</p><f1_br>
+<p>P₁ = (a₁, a₂, ..., aₙ)</p><f1_br>
+<p>P₂ = (b₁, b₂, ..., bₙ)</p><f1_br>
+<p>And P₁ > P₂ means</p><f1_br>
+<p>aᵢ ≥ bᵢ for every i = 1,…,n, and</p><f1_br>
+<p>aᵢ' > bᵢ' for at least one variable.</p><f1_br>
+<p>Example:  (2, 5, 4, 4, 3) > (2, 5, 3, 4, 3)</p><f1_br>
+<f1_br>
+<h2>Condition 2. Preservation of Incomparability</h2><f1_br>
+<p>Two profiles are incomparable (P₁ $ P₂) when each profile exceeds the other on at least one variable.</p><f1_br>
+<p>POSAC represents such profiles so that one profile is higher on one coordinate and lower on the other.</p><f1_br>
+<p>Formally</p><f1_br>
+<p>If P₁ $ P₂ , then either</p><f1_br>
+<p>x₁ > x₂ and y₁ < y₂, or</p><f1_br>
+<p>x₁ < x₂ and y₁ > y₂.</p><f1_br>
+<p>where P₁ $ P₂ means that</p><f1_br>
+<p>there exists at least one variable for which aᵢ > bᵢ, and</p><f1_br>
+<p>at least one other variable for which aⱼ < bⱼ.</p><f1_br>
+<p>Example: (3, 5, 2, 2, 4) $ (3, 4, 1, 2, 5)</p><f1_br>
+<p>POSAC produces two theory-based measurement scales, X and Y, that jointly measure the investigated population with respect to the concept represented by the observed variables.</p><f1_br>
+<p>Two dimensions constitute the minimum dimensionality capable of representing incomparability relationships among score profiles.</p><f1_br>
+<f1_br>
+<h2>Interpreting the POSAC Coordinate Scales</h2><f1_br>
+<p>An important scientific advantage of POSAC is that the meanings of the coordinate scales X and Y can themselves be discovered and interpreted.</p><f1_br>
+<p>Interpretation is achieved by identifying systematic correspondences between the substantive content of the observed variables and their structural roles within the POSAC space. This process often leads to the discovery of new ("artificial") concepts represented by the X and Y coordinates. Although these concepts are not directly observed, they emerge naturally from the empirical structure as fundamental to the investigated domain.</p><f1_br>
+<p>The interpretation of the coordinate scales is supported by the auxiliary POSACSEP diagrams and POSACSEP table, as well as the auxiliary programs LSA1 and LSA2, which are generated automatically by POSAC. Detailed explanations and empirical examples are available in the references below.</p><f1_br>
+<f1_br>
+<h2>References</h2><f1_br>
+<p>Shye, S. (1985). Multiple Scaling: The Theory and Application of Partial Order Scalogram Analysis by Coordinates. Amsterdam: North-Holland.</p><f1_br>
+<p>Shye, S. (2009). Partial Order Scalogram Analysis by Coordinates (POSAC) as a Facet Theory Measurement Procedure: How to Do POSAC in Four Simple Steps. In A. Cohen (Ed.), Facet Theory and Scaling: In Search for Structure in Behavioral and Social Sciences (pp. 295–310). Ramat-Gan, Israel: FTA Press.</p><f1_br>
+<p>https://www.researchgate.net/publication/263932933</p><f1_br>
+<p>Kedar, Y., & Shye, S. (2015). The Measurement of Distributive Justice Attitudes: Multiple Scaling by POSAC. Proceedings of the 15th International Facet Theory Conference (pp. 96–105).</p><f1_br>
+<p>https://research.library.fordham.edu/cgi/viewcontent.cgi?article=1012&context=ftc</p><f1_br>
+<p>Haber, I. (2015). The OECD Better Life Index: Faceted SSA Validation and Multiple Scaling by POSAC. Proceedings of the 15th International Facet Theory Conference (pp. 84–95).</p><f1_br>
+<p>https://research.library.fordham.edu/cgi/viewcontent.cgi?article=1012&context=ftc</p><f1_br>
+<p>Shye, S. (2019). Facet Theory: Formal Definition and Three Surprising Features. Proceedings of the 19th International Facet Theory Conference (pp. 11–18; Surprise #3: Creativity in Problem Solving –SSA Structure & POSAC Measurement).</p><f1_br>
+<p>https://research.library.fordham.edu/cgi/viewcontent.cgi?article=1015&context=ftc</p><f1_br>
 
 
 # $ k Name of the job
@@ -46,17 +98,18 @@ ASCII files
 
 
 # $ k Input data file
-<p>Here you must enter the name of the file that contains the data for the Variables, as well as its path. It must exist in the computer or you'll get an error message.</p>
+<p>Enter the file name and full file path of your data file. The file must be located on your computer; otherwise, an error will occur. The data file must be a plain .txt file (e.g., created with Notepad or a similar editor) containing numeric data only. Structure the data so that each row represents a case and each column (or pair of adjacent columns) represents a variable.</p>
 
-<h2>Important Notes</h2>
-<p>The data file must be a plain text (TXT) file in fixed format, that is, the value of each variable must appear in the same column positions in every record.</p>
-<p>The data file must be properly formatted according to your variable definitions. See the following topics for more information:</p>
+<p>Note: A single logical row (case) may span multiple physical lines in the text file.</p>
+
+<p>For meaningful POSAC results, all variables must be ordered consistently in the same direction - from high to low or low to high - relative to a single underlying concept. Note that variables do not need to have the same number of categories. To help meet this requirement, the program includes an optional recode feature.</p>
 
 <h2>Related Topics</h2>
 <link target="lines_per_case">Lines Per Case</link><br/>
 <link target="internal_variables">Internal variables</link><br/>
 <link target="external_variables">External variables</link><br/>
-<link target="data_subjects">Data Subjects</link>
+<link target="data_subjects">Data Subjects</link><br/>
+<link target="recode_function">Recode Function</link>
 
 
 # $ k Lines Per Case
@@ -410,12 +463,14 @@ ASCII files
 <p><strong>MODIF:</strong> A line with 3 bends, describable as modifying an attenuating or an accentuating form, representing a T-modifying or a C-modifying variable, respectively.</p>
 
 <h2>Output Files</h2>
-<row left="POASCSET.TAB" right="Reports total deviations for each variable and form"/>
+<row left="POSACSEP.TAB" right="Reports total deviations for each variable and form"/>
 <row left="POSACSEP.OUT" right="Provides algebraic equations for partition curves"/>
 <row left="Diagram Files" right="POLAR01.SCR, PROMO03.SCR, etc."/>
 
 <h2>Important Note</h2>
-<p>POSACSEP.TAB file and the partitioned-space diagram files as well as POSACSEP.OUT are written into the POSAC program directory and, unless their file names are changed, are erased after the next run of the program.</p>
+<p>The POSACSEP table is saved into the output directory together with the POSAC, LSA1 and LSA2 results, under the same name as the data file with the extension .TAB.</p>
+
+<p>The partitioned-space diagram files and POSACSEP.OUT are written into the POSAC program directory and, unless their file names are changed, are erased after the next run of the program.</p>
 
 <h2>Related Topics</h2>
 <link target="posacsep_thresholds">POSACSEP thresholds</link><br/>
@@ -453,10 +508,10 @@ ASCII files
 
 
 # $ k Handling Result Files
-<p>POSAC, LSA1 and LSA2 outputs are written into the files specified in the output files menu. POSACSEP.TAB is located in the posac program directory. These files may be viewed by Microsoft EDIT, NOTEPAD or WORD programs. In case WORD is used for opening one of these files, select the MS-DOS (or the US-ASCII) encoding in WORD File Conversion window. For conveniently viewing POSAC, LSA1 and LSA2 outputs, mark the entire document (Ctrl-a) and choose font Courier New size 6.</p>
+<p>POSAC, LSA1 and LSA2 outputs are written into the files specified in the output files menu. The POSACSEP table is written into the same directory, with the extension .TAB. These files may be viewed by Microsoft EDIT, NOTEPAD or WORD programs. In case WORD is used for opening one of these files, select the MS-DOS (or the US-ASCII) encoding in WORD File Conversion window; the .TAB table is plain text and needs no particular encoding. For conveniently viewing POSAC, LSA1 and LSA2 outputs, mark the entire document (Ctrl-a) and choose font Courier New size 6.</p>
 <h2>File Locations</h2>
 <row left="POSAC/LSA1/LSA2" right="Specified in output files menu"/>
-<row left="POSACSEP.TAB" right="POSAC program directory"/>
+<row left="POSACSEP table (.TAB)" right="Specified in output files menu"/>
 <h2>Viewing Software</h2>
 <row left="Microsoft EDIT" right="Simple text editor"/>
 <row left="NOTEPAD" right="Windows text editor"/>

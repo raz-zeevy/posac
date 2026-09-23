@@ -57,7 +57,10 @@ class GitUpdateNotifier:
         # Split commit message into title and body
         commit_lines = commit_msg.split('\n')
         commit_title = commit_lines[0] if commit_lines else ""
-        commit_body = '\n'.join(commit_lines[1:]).strip() if len(commit_lines) > 1 else ""
+        # Trailers are meant for the repository, not for the recipients
+        body_lines = [line for line in commit_lines[1:]
+                      if not re.match(r"\s*[\w-]+-by:\s", line, re.IGNORECASE)]
+        commit_body = '\n'.join(body_lines).strip()
         
         subject = f"עדכון גרסה - Posac {version}"
         

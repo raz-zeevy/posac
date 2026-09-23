@@ -56,9 +56,9 @@ class StartPage(tk.Frame):
         exit_frame = tk.Frame(buttons_frame)
         exit_frame.pack(side="left", fill="x", expand=True)
 
-        what_is_posac_button = Button(help_frame, text="What is Posac", width=15,
-                           command=lambda: self.title_frame._show_help())
-        what_is_posac_button.pack()
+        self.what_is_posac_button = Button(help_frame, text="What is Posac",
+                                           width=15)
+        self.what_is_posac_button.pack()
 
         self.exit_button = Button(exit_frame, text="Exit", width=15)
         self.exit_button.pack()

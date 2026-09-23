@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def parse_help_file(filepath=POSAC_HELP_FILE):
-    with open(filepath, "r", encoding="latin1") as file:
+    with open(filepath, "r", encoding="utf-8") as file:
         raw_text = file.read()
 
     sections = {}

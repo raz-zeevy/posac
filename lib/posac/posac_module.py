@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import subprocess
 from contextlib import contextmanager
@@ -15,6 +16,11 @@ from lib.utils import *
 
 logger = getLogger(__name__)
 
+# Column widths used when redrawing the POSACSEP table
+TABLE_ITEM_WIDTH = 6
+TABLE_VALUE_WIDTH = 10
+TABLE_KIND_WIDTH = 3
+
 FALSE_ERROR = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP POSAC Completed\nSTOP LSA1 Completed\nSTOP LSA2 Completed\nNote: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP  \n"
 FALSE_ERROR_SHORT = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 2\n"
 FALSE_ERROR_INVALID_FLAG = "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP POSAC Completed\nNote: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG\nSTOP LSA1 Completed\nSTOP LSA2 Completed\nNote: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP  \n"
@@ -26,6 +32,63 @@ def cwd(path):
         yield
     finally:
         os.chdir(oldpwd)
+
+def render_posacsep_table(table: str):
+    """Redraw the POSACSEP table in plain ASCII.
+
+    POSACSEP draws it with CP437 line characters, which show up as mojibake
+    outside a DOS code page, and it splits the type letter into its own cell on
+    the data rows but not in the header, so the columns cannot line up. Returns
+    None when the table is not shaped as expected, so the caller can fall back
+    to the file as POSACSEP wrote it.
+    """
+    headers = []
+    rows = []
+    for line in table.splitlines():
+        item = re.match(r"\s*\D\s*(\d+)\s*\D", line)
+        cells = re.findall(r"(-?\d+\.\d\d)\s*\D\s*(\w)\s*\D", line)
+        if item and cells:
+            rows.append((item.group(1), cells))
+        elif not headers and "ITEM" in line:
+            headers = [cell.strip() for cell in re.split(r"[│|]", line) if cell.strip()]
+
+    columns = headers[1:]
+    if not columns or not rows or any(len(cells) != len(columns) for _, cells in rows):
+        return None
+
+    header_width = TABLE_VALUE_WIDTH + 1 + TABLE_KIND_WIDTH
+    header_rule = "+{}+{}+".format(
+        "-" * TABLE_ITEM_WIDTH,
+        "+".join(["-" * header_width] * len(columns)),
+    )
+    body_rule = "+{}+{}+".format(
+        "-" * TABLE_ITEM_WIDTH,
+        "+".join(
+            ["-" * TABLE_VALUE_WIDTH + "+" + "-" * TABLE_KIND_WIDTH] * len(columns)
+        ),
+    )
+
+    lines = [
+        header_rule,
+        "|{}|{}|".format(
+            f"{headers[0]:^{TABLE_ITEM_WIDTH}}",
+            "|".join(f"{name:^{header_width}}" for name in columns),
+        ),
+        body_rule,
+    ]
+    for item, cells in rows:
+        lines.append(
+            "|{}|{}|".format(
+                f"{item:^{TABLE_ITEM_WIDTH}}",
+                "|".join(
+                    f"{value:>{TABLE_VALUE_WIDTH - 1}} |{kind:^{TABLE_KIND_WIDTH}}"
+                    for value, kind in cells
+                ),
+            )
+        )
+    lines.append(body_rule)
+    return "\r\n".join(lines) + "\r\n"
+
 
 class PosacDataError(Exception):
     """Custom exception for POSAC data handling errors"""
@@ -289,7 +352,14 @@ class PosacModule:
             return None
         destination = os.path.splitext(posac_out)[0] + ".tab"
         try:
-            shutil.copyfile(P_POSACSEP_TABLE_PATH, destination)
+            with open(P_POSACSEP_TABLE_PATH, encoding="cp437") as file:
+                rendered = render_posacsep_table(file.read())
+            if rendered is None:
+                logger.warning("Unexpected POSACSEP table layout, saving it as is")
+                shutil.copyfile(P_POSACSEP_TABLE_PATH, destination)
+            else:
+                with open(destination, "w", encoding="ascii", newline="") as file:
+                    file.write(rendered)
         except OSError as e:
             logger.warning(f"Could not save the POSACSEP table to {destination}: {e}")
             return None

@@ -7,7 +7,15 @@ a = Analysis(['app.py'],
              binaries=[],
              datas=[('lib/assets', 'lib/assets'), ('lib/assets/toolbar', 'lib/assets/toolbar'),
              ('lib/assets/navigation', 'lib/assets/navigation'),
-			 ('lib/scripts/IdoPosac/*','lib/scripts/IdoPosac/'),
+			 # Only what PXPOS.BAT actually launches. The rest of that folder is
+			 # Fortran source, build output and the pre-GUI DOS shell, and a
+			 # glob would also sweep in the run artifacts left there locally.
+			 ('lib/scripts/IdoPosac/PXPOS.BAT','lib/scripts/IdoPosac/'),
+			 ('lib/scripts/IdoPosac/TNWPOSAC_32.exe','lib/scripts/IdoPosac/'),
+			 ('lib/scripts/IdoPosac/SLSA1_32.exe','lib/scripts/IdoPosac/'),
+			 ('lib/scripts/IdoPosac/SLSA2_32.exe','lib/scripts/IdoPosac/'),
+			 ('lib/scripts/IdoPosac/SSHEMOR_32.exe','lib/scripts/IdoPosac/'),
+			 ('lib/scripts/IdoPosac/POSACSEP_32.exe','lib/scripts/IdoPosac/'),
 			 ('README.md', '.'),
               ('lib/help/*',
               'lib/help/'),

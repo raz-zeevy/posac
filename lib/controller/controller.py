@@ -98,6 +98,9 @@ class Controller:
         self.gui.menu.help_menu.entryconfig(
             "About Posac", command=self.gui.show_about_window
         )
+        self.gui.start_page.what_is_posac_button.config(
+            command=self.gui.show_about_window
+        )
         self.gui.menu.help_menu.entryconfig(
             "Help Contents", command=self.gui.show_help_window
         )

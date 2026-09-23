@@ -1,0 +1,5 @@
+#!/bin/sh
+# Strip agent attribution trailers. They are injected by the editor's git
+# integration after the message is written, and the release notification email
+# is built from the commit body, so they would reach customers.
+sed -i -e '/^Co-authored-by:[[:space:]]*Cursor[[:space:]]*<cursoragent@cursor\.com>[[:space:]]*$/d' "$1"

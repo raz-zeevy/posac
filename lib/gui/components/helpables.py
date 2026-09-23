@@ -85,8 +85,6 @@ class Helpable(ABC):
         """Close help window and clean up bindings"""
         if self.help_frame and self.help_frame.winfo_exists():
             self._destroy()
-            self.master.unbind_all("<Button-1>")
-            self.master.unbind_all("<Escape>")
 
     def _show_help_frame(self):
         # Get the toplevel window that contains this widget
@@ -202,13 +200,14 @@ class Helpable(ABC):
             y2 = y1 + self.help_frame.winfo_height()
             if not (x1 <= event.x_root <= x2 and y1 <= event.y_root <= y2):
                 self._destroy()
-                if self.shadow_frame and self.shadow_frame.winfo_exists():
-                    self.shadow_frame.destroy()
-                self.master.unbind_all("<Button-1>")
 
     def _destroy(self):
         self.help_frame.destroy()
         self.shadow_frame.destroy()
+        # These are bound on "all" while the help is open, so they must go with
+        # it, otherwise they keep firing against the destroyed canvas.
+        for sequence in ("<Button-1>", "<Escape>", "<MouseWheel>", "<Up>", "<Down>"):
+            self.master.unbind_all(sequence)
 
 
 class HelpableEntry(Helpable, tk.Entry):

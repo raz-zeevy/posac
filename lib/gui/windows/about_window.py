@@ -1,15 +1,21 @@
+import tkinter as tk
 from tkinter import ttk
 
 from lib.__version__ import VERSION
 from lib.gui.windows.window import Window
+from lib.help.help_window.markup_parser import MarkupParser
+from lib.help.posac_help import PosacHelp
 from lib.utils import rreal_size
+
+ABOUT_SECTION = "Welcome to the Posac program"
 
 
 class AboutWindow(Window):
     def setup_window(self, **kwargs):
         """Initialize the window."""
         self.title("About POSAC")
-        self.resizable(False, False)  # Make window non-resizable
+        self.geometry(f"{rreal_size(620)}x{rreal_size(640)}")
+        self.resizable(True, True)  # The description is too long for a fixed height
         self.create_widgets()
         self.update_idletasks()  # Ensure all elements are rendered before centering
         self.center_window()
@@ -27,33 +33,38 @@ class AboutWindow(Window):
         )
         self.title_label.pack(pady=(rreal_size(20), rreal_size(10)))
 
+    @staticmethod
+    def get_description():
+        """The description shared with the 'What is Posac' help screen."""
+        markup = PosacHelp.get(ABOUT_SECTION, return_dict=False)
+        return MarkupParser().strip_markup(markup).replace("<f1_br>", "").strip()
+
     def create_content(self):
-        main_description = (
-            """POSAC/LSA Program was developed in Fortran by Samuel Shye, the Hebrew University of Jerusalem, as part of a research project supported in part by the U.S. Army Research Institute for the Behavioral and Social Sciences through its European Research Office."""
+        content_frame = ttk.Frame(self)
+        content_frame.pack(
+            fill="both",
+            expand=True,
+            padx=rreal_size(20),
+            pady=(rreal_size(10), rreal_size(5)),
         )
 
-        self.main_content_label = ttk.Label(
-            self,
-            text=main_description,
-            wraplength=rreal_size(300),
-            justify="center",
-        )
-        self.main_content_label.pack(padx=rreal_size(20), pady=(rreal_size(10), rreal_size(5)))
+        scrollbar = ttk.Scrollbar(content_frame, orient="vertical")
+        scrollbar.pack(side="right", fill="y")
 
-        references_description = (
-            """Basic References:
-Shye, S. (1985). Multiple Scaling: The Theory and Application of Partial Order Scalogram Analysis. Amsterdam: North-Holland. [The mathematical foundation of POSAC and its relationship to SSA of the variables]
-Shye, S. & Amar, R. (1985). Partial Order Scalogram Analysis by Base Coordinates and Lattice Mapping of the Items by Their Scalogram Roles. In D. Canter (ed.) Facet Theory: Approaches to Social Research. New York: Springer-Verlag. [An article describing POSAC/LSA procedures and computer program.]"""
+        self.description = tk.Text(
+            content_frame,
+            wrap="word",
+            borderwidth=0,
+            highlightthickness=0,
+            font=("Helvetica", rreal_size(9)),
+            yscrollcommand=scrollbar.set,
+            background=self.cget("background"),
         )
+        self.description.pack(side="left", fill="both", expand=True)
+        scrollbar.config(command=self.description.yview)
 
-        self.references_label = ttk.Label(
-            self,
-            text=references_description,
-            wraplength=rreal_size(300),
-            justify="left",
-            anchor="w"
-        )
-        self.references_label.pack(padx=rreal_size(20), pady=(rreal_size(5), rreal_size(10)))
+        self.description.insert("1.0", self.get_description())
+        self.description.config(state="disabled")
 
     def create_credit(self):
         credit_frame = ttk.Frame(self)

@@ -255,9 +255,9 @@ class Controller:
 
     def show_save_session(self):
         if not self.save_path:
-            self.show_save_as_session()
-        else:
-            self.save_session(self.save_path)
+            return self.show_save_as_session()
+        self.save_session(self.save_path)
+        return True
 
     def show_save_as_session(self):
         default_file_name = Path(self.gui.notebook.general_tab.get_data_file()).stem
@@ -265,6 +265,8 @@ class Controller:
         if save_file:
             self.update_save_path(save_file)
             self.save_session(save_file)
+            return True
+        return False
 
     def show_save_session_and_callback(self, callback):
         self.show_save_session()
@@ -336,19 +338,18 @@ class Controller:
     def on_close(self):
         # Prompt the user with a message box
         if IS_PROD():
-            result = self.gui.show_msg(
+            def save_and_close():
+                # The Yes button already runs this. Do not save again afterwards.
+                if self.show_save_session():
+                    self.gui.root.destroy()
+
+            self.gui.show_msg(
                 "Do you want to save the current session before exiting?",
                 title="Exit",
-                yes_command=self.show_save_session,
+                yes_command=save_and_close,
+                no_command=self.gui.root.destroy,
                 buttons=["Yes:primary", "No:secondary", "Cancel:secondary"],
             )
-            if result == "Yes":
-                self.show_save_session()
-                self.gui.root.destroy()  # Close the application after saving
-            elif result == "No":
-                self.gui.root.destroy()  # Close the application without saving
-            else:
-                pass  # Do nothing (cancel the close operation)
         else:
             self.gui.root.destroy()
 

@@ -7,9 +7,9 @@ disable-model-invocation: true
 # Releasing POSAC
 
 Publishing is done through the git repository itself: the committed
-`releases/PosacSetupDebug.exe` is what users download, so **pushing to `main` is
-the deployment**. The notification email is generated from the version commit,
-which is why its wording matters.
+`releases/PosacSetupDebug.exe` is what users download, so **pushing to `main`
+is the deployment**. The notification email is generated from the version
+commit, which is why its wording matters.
 
 Run every command from the repository root with `venv\Scripts\python.exe`, not a
 bare `python` (the app targets 32-bit Python 3.7).
@@ -51,16 +51,41 @@ Ask which component moves if it is not obvious from the change.
 cmd /c "scripts\build_debug.bat"
 ```
 
-Run it from the repository root - its paths are relative to the root, unlike
-`build.bat`, which starts with `cd ../` and expects to run from `scripts/`.
-
-Despite the name this is the release build - it is the only script that runs
-both PyInstaller and Inno Setup, and it produces `releases/PosacSetupDebug.exe`,
-the file users download. `build.bat` has its PyInstaller line commented out and
-produces an untracked `PosacSetup.exe` that nothing references; ignore it.
+Run it from the repository root. It produces `releases/PosacSetupDebug.exe`,
+the console build, which is what is distributed during the beta - the console
+is currently the only channel through which a user can see a crash, so it
+stays until testing is done.
 
 Confirm `releases/PosacSetupDebug.exe` changed size and timestamp before
 continuing. The script exits non-zero on failure but check anyway.
+
+Then publish the two names users actually download. Do this from the build
+just produced, not from an older `dist`:
+
+```
+copy /Y releases\PosacSetupDebug.exe releases\POSAC-WIN-26P.exe
+```
+
+Rebuild `releases/POSAC-WIN-26Z.zip` from `dist\PosacDebug`: the zip's top
+folder is `POSAC-WIN-26Z`, and it includes `releases/POSAC-WIN-26Z.txt`.
+Commit both new files together with `PosacSetupDebug.exe`. The old installer
+name stays in the repository so links already sent keep working.
+
+| Download | File |
+|---|---|
+| Installer | `releases/POSAC-WIN-26P.exe` |
+| Installer guide | `releases/POSAC-WIN-26P.txt` |
+| Portable ZIP | `releases/POSAC-WIN-26Z.zip` |
+| Portable guide | `releases/POSAC-WIN-26Z.txt` |
+| Previous installer link | `releases/PosacSetupDebug.exe` |
+
+`scripts/build.bat` builds the windowed customer version (`Posac.exe` ->
+`releases/PosacSetup.exe`) and works, but is **not** distributed yet. Before
+switching to it, two things must be settled: the error reporter is disabled
+(`Controller.__init__` has `ErrorReporter` and `install_tk_exception_handler`
+commented out, and `report_manual_error` would raise `AttributeError`), so a
+windowed build discards every unhandled error silently; and the two installers
+share an `AppId`, so Windows treats them as the same application.
 
 ### Step 4: Commit
 
@@ -115,9 +140,9 @@ else between step 4 and here.
 | Thing | Where |
 |---|---|
 | Version | `lib/__version__.py` |
-| Release build | `scripts/build_debug.bat` |
-| Installer users download | `releases/PosacSetupDebug.exe` (tracked in git) |
-| Download link | `raw.githubusercontent.com/raz-zeevy/posac/main/releases/PosacSetupDebug.exe` |
+| Distributed build | `scripts/build_debug.bat` -> `releases/PosacSetupDebug.exe` |
+| Windowed build (not distributed yet) | `scripts/build.bat` -> `releases/PosacSetup.exe` |
+| Download links | `releases/POSAC-WIN-26P.exe` and `releases/POSAC-WIN-26Z.zip` (old name `PosacSetupDebug.exe` still served) |
 | Email entry point | `scripts/email/send_update_email.py` |
 | Email body builder | `scripts/email/git_update_notifier.py` |
 | Recipients | `scripts/email/config/email_recipients.py` (gitignored) |

@@ -13,7 +13,12 @@ class GitUpdateNotifier:
             email_sender: EmailSender instance for sending emails
         """
         self.email_sender = email_sender
-        self.setup_exe_link = "https://raw.githubusercontent.com/raz-zeevy/posac/main/releases/PosacSetupDebug.exe"
+        self.installer_link = "https://raw.githubusercontent.com/raz-zeevy/posac/main/releases/POSAC-WIN-26P.exe"
+        self.portable_link = "https://raw.githubusercontent.com/raz-zeevy/posac/main/releases/POSAC-WIN-26Z.zip"
+        self.installer_guide_link = "https://raw.githubusercontent.com/raz-zeevy/posac/main/releases/POSAC-WIN-26P.txt"
+        self.portable_guide_link = "https://raw.githubusercontent.com/raz-zeevy/posac/main/releases/POSAC-WIN-26Z.txt"
+        # The previous filename stays in the repository so links already sent keep working.
+        self.setup_exe_link = self.installer_link
 
     def get_latest_commit_info(self) -> Tuple[str, str, str]:
         """
@@ -118,8 +123,19 @@ class GitUpdateNotifier:
             <div class="email-container">
                 <div class="hebrew-text">התפרסמה גרסה חדשה לתוכנה Posac.</div>
                 <div class="hebrew-text" style="margin: 15px 0;">
-                    אפשר להוריד את התוכנה בקישור ההורדה הקבוע:<br>
-                    <span class="ltr-text"><a class="link" href="{self.setup_exe_link}">{self.setup_exe_link}</a></span>
+                    אפשר להוריד את התוכנה באחת משתי דרכים:
+                </div>
+                <div class="hebrew-text" style="margin: 15px 0;">
+                    התקנה (POSAC-WIN-26P):<br>
+                    <span class="ltr-text"><a class="link" href="{self.installer_link}">{self.installer_link}</a></span><br>
+                    הוראות התקנה:<br>
+                    <span class="ltr-text"><a class="link" href="{self.installer_guide_link}">{self.installer_guide_link}</a></span>
+                </div>
+                <div class="hebrew-text" style="margin: 15px 0;">
+                    גרסה ניידת, בלי התקנה (POSAC-WIN-26Z):<br>
+                    <span class="ltr-text"><a class="link" href="{self.portable_link}">{self.portable_link}</a></span><br>
+                    הוראות הפעלה:<br>
+                    <span class="ltr-text"><a class="link" href="{self.portable_guide_link}">{self.portable_guide_link}</a></span>
                 </div>
                 <div class="commit-title ltr-text">{commit_title}</div>
                 <div class="commit-body ltr-text">{commit_body}</div>
